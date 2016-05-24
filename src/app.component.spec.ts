@@ -1,19 +1,19 @@
 import {
-  it,
+  it,   
   inject,
   beforeEachProviders,
 } from '@angular/core/testing';
 
 // Load the implementations that should be tested
-import {App} from './app.component';
+import {AppComponent} from './app.component';
 
 describe('App Component', () => {
   // provide our implementations or mocks to the dependency injector
   beforeEachProviders(() => [
-    App
+    AppComponent
   ]);
 
-  it('should have a title', inject([ App ], (app) => {
+  it('should have a title', inject([ AppComponent ], (app) => {
     expect(app.title).toEqual('Axio Workspace');
   }));
 
