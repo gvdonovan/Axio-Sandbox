@@ -1,2 +1,1 @@
-export * from './+property-summary/index';
-export * from './+property-search/index';
+export * from './+company-summary/index';
