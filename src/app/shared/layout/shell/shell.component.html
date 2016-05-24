@@ -6,23 +6,20 @@
         <button class="navbar-toggler pull-xs-left" type="button" ng2-bl-sidebar-toggle data-target="#sidebar"><span
             class="material-icons">menu</span></button>
 
-        <!-- Brand -->
-        <!--<span class="navbar-brand">Dashboard</span>-->
-
-
+        <!-- Search Form -->
         <form class="form-inline pull-xs-left hidden-md-down">
             <div class="input-group width-400">
                 <input type="text" class="form-control" placeholder="Search for...">
-                <span class="input-group-btn"><button class="btn" type="button"><i
-                    class="material-icons">search</i></button></span>
+                <span class="input-group-btn">
+                    <button class="btn" type="button"><i class="material-icons">search</i></button>
+                </span>
             </div>
             <div class="btn-group search-type">
-
-                <label class="btn btn-primary border-radius-left-5" [(ngModel)]="radioModel" btnRadio="Property">Property</label>
-                <label class="btn btn-primary border-radius-right-5" [(ngModel)]="radioModel"
-                       btnRadio="Company">Company</label>
+                <label class="btn btn-default border-radius-left-5" [(ngModel)]="searchTypeModel" btnRadio="Property">Property</label>
+                <label class="btn btn-default border-radius-right-5" [(ngModel)]="searchTypeModel"btnRadio="Company">Company</label>
             </div>
         </form>
+
 
         <ul class="nav navbar-nav pull-xs-right hidden-md-down">
 
@@ -104,38 +101,43 @@
 
         <!-- Menu -->
         <ul class="sidebar-menu sm-active-button-bg">
+
+            <!-- Home -->
             <li class="sidebar-menu-item sm-bordered" ng2-router-active>
                 <a class="sidebar-menu-button" [routerLink]="['/app/home']"><i
                     class="sidebar-menu-icon material-icons">home</i> Home</a>
             </li>
 
+            <!-- Dashboard -->
             <li class="sidebar-menu-item sm-bordered" ng2-router-active>
                 <a class="sidebar-menu-button" [routerLink]="['/app/dashboard']"><i
                     class="sidebar-menu-icon material-icons">dashboard</i> Dashboard</a>
             </li>
 
-            <li [class]="isCollapsed === true ? 'sidebar-menu-item sm-bordered' : 'sidebar-menu-item open'">
+            <!-- Property -->
+            <li [class]="isPropertyMenuCollapsed === true ? 'sidebar-menu-item sm-bordered' : 'sidebar-menu-item open'">
                 <a class="sidebar-menu-button"
-                   (click)="isCollapsed = !isCollapsed"><i class="sidebar-menu-icon material-icons">domain</i> Property</a>
+                   (click)="isPropertyMenuCollapsed = !isPropertyMenuCollapsed"><i class="sidebar-menu-icon material-icons">domain</i> Property</a>
 
                 <!-- Submenu -->
-                <ul [collapse]="isCollapsed" class="sidebar-submenu sm-bordered sm-indent">
+                <ul [collapse]="isPropertyMenuCollapsed" class="sidebar-submenu sm-bordered sm-indent">
                     <li class="sidebar-menu-item" ng2-router-active>
-                        <a class="sidebar-menu-button" [routerLink]="['/app/advanced-search']"><i class="sidebar-menu-icon material-icons">search</i>Advanced Search</a>
+                        <a class="sidebar-menu-button" [routerLink]="['/app/property/search']"><i class="sidebar-menu-icon material-icons">search</i>Advanced Search</a>
                     </li>
                     <li class="sidebar-menu-item" ng2-router-active>
-                        <a class="sidebar-menu-button" [routerLink]="['/app/property/1']"><i class="sidebar-menu-icon material-icons">business</i>Property</a>
+                        <a class="sidebar-menu-button" [routerLink]="['/app/property/1']"><i class="sidebar-menu-icon material-icons">insert_chart</i>Reports</a>
                     </li>
                 </ul>
             </li>
 
+            <!-- Admin -->
             <li class="sidebar-menu-item sm-bordered" ng2-router-active>
-                <a class="sidebar-menu-button" [routerLink]="['/app/dashboard']"><i
-                    class="sidebar-menu-icon material-icons">build</i> Administration</a>
+                <a class="sidebar-menu-button" [routerLink]="['/app/admin']"><i
+                    class="sidebar-menu-icon material-icons">build</i> Admin</a>
             </li>
 
         </ul>
-        <!-- // END Menu -->
+
 
 
     </ng2-bl-sidebar>
@@ -143,4 +145,6 @@
     <router-outlet></router-outlet>
 
 </ng2-bl-layout>
+
+
 

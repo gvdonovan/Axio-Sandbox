@@ -5,19 +5,17 @@ import {Sidebar, SidebarToggle} from 'bootstrap-layout';
 import {RouterActiveDirective} from 'ng2-router-active';
 import {BUTTON_DIRECTIVES, CollapseDirective} from 'ng2-bootstrap/ng2-bootstrap';
 
-import { HomeComponent } from "../+home/index"
-import { CompanyComponent } from "../company/company.component";
-import { DashboardComponent } from "../dashboard/dashboard.component";
-import { PropertyComponent } from "../+properties/+property/index";
-import { AdvancedSearchComponent } from "../+properties/+search/index";
-
-declare var jQuery:any;
+import { AdminHomeComponent } from "../../../+admin/index";
+import { HomeComponent } from "../../../+home/index"
+import { CompanySummaryComponent } from "../../../+company/index";
+import { DashboardComponent } from "../../../+dashboard/index";
+import { PropertySummaryComponent } from "../../../+property/index";
+import { PropertySearchComponent } from "../../../+property/index";
 
 @Component({
     selector: 'app',
     template: require('./shell.component.html'),
-    styles: [
-        require('./shell.component.scss')],
+    styles: [ require('./shell.component.scss') ],
     directives: [
         ROUTER_DIRECTIVES,
         LayoutComponent,
@@ -37,21 +35,22 @@ declare var jQuery:any;
 @Routes([
     {path: '/home', component: HomeComponent}, //, name: 'Dashboard', useAsDefault: true },
     {path: '/dashboard', component: DashboardComponent}, //, name: 'Dashboard', useAsDefault: true },
-    {path: '/property/:propertyId', component: PropertyComponent }, //, name: 'Property' },
-    {path: '/advanced-search', component: AdvancedSearchComponent }, //, name: 'AdvancedSearch' },
-    {path: '/company/:companyId', component: CompanyComponent}, //, name: 'Company' }
-
+    {path: '/property/search', component: PropertySearchComponent }, //, name: 'AdvancedSearch' },
+    {path: '/admin', component: AdminHomeComponent }, //, name: 'AdvancedSearch' },
+    /***
+     * Routes without links
+     */
+    {path: '/property/:propertyId', component: PropertySummaryComponent }, //, name: 'Property' },
+    {path: '/company/:companyId', component: CompanySummaryComponent}, //, name: 'Company' }
 ])
 export class ShellComponent implements OnInit {
-    public isCollapsed:boolean = true;
 
-    public radioModel:string = 'Property';
+    public isPropertyMenuCollapsed:boolean = true;
+    public searchTypeModel:string = 'Property';
 
-    constructor(private router:Router) {
-    }
+    constructor(private router:Router) {}
 
     ngOnInit() {
-       console.log('biff');
         this.router.navigate(['/app/home']);
     }
 }

@@ -1,1 +1,1 @@
-export * from './property.component.ts';
+export * from './property-summary.component';

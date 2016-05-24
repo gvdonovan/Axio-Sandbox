@@ -2,15 +2,16 @@ import { Component } from '@angular/core';
 import {LayoutComponent, NavbarComponent, SidebarComponent, SidebarToggleDirective} from 'ng2-bootstrap-layout';
 import {Sidebar, SidebarToggle} from 'bootstrap-layout';
 
-@Component({
+@Component({    
     selector: 'ax-property',
-    template: require('./property.component.html'),
+    template: require('./property-summary.component.html'),
+    styles: [ require('./property-summary.component.scss') ],
     directives: [
         LayoutComponent,
         NavbarComponent,
         SidebarToggleDirective,
         SidebarComponent
-       
+
     ],
     providers: [
         Sidebar,
@@ -18,4 +19,4 @@ import {Sidebar, SidebarToggle} from 'bootstrap-layout';
     ]
 
 })
-export class PropertyComponent {}
+export class PropertySummaryComponent {}

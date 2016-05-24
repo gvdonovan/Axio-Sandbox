@@ -1,1 +1,1 @@
-export * from './advanced-search.component.ts';
+export * from './property-search.component';

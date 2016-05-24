@@ -1,1 +1,1 @@
-export * from './+company-summary/index';
+export * from './+admin-home/index';

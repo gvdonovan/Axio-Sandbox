@@ -1,1 +1,1 @@
-export * from './property-summary.component';
+export * from './company-summary.component';
