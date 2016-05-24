@@ -1,0 +1,62 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "sourceMap": true
+    },
+    "exclude": [
+        "node_modules",
+        "typings/main.d.ts",
+        "typings/main"
+    ],
+    "filesGlob": [
+        "./src/**/*.ts",
+        "./test/**/*.ts",
+        "!./node_modules/**/*.ts",
+        "src/custom_typings.d.ts",
+        "typings/browser.d.ts"
+    ],
+    "compileOnSave": false,
+    "buildOnSave": false,
+    "atom": {
+        "rewriteTsconfig": false
+    },
+    "files": [
+        "typings/browser.d.ts",
+        "./src/app.component.spec.ts",
+        "./src/app.component.ts",
+        "./src/app/advanced-search/advanced-search.component.ts",
+        "./src/app/dashboard/dashboard.component.ts",
+        "./src/app/error/error.component.ts",
+        //"./src/app/login/authorized.router.outlet.ts",
+        "./src/app/login/canactivate.ts",
+        "./src/app/login/login.component.ts",
+        "./src/app/property/mock-property.ts",
+        "./src/app/property/property.component.spec.ts",
+        "./src/app/property/property.component.ts",
+        "./src/app/property/property.service.spec.ts",
+        "./src/app/property/property.service.ts",
+        "./src/app/services/index.ts",
+        "./src/app/services/user.service.ts",
+        "./src/app/shared/config/config.ts",
+        "./src/app/shared/config/index.ts",
+        "./src/app/shared/data/index.ts",
+        "./src/app/shared/interfaces/index.ts",
+        "./src/app/shared/interfaces/property.interface.ts",
+        "./src/app/shared/services/factory.service.spec.ts",
+        "./src/app/shared/services/factory.service.ts",
+        "./src/app/shared/services/index.ts",
+        "./src/app/shared/services/search.service.spec.ts",
+        "./src/app/shared/services/search.service.ts",
+        "./src/app/workspace/config.ts",
+        "./src/app/workspace/shell.component.ts",
+        "./src/app/workspace/widget/panel.ts",
+        "./src/main.ts",
+        "./src/polyfills.ts"
+    ],
+    "rules": {
+        "interface-name": false
+    }
+}

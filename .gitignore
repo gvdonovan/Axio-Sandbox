@@ -1,0 +1,11 @@
+/node_modules
+/typings
+/.idea
+/reports
+.editorconfig
+/src/**/*.js
+/src/**/*.js.map
+/dist
+/desktop/windows/app/**/*
+!/desktop/windows/app/main.js
+!/desktop/windows/app/package.json
