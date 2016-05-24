@@ -1,12 +1,3 @@
-<!--<nav sidebar id="sidebar" role="navigation" class="sidebar"></nav>-->
-<!--<nav (toggleSidebarEvent)="toggleSidebarListener($event)" (toggleChatEvent)="toggleChatListener()" class="page-controls navbar navbar-dashboard" navbar></nav>-->
-<!--<aside chat-sidebar class="chat-sidebar"></aside>-->
-
-<!--<div class="content-wrap">-->
-<!--<main id="content" class="content view-animate fade-up" role="main"><router-outlet></router-outlet></main>-->
-<!--</div>-->
-
-
 <ng2-bl-layout layout-type="fluid">
 
     <ng2-bl-navbar navbar-class="navbar-light bg-white">
@@ -19,11 +10,17 @@
         <!--<span class="navbar-brand">Dashboard</span>-->
 
 
-        <form class="form-inline pull-xs-left hidden-sm-down">
-            <div class="input-group width-500">
+        <form class="form-inline pull-xs-left hidden-md-down">
+            <div class="input-group width-400">
                 <input type="text" class="form-control" placeholder="Search for...">
                 <span class="input-group-btn"><button class="btn" type="button"><i
                     class="material-icons">search</i></button></span>
+            </div>
+            <div class="btn-group search-type">
+
+                <label class="btn btn-primary border-radius-left-5" [(ngModel)]="radioModel" btnRadio="Property">Property</label>
+                <label class="btn btn-primary border-radius-right-5" [(ngModel)]="radioModel"
+                       btnRadio="Company">Company</label>
             </div>
         </form>
 
@@ -114,7 +111,7 @@
 
             <li class="sidebar-menu-item sm-bordered" ng2-router-active>
                 <a class="sidebar-menu-button" [routerLink]="['/app/dashboard']"><i
-                    class="sidebar-menu-icon material-icons">insert_chart</i> Dashboard</a>
+                    class="sidebar-menu-icon material-icons">dashboard</i> Dashboard</a>
             </li>
 
             <li [class]="isCollapsed === true ? 'sidebar-menu-item sm-bordered' : 'sidebar-menu-item open'">
@@ -134,7 +131,7 @@
 
             <li class="sidebar-menu-item sm-bordered" ng2-router-active>
                 <a class="sidebar-menu-button" [routerLink]="['/app/dashboard']"><i
-                    class="sidebar-menu-icon material-icons">build</i> Adminisration</a>
+                    class="sidebar-menu-icon material-icons">build</i> Administration</a>
             </li>
 
         </ul>

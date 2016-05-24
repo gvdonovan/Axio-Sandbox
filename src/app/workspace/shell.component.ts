@@ -3,7 +3,7 @@ import {Routes, Router, ROUTER_DIRECTIVES} from '@angular/router';
 import {LayoutComponent, NavbarComponent, SidebarComponent, SidebarToggleDirective} from 'ng2-bootstrap-layout';
 import {Sidebar, SidebarToggle} from 'bootstrap-layout';
 import {RouterActiveDirective} from 'ng2-router-active';
-import {CollapseDirective} from 'ng2-bootstrap/ng2-bootstrap';
+import {BUTTON_DIRECTIVES, CollapseDirective} from 'ng2-bootstrap/ng2-bootstrap';
 
 import { HomeComponent } from "../+home/index"
 import { CompanyComponent } from "../company/company.component";
@@ -25,6 +25,7 @@ declare var jQuery:any;
         SidebarToggleDirective,
         SidebarComponent,
         RouterActiveDirective,
+        BUTTON_DIRECTIVES,
         CollapseDirective
     ],
     providers: [
@@ -43,6 +44,9 @@ declare var jQuery:any;
 ])
 export class ShellComponent implements OnInit {
     public isCollapsed:boolean = true;
+
+    public radioModel:string = 'Property';
+
     constructor(private router:Router) {
     }
 
