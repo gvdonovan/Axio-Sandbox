@@ -26,10 +26,16 @@ declare var jQuery:any;
     {path: '/login', component: LoginComponent}, //name: 'LoginPage'}
 ])
 export class AppComponent implements OnInit {
-    constructor(private router:Router) {
-    }
+    constructor(
+        private router:Router,
+        private userService: UserService
+    ) {}
 
     ngOnInit() {
-        this.router.navigate(['/app']);
+        if (this.userService.loggedIn) {
+            this.router.navigate(['/app']);
+        } else {
+            this.router.navigate(['/login']);
+        }
     }
 }

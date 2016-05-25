@@ -11,6 +11,7 @@ import { CompanySummaryComponent } from "../../../+company/index";
 import { DashboardComponent } from "../../../+dashboard/index";
 import { PropertySummaryComponent } from "../../../+property/index";
 import { PropertySearchComponent } from "../../../+property/index";
+import { UserService } from '../../../services';
 
 @Component({
     selector: 'app',
@@ -48,9 +49,13 @@ export class ShellComponent implements OnInit {
     public isPropertyMenuCollapsed:boolean = true;
     public searchTypeModel:string = 'Property';
 
-    constructor(private router:Router) {}
+    constructor(private router:Router, private userService: UserService) {}
 
     ngOnInit() {
         this.router.navigate(['/app/home']);
+    }
+
+    logout() {
+        this.userService.logout();
     }
 }
