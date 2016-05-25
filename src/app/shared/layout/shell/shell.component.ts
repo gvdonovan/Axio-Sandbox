@@ -56,16 +56,15 @@ export class ShellComponent implements OnInit {
     searchTerm: string;
     searched: boolean = false;
 
-    constructor(private router:Router) {}
     states: Object[] = this._.map(STATES,(data)=>{
         return {id: data.id, name: data.shortName}
     });
 
     constructor(private router:Router,
                 private http: Http, @Inject('_') public _,
-                private searchService: SearchService
+                private searchService: SearchService,
+                private userService: UserService
     ) {}
-    constructor(private router:Router, private userService: UserService) {}
 
     ngOnInit() {
         this.router.navigate(['/app/home']);
@@ -116,12 +115,12 @@ export class ShellComponent implements OnInit {
         this.searched = true;
         this.searchService.basicSearch(value)
             .subscribe(properties => {
-                if(properties.length === 1) {
-                    if(this.searchTypeModel === 'Property') {
-                        this.router.navigate(['/app/property/'+properties[0].id]);
+                if (properties.length === 1) {
+                    if (this.searchTypeModel === 'Property') {
+                        this.router.navigate(['/app/property/' + properties[0].id]);
                     }
                     else {
-                        this.router.navigate(['/app/company/'+properties[0].id]);
+                        this.router.navigate(['/app/company/' + properties[0].id]);
                     }
                 }
                 else if (properties.length > 1) {
@@ -129,6 +128,8 @@ export class ShellComponent implements OnInit {
                     this.searchService.setSearchResults(properties);
                 }
             });
+    }
+
     logout() {
         this.userService.logout();
     }
