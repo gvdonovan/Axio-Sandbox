@@ -18,3 +18,83 @@
 .width-400 { width: 400px; }
 .width-500 { width: 500px; }
 
+.sidebar-light {
+    .sidebar-user img {
+        border: 1px solid $sidebar-light-border-color;
+    }
+    .sidebar-user-center {
+        background: rgba(0, 0, 0, .05);
+        border-bottom: 1px solid $sidebar-light-border-color;
+        .sidebar-user-avatar img {
+            border: 1px solid $sidebar-light-border-color;
+        }
+        .user-info > a {
+            color: $gray;
+            &:hover {
+                color: $brand-primary;
+            }
+        }
+        .user-extras a {
+            color: rgba(0, 0, 0, .24);
+            &:hover {
+                color: $gray;
+                text-decoration: none;
+            }
+        }
+    }
+    .sidebar-activity {
+        li {
+            color: $gray-light;
+            background: rgba(0, 0, 0, .05);
+            border-bottom: 1px solid $sidebar-light-border-color;
+            small {
+                color: rgba(0, 0, 0, .34);
+            }
+            a {
+                color: $gray-light;
+            }
+            .sidebar-activity-icon {
+                background: rgba(0, 0, 0, .05);
+                color: $gray;
+                i {
+                    position: relative;
+                    top: 1px;
+                }
+            }
+            &:hover, &.active {
+                background: transparent;
+                &,
+                a {
+                    color: #212121;
+                    transition: all .7s;
+                }
+            }
+        }
+    }
+    .sidebar-email .sidebar-email-item {
+        border-bottom: 1px solid $sidebar-light-border-color;
+        a.nav-link {
+            color: $gray;
+            .sidebar-email-message {
+                color: $text-muted;
+            }
+            &:hover {
+                background: #efefef;
+            }
+        }
+        &.new a:after {
+            background: $brand-primary;
+        }
+        &.active a.nav-link,
+        &.active a.nav-link:hover {
+            background: $brand-primary;
+            * {
+                color: #fff;
+            }
+        }
+    }
+    .sidebar-stats {
+        border: 1px solid $sidebar-light-border-color;
+        color: $text-muted;
+    }
+}
