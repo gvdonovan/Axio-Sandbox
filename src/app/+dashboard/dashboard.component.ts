@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Panel} from '../shared/widget/panel';
+import {Panel} from '../shared/components';
 
 @Component({
     selector: 'dashboard',

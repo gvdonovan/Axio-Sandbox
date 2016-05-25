@@ -6,9 +6,7 @@ import { Pipe, PipeTransform } from "@angular/core";
 })
 export class PaginatePipe implements PipeTransform {
   transform(collection: any[], args: any): any {
-    console.log(collection);
-    console.log(args);
-
+    
     let itermPerPage = args.itemsPerPage || 5;
     let currentPage = args.currentPage || 1;
     let start, end;

@@ -9,7 +9,10 @@
         <!-- Search Form -->
         <form class="form-inline pull-xs-left hidden-md-down">
             <div class="input-group width-400">
-                <input type="text" class="form-control" placeholder="Search for...">
+                <input type="text" class="form-control" placeholder="Search for..."
+                       [typeahead]="getAsyncData(getContext())"
+                       [typeaheadOptionField]="'data'" typeaheadWaitMs="300" (typeaheadOnSelect)="typeaheadOnSelect($event)"
+                       (keypress)="keyPressed($event.keyCode,searchTerm)" [(ngModel)]="searchTerm">
                 <span class="input-group-btn">
                     <button class="btn" type="button"><i class="material-icons">search</i></button>
                 </span>
@@ -79,7 +82,7 @@
             <!-- User dropdown -->
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="false">
-                    <img src="assets/images/guy-6.jpg" alt="Avatar" class="img-circle" width="40">
+                    <img src="assets/images/guy-7.jpg" alt="Avatar" class="img-circle" width="40">
                 </a>
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-list" aria-labelledby="Preview">
                     <a class="dropdown-item" href="#"><i class="material-icons md-18">lock</i> <span class="icon-text">Edit Account</span></a>
@@ -117,16 +120,32 @@
             <!-- Property -->
             <li [class]="isPropertyMenuCollapsed === true ? 'sidebar-menu-item sm-bordered' : 'sidebar-menu-item open'">
                 <a class="sidebar-menu-button"
-                   (click)="isPropertyMenuCollapsed = !isPropertyMenuCollapsed"><i class="sidebar-menu-icon material-icons">domain</i> Property</a>
+                   (click)="isPropertyMenuCollapsed = !isPropertyMenuCollapsed"><i class="sidebar-menu-icon material-icons">home</i> Property</a>
 
                 <!-- Submenu -->
                 <ul [collapse]="isPropertyMenuCollapsed" class="sidebar-submenu sm-bordered sm-indent">
                     <li class="sidebar-menu-item" ng2-router-active>
-                        <a class="sidebar-menu-button" [routerLink]="['/app/property/search']"><i class="sidebar-menu-icon material-icons">search</i>Advanced Search</a>
+                        <a class="sidebar-menu-button" [routerLink]="['/app/property/1']"><i class="sidebar-menu-icon material-icons">insert_chart</i>Summary</a>
                     </li>
                     <li class="sidebar-menu-item" ng2-router-active>
-                        <a class="sidebar-menu-button" [routerLink]="['/app/property/1']"><i class="sidebar-menu-icon material-icons">insert_chart</i>Reports</a>
+                        <a class="sidebar-menu-button" [routerLink]="['/app/property/search']"><i class="sidebar-menu-icon material-icons">search</i>Advanced Search</a>
                     </li>
+                </ul>
+            </li>
+
+            <!-- Company -->
+            <li [class]="isCompanyMenuCollapsed === true ? 'sidebar-menu-item sm-bordered' : 'sidebar-menu-item open'">
+                <a class="sidebar-menu-button"
+                   (click)="isCompanyMenuCollapsed = !isCompanyMenuCollapsed"><i class="sidebar-menu-icon material-icons">domain</i> Company</a>
+
+                <!-- Submenu -->
+                <ul [collapse]="isCompanyMenuCollapsed" class="sidebar-submenu sm-bordered sm-indent">
+                    <li class="sidebar-menu-item" ng2-router-active>
+                        <a class="sidebar-menu-button" [routerLink]="['/app/company/72']"><i class="sidebar-menu-icon material-icons">insert_chart</i>Summary</a>
+                    </li>
+                    <!--<li class="sidebar-menu-item" ng2-router-active>-->
+                        <!--<a class="sidebar-menu-button" [routerLink]="['/app/property/search']"><i class="sidebar-menu-icon material-icons">search</i>Advanced Search</a>-->
+                    <!--</li>-->
                 </ul>
             </li>
 
