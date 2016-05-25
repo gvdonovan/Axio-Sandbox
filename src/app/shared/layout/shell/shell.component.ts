@@ -14,6 +14,7 @@ import { PropertySummaryComponent } from "../../../+property/index";
 import { PropertySearchComponent } from "../../../+property/index";
 import {STATES} from "../../data";
 import {SearchService} from "../../services";
+import { UserService } from '../../../services';
 
 @Component({
     selector: 'app',
@@ -55,6 +56,7 @@ export class ShellComponent implements OnInit {
     searchTerm: string;
     searched: boolean = false;
 
+    constructor(private router:Router) {}
     states: Object[] = this._.map(STATES,(data)=>{
         return {id: data.id, name: data.shortName}
     });
@@ -63,6 +65,7 @@ export class ShellComponent implements OnInit {
                 private http: Http, @Inject('_') public _,
                 private searchService: SearchService
     ) {}
+    constructor(private router:Router, private userService: UserService) {}
 
     ngOnInit() {
         this.router.navigate(['/app/home']);
@@ -126,5 +129,7 @@ export class ShellComponent implements OnInit {
                     this.searchService.setSearchResults(properties);
                 }
             });
+    logout() {
+        this.userService.logout();
     }
 }
