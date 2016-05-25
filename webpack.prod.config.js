@@ -113,6 +113,9 @@ module.exports = {
       // if you add a loader include the file extension
     ]
   },
+  sassLoader: {
+    includePaths: [path.resolve(__dirname, "node_modules/")]
+  },
 
   plugins: [
     new WebpackMd5Hash(),
@@ -182,8 +185,8 @@ module.exports = {
   ],
   // Other module loader config
   tslint: {
-    emitErrors: true,
-    failOnHint: true
+    emitErrors: false,
+    failOnHint: false
   },
   // don't use devServer for production
 

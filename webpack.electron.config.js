@@ -10,8 +10,6 @@ var ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 const autoprefixer = require('autoprefixer');
 var ProvidePlugin = require('webpack/lib/ProvidePlugin');
 
-var webpackTargetElectronRenderer = require('webpack-target-electron-renderer');
-
 var metadata = {
   title: 'Sing Template',
   baseUrl: '/',
@@ -103,7 +101,9 @@ var config = {
       // if you add a loader include the file extension
     ]
   },
-
+  sassLoader: {
+    includePaths: [path.resolve(__dirname, "node_modules/")]
+  },
 
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(true),
