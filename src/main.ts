@@ -7,6 +7,8 @@ import 'tether';
 import 'bootstrap';
 import 'pace';
 
+require('simplebar/dist/simplebar.min.js');
+
 import {provide, enableProdMode} from '@angular/core';
 import {bootstrap} from '@angular/platform-browser-dynamic';
 import {ELEMENT_PROBE_PROVIDERS} from '@angular/platform-browser';

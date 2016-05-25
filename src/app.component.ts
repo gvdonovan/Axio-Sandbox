@@ -14,8 +14,7 @@ declare var jQuery:any;
     directives: [ROUTER_DIRECTIVES],
     template: require('./app.component.html'),
     styles: [
-        require('./scss/app.scss'),
-        require('../node_modules/simplebar/dist/simplebar.css')
+        require('./scss/app.scss')
     ],
     encapsulation: ViewEncapsulation.None,
     providers: [UserService]
