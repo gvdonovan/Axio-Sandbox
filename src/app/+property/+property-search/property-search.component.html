@@ -1,1 +1,84 @@
-<span>Property Search</span>
+<div class="search-container">
+    <div class="row" style="margin-bottom:10px;">
+        <span (click)="isCollapsed = !isCollapsed">Advanced Search<i class="material-icons" style="cursor: pointer;">keyboard_arrow_{{isCollapsed?'down':'up'}}</i></span>
+    </div>
+
+    <form [ngFormModel]="form" [collapse]="isCollapsed" (submit)="search()">
+
+        <div *ngFor="let field of fields">
+            <div [class]="field.className">
+                <div *ngFor="let fieldGroup of field.fieldGroups;let i=index;" [class]="fieldGroup.className">
+                    <div class="form-group">
+                        <label *ngIf="fieldGroup.templateOptions.label" [attr.for]="'form_'+i+'_input_'+fieldGroup.key" [innerHtml]="fieldGroup.templateOptions.label">
+                        </label>
+                        <input *ngIf="fieldGroup.type === 'input'" [attr.id]="'form_'+i+'_input_'+fieldGroup.key" class="form-control" [ngControl]="fieldGroup.key"
+                               [attr.placeholder]="fieldGroup.templateOptions.placeholder" [attr.type]="fieldGroup.templateOptions.type" [disabled]="fieldGroup.templateOptions.disabled ? fieldGroup.templateOptions.disabled() : false">
+
+                        <input *ngIf="fieldGroup.type === 'typeahead'" [(ngModel)]="model[fieldGroup.key]" [disabled]="fieldGroup.templateOptions.disabled ? fieldGroup.templateOptions.disabled() : false"
+                               [typeahead]="fieldGroup.templateOptions.options(getContext())" [attr.id]="'form_'+i+'_input_'+fieldGroup.key"
+                               (typeaheadOnSelect)="typeaheadOnSelect($event,fieldGroup.key,model[fieldGroup.key])"
+                               class="form-control">
+                    </div>
+                </div>
+            </div>
+            <hr />
+        </div>
+        <div class="row">
+            <!--<div class="col-md-2">-->
+                <!--<div class="form-group" dropdown *ngIf="savedSearches.length > 0">-->
+                    <!--<label for="saveSearch">Saved Searches</label>-->
+                    <!--<button class="btn btn-sm btn-default" id="saveSearch" dropdownToggle>-->
+                        <!--<i class="fa fa-bars" aria-hidden="true"></i>-->
+                    <!--</button>-->
+                    <!--<ul class="dropdown-menu" role="menu" aria-labelledby="single-button">-->
+                        <!--<li role="menuitem" *ngFor="let search of savedSearches"><a class="dropdown-item" href="#" (click)="$event.preventDefault();gotoSearch(search)">{{search.name}}</a></li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="col-md-2 col-md-offset-8">
+                <button class="btn btn-primary" type="submit" [disabled]="!form.valid">Search</button>
+                <button class="btn btn-default" type="button" (click)="resetForm()">Reset</button>
+                <!--<button class="btn btn-default" type="button" [disabled]="!form.valid" data-toggle="modal" data-target="#saveModal" data-backdrop="false">Save</button>-->
+            </div>
+        </div>
+    </form>
+</div>
+<!--<div class="row">-->
+<!--<p>-->
+<!--{{form.value | json}}-->
+<!--</p>-->
+<!--</div>-->
+<div class="results-container" *ngIf="searchActive">
+    <div class="row">
+        <div class="col-lg-12">
+            <section class="search-result-item" *ngFor="let searchResult of searchResults | paginate: { itemsPerPage: 5, currentPage: currentPage }">
+                <a class="image-link" href="#">
+                    <img class="image" src="//axioportal.s3.amazonaws.com/images/properties/{{searchResult.id}}.jpg"
+                         onError="this.src='//axioportal.s3.amazonaws.com/images/properties/coming_soon_icon.png';">
+                </a>
+                <div class="search-result-item-body">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <h4 class="search-result-item-heading">
+                                <a href="#">{{searchResult.name}}</a>
+                            </h4>
+                            <p class="info">
+                                {{searchResult.address.streetName + ' ' + searchResult.address.city + ', ' + searchResult.address.state.shortName + ' ' + searchResult.address.zipCode}}
+                            </p>
+                            <p class="description">
+                            </p>
+                        </div>
+                        <div class="col-sm-2 text-align-center">
+                            <a class="btn btn-primary btn-info btn-sm" href="#" [routerLink]=" ['/app/property/'+searchResult.id] ">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="text-align-center" style="text-align: center;">
+                <pagination [boundaryLinks]="true" [totalItems]="totalItems" [(ngModel)]="currentPage" class="pagination-sm" [itemsPerPage]="5"
+                            (pageChanged)="pageChanged($event)"
+                            previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+            </div>
+        </div>
+    </div>
+</div>

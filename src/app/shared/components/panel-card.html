@@ -1,0 +1,11 @@
+<div class="card-button-wrapper">
+    <!--<a (click)="isCollapsed = !isCollapsed" *ngIf="showCollapse" class="card-button"><i class="material-icons">keyboard_arrow_dow</i></a>-->
+    <ng-content select="header-menu"></ng-content>
+</div>
+<div class="card-block" [collapse]="isCollapsed">
+    <h5 class="card-title"><ng-content select="panel-title"></ng-content></h5>
+    <p class="card-subtitle"><ng-content select="panel-sub-title"></ng-content></p>
+    <div style="margin-top: 30px;font-size: 14px;">
+        <ng-content select="content"></ng-content>
+    </div>
+</div>

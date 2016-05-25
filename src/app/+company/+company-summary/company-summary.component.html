@@ -1,1 +1,157 @@
-<span>Company Page</span>
+<div *ngIf="company">
+    <h2 class="page-title">{{company.name}}</h2>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <panel>
+                <panel-title>Company Details</panel-title>
+                <content>
+                    <div class="row no-margin">
+                        <div class="col-md-5">
+                            <div class="row">
+                                <strong><span>Address</span></strong>
+                                <i class="material-icons btn btn-sm no-padding" (click)="ifEditAddress = true;ifEditPhoneNumber = false;"
+                                   data-toggle="modal" data-target="#editModal" data-backdrop="false">edit</i>
+                            </div>
+                            <div class="row">
+                                3805 164th St SW, Lynnwood WA 75013
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="row"><strong><span>Phone Number</span></strong>
+                                <i class="material-icons btn btn-sm no-padding" (click)="ifEditPhoneNumber = true;ifEditAddress = false;"
+                                   data-toggle="modal" data-target="#editModal" data-backdrop="false">edit</i>
+                            </div>
+                            <div class="row">
+                                (617)-212-3456
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="row"><strong><span>Web Address</span></strong>
+                                <i class="material-icons btn btn-sm no-padding">edit</i>
+                            </div>
+                            <div class="row">
+                                www.axiometrics.com
+                            </div>
+                        </div>
+                    </div>
+                </content>
+            </panel>
+        </div>
+
+        <div class="col-lg-4">
+            <panel>
+                <panel-title>Company Stats</panel-title>
+                <content>
+                </content>
+            </panel>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <panel>
+                <panel-title>Properties</panel-title>
+                <header-menu>
+                    <span class="dropdown">
+                        <a href="#" class="card-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="#"><i class="material-icons">home</i> add properties</a>
+                        </div>
+                    </span>
+                </header-menu>
+                <content>
+                    <table class="table table-hover" [mfData]="company.properties" #mf="mfDataTable" [mfRowsOnPage]="5">
+                        <thead>
+                        <tr>
+                            <th>
+                                <mfDefaultSorter by="name">Name</mfDefaultSorter>
+                            </th>
+                            <th>
+                                <mfDefaultSorter by="address.streetName">Address</mfDefaultSorter>
+                            </th>
+                            <th class="no-sort hidden-sm-down">
+                                <mfDefaultSorter by="info">Type</mfDefaultSorter>
+                            </th>
+                            <th class="hidden-sm-down">
+                                <mfDefaultSorter by="market.name">Market</mfDefaultSorter>
+                            </th>
+                            <th class="hidden-sm-down">
+                                <mfDefaultSorter by="stats.occupancyStatus">Status</mfDefaultSorter>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let property of mf.data">
+                            <td>{{property.name}}</td>
+                            <td>
+                                <small>
+                                    {{property.address.streetName}}
+                                </small>
+                                <br>
+                                <small>
+                  <span>
+                    {{property.address.city}} {{property.address.state.shortName}}
+                  </span>
+                                </small>
+                            </td>
+                            <td class="hidden-sm-down">
+                            </td>
+                            <td class="hidden-sm-down">{{property.market.name}}</td>
+                            <td class="hidden-sm-down">{{property.stats.occupancyStatus}}</td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="12" style="padding: 0;line-height: 0;">
+                                <mfBootstrapPaginator></mfBootstrapPaginator> <!-- [rowsOnPageSet]="[5, 10]" -->
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </content>
+            </panel>
+        </div>
+
+        <div class="col-lg-6">
+            <panel>
+                <panel-title>Property Map</panel-title>
+                <content>
+                    <div class="map-container" style="padding:15px;">
+                        <sebm-google-map [latitude]="40.1739428" [longitude]="-101.2099918" zoom="4">
+                            <sebm-google-map-marker *ngFor="let marker of markers" [latitude]="marker.latitude" [longitude]="marker.longitude"
+                                                    [iconUrl]="'assets/images/icon_red.png'">
+                            </sebm-google-map-marker>
+                        </sebm-google-map>
+                    </div>
+                </content>
+            </panel>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="!company">
+    No Data Available
+</div>
+
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content" style="margin-top:10%;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Edit {{ifEditAddress ? 'Address': (ifEditPhoneNumber ? 'Phone Number' : '')}}</h4>
+            </div>
+            <div class="modal-body">
+                <form-address (addressChanged)="onAddressChange($event)" [model]="currentAddress" *ngIf="ifEditAddress"></form-address>
+                <form-phone [model]="currentPhoneNumber" *ngIf="ifEditPhoneNumber"></form-phone>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" [disabled]="!formValid">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
