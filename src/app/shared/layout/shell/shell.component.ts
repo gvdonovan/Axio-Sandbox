@@ -89,8 +89,10 @@ export class ShellComponent implements OnInit {
             && context.searchTerm.split(':')[1].trim()) {
             let stateName = context.searchTerm.split(':')[0].trim();
             return function ():Promise<Object[]> {
-                return context.http.get('http://localhost:59176/api/properties/search-by-state/' +
-                    context._.find(context.states,{name : stateName.toUpperCase()}).id + '/' + context.searchTerm.split(':')[1].trim()) .map((response) => {
+                return context.searchService.searchPropertiesByState(
+                        context._.find(context.states,{name : stateName.toUpperCase()}).id,
+                        context.searchTerm.split(':')[1].trim()
+                    ).map((response) => {
                     return context._.map(response.json(), data => {
                         data.data = data.propertyName + ' -- ' + data.streetName + ', ' + data.city;
                         return data;
