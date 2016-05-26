@@ -129,7 +129,7 @@ export class ShellComponent implements OnInit {
                 }
             });
     }
-
+   
     logout() {
         this.userService.logout();
     }
