@@ -51,64 +51,86 @@
     <div class="row">
         <div class="col-lg-6">
             <panel>
-                <panel-title>Properties</panel-title>
-                <header-menu>
-                    <span class="dropdown">
-                        <a href="#" class="card-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="#"><i class="material-icons">home</i> add properties</a>
+                <panel-title>
+                    <div class="row">
+                        <div class="col-xs-7">
+                            Properties
                         </div>
-                    </span>
-                </header-menu>
-                <content>
-                    <table class="table table-hover" [mfData]="company.properties" #mf="mfDataTable" [mfRowsOnPage]="5">
-                        <thead>
-                        <tr>
-                            <th>
-                                <mfDefaultSorter by="name">Name</mfDefaultSorter>
-                            </th>
-                            <th>
-                                <mfDefaultSorter by="address.streetName">Address</mfDefaultSorter>
-                            </th>
-                            <th class="no-sort hidden-sm-down">
-                                <mfDefaultSorter by="info">Type</mfDefaultSorter>
-                            </th>
-                            <th class="hidden-sm-down">
-                                <mfDefaultSorter by="market.name">Market</mfDefaultSorter>
-                            </th>
-                            <th class="hidden-sm-down">
-                                <mfDefaultSorter by="stats.occupancyStatus">Status</mfDefaultSorter>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr *ngFor="let property of mf.data">
-                            <td>{{property.name}}</td>
-                            <td>
-                                <small>
-                                    {{property.address.streetName}}
-                                </small>
-                                <br>
-                                <small>
+                        <div class="col-xs-4">
+                            <div class="dataTables_filter" id="datatable-example_filter">
+                                <label>Search:
+                                    <input type="search" class="form-control input-sm" placeholder=""
+                                    aria-controls="datatable-example" [ngFormControl]="propertiesTableFilter">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+         </panel-title>
+         <header-menu>
+             <span class="dropdown">
+                 <a href="#" class="card-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                 <div class="dropdown-menu dropdown-menu-right">
+                     <a class="dropdown-item btn" data-toggle="modal"
+                        data-target="#addPropertiesModal" data-backdrop="false">
+                         <i class="material-icons">home</i>
+                         add properties
+                     </a>
+                 </div>
+             </span>
+         </header-menu>
+         <content>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-hover" [mfData]="properties" #mf="mfDataTable" [mfRowsOnPage]="5">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <mfDefaultSorter by="name">Name</mfDefaultSorter>
+                                    </th>
+                                    <th>
+                                        <mfDefaultSorter by="address.streetName">Address</mfDefaultSorter>
+                                    </th>
+                                    <th class="no-sort hidden-sm-down">
+                                        <mfDefaultSorter by="info">Type</mfDefaultSorter>
+                                    </th>
+                                    <th class="hidden-sm-down">
+                                        <mfDefaultSorter by="market.name">Market</mfDefaultSorter>
+                                    </th>
+                                    <th class="hidden-sm-down">
+                                        <mfDefaultSorter by="stats.occupancyStatus">Status</mfDefaultSorter>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let property of mf.data">
+                                    <td>{{property.name}}</td>
+                                    <td>
+                                        <small>
+                                            {{property.address.streetName}}
+                                        </small>
+                                        <br>
+                                        <small>
                   <span>
                     {{property.address.city}} {{property.address.state.shortName}}
                   </span>
-                                </small>
-                            </td>
-                            <td class="hidden-sm-down">
-                            </td>
-                            <td class="hidden-sm-down">{{property.market.name}}</td>
-                            <td class="hidden-sm-down">{{property.stats.occupancyStatus}}</td>
-                        </tr>
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <td colspan="12" style="padding: 0;line-height: 0;">
-                                <mfBootstrapPaginator></mfBootstrapPaginator> <!-- [rowsOnPageSet]="[5, 10]" -->
-                            </td>
-                        </tr>
-                        </tfoot>
-                    </table>
+                                        </small>
+                                    </td>
+                                    <td class="hidden-sm-down">
+                                    </td>
+                                    <td class="hidden-sm-down">{{property.market.name}}</td>
+                                    <td class="hidden-sm-down">{{property.stats.occupancyStatus}}</td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="12" style="padding: 0;line-height: 0;">
+                                        <mfBootstrapPaginator></mfBootstrapPaginator> <!-- [rowsOnPageSet]="[5, 10]" -->
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
                 </content>
             </panel>
         </div>
@@ -119,8 +141,11 @@
                 <content>
                     <div class="map-container" style="padding:15px;">
                         <sebm-google-map [latitude]="40.1739428" [longitude]="-101.2099918" zoom="4">
-                            <sebm-google-map-marker *ngFor="let marker of markers" [latitude]="marker.latitude" [longitude]="marker.longitude"
+                            <sebm-google-map-marker *ngFor="let property of properties" [latitude]="property.coordinate.latitude" [longitude]="property.coordinate.longitude"
                                                     [iconUrl]="'assets/images/icon_red.png'">
+                                <sebm-google-map-info-window [disableAutoPan]="true">
+                                    <strong>{{property.name}}</strong>
+                                </sebm-google-map-info-window>
                             </sebm-google-map-marker>
                         </sebm-google-map>
                     </div>
@@ -149,8 +174,89 @@
                 <form-phone [model]="currentPhoneNumber" *ngIf="ifEditPhoneNumber"></form-phone>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" [disabled]="!formValid">Save</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" [disabled]="!formValid">OK</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addPropertiesModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content" style="margin-top:10%;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="addPropertiesModalLabel">Add Properties</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <input class="form-control" placeholder="TX: Property Name"
+                                   [typeahead]="getAsyncData(getContext())" [typeaheadOptionField]="'data'"
+                                   typeaheadWaitMs="300" (typeaheadOnSelect)="typeaheadOnSelect($event)"
+                                   [(ngModel)]="addPropertiesModalsearchTerm">
+                        </div>
+                        <div class="col-lg-4">
+                            <button type="submit" class="btn btn-primary" (click)="AddPropertyToTable()">Add</button>
+                            <button class="btn btn-secondary" (click)="addPropertiesModalsearchTerm = '';">Clear</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+
+                    </div>
+                </form>
+                <div class="add-properties-table-container">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <table class="table table-hover" [mfData]="addPropertiesData" #mf="mfDataTable" [mfRowsOnPage]="10">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <mfDefaultSorter by="name">Name</mfDefaultSorter>
+                                    </th>
+                                    <th>
+                                        <mfDefaultSorter by="address.streetName">Address</mfDefaultSorter>
+                                    </th>
+                                    <th class="no-sort hidden-sm-down">
+                                        <mfDefaultSorter by="info">Action</mfDefaultSorter>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let property of mf.data; let rowIndex = index">
+                                    <td>{{property.propertyName}}</td>
+                                    <td>
+                                        <span>
+                                            {{property.streetName}}
+                                        </span>
+                                        <br>
+                                        <span>
+                                        {{property.city}} {{property.stateName}}
+                                        </span>
+                                    </td>
+                                    <td class="hidden-sm-down">
+                                        <button class="btn btn-sm btn-danger" (click)="deleteRow(rowIndex)">Delete</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="12" style="padding: 0;line-height: 0;">
+                                        <mfBootstrapPaginator></mfBootstrapPaginator>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="OKAddProperties()">Ok</button> <!-- [disabled]="addPropertiesData.length === 0" -->
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelAddProperties()">Cancel</button>
             </div>
         </div>
     </div>

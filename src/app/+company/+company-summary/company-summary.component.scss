@@ -22,6 +22,27 @@ mfDefaultSorter > a {
   }
 }
 
+#addPropertiesModal {
+
+  div.add-properties-table-container {
+    margin-top: 30px;
+  }
+}
+
+.dataTables_filter {
+  font-size: 14px;
+
+  label {
+    display: inline-block;
+  }
+
+  input {
+    display: inline-block;
+    width: 75%;
+    vertical-align: middle;
+  }
+}
+
 .pagination {
   display: inline-block;
   padding-left: 0;

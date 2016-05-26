@@ -6,6 +6,9 @@
         <button class="navbar-toggler pull-xs-left" type="button" ng2-bl-sidebar-toggle data-target="#sidebar"><span
             class="material-icons">menu</span></button>
 
+        <button class="navbar-toggler pull-xs-right" type="button" ng2-bl-sidebar-toggle data-target="#sidebar-right"><span
+            class="material-icons">menu</span></button>
+            
         <!-- Search Form -->
         <form class="form-inline pull-xs-left hidden-md-down">
             <div class="input-group width-400">
@@ -153,24 +156,12 @@
                 <a class="sidebar-menu-button" [routerLink]="['/app/admin']"><i
                     class="sidebar-menu-icon material-icons">build</i> Admin</a>
             </li>
-
         </ul>
 
     </ng2-bl-sidebar>
 
-    <ng2-bl-sidebar sidebar-id="sidebar" sidebar-position="right" sidebar-class="sidebar-visible-xl-up sidebar-light bg-white ls-top-navbar-xs-up">
-        <ul class="sidebar-menu sm-active-button-bg">
-            <li class="sidebar-menu-item sm-bordered" ng2-router-active>
-                <a class="sidebar-menu-button" [routerLink]="['/app/home']"><i
-                    class="sidebar-menu-icon material-icons">home</i> Home</a>
-            </li>
-
-            <!-- Dashboard -->
-            <li class="sidebar-menu-item sm-bordered" ng2-router-active>
-                <a class="sidebar-menu-button" [routerLink]="['/app/dashboard']"><i
-                    class="sidebar-menu-icon material-icons">dashboard</i> Dashboard</a>
-            </li>
-        </ul>
+    <ng2-bl-sidebar sidebar-id="sidebar-right" sidebar-position="right" sidebar-class="sidebar-visible-xl-up sidebar-light bg-white ls-top-navbar-xs-up" *ngIf="sidebarValue">
+        <property-sidebar [model]="sidebarValue"></property-sidebar>
     </ng2-bl-sidebar>
 
 <!-- sidebar 
