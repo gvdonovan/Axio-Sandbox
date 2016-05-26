@@ -6,6 +6,9 @@
         <button class="navbar-toggler pull-xs-left" type="button" ng2-bl-sidebar-toggle data-target="#sidebar"><span
             class="material-icons">menu</span></button>
 
+        <button class="navbar-toggler pull-xs-right" type="button" ng2-bl-sidebar-toggle data-target="#sidebar-right"><span
+            class="material-icons">menu</span></button>
+            
         <!-- Search Form -->
         <form class="form-inline pull-xs-left hidden-md-down">
             <div class="input-group width-400">
@@ -158,7 +161,7 @@
 
     </ng2-bl-sidebar>
 
-    <ng2-bl-sidebar sidebar-id="sidebar" sidebar-position="right" sidebar-class="sidebar-visible-xl-up sidebar-light bg-white ls-top-navbar-xs-up" *ngIf="sidebarValue">
+    <ng2-bl-sidebar sidebar-id="sidebar-right" sidebar-position="right" sidebar-class="sidebar-visible-xl-up sidebar-light bg-white ls-top-navbar-xs-up" *ngIf="sidebarValue">
         <property-sidebar [model]="sidebarValue"></property-sidebar>
     </ng2-bl-sidebar>
 
