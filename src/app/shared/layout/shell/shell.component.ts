@@ -1,7 +1,7 @@
 import {Component, OnInit, Inject} from '@angular/core';
 import {Http} from "@angular/http";
 import {Routes, Router, ROUTER_DIRECTIVES} from '@angular/router';
-import {LayoutComponent, NavbarComponent, SidebarToggleDirective} from 'ng2-bootstrap-layout';
+import {LayoutComponent, NavbarComponent, SidebarToggleDirective, SidebarComponent} from 'ng2-bootstrap-layout';
 import {Sidebar, SidebarToggle} from 'bootstrap-layout';
 import {RouterActiveDirective} from 'ng2-router-active';
 import {BUTTON_DIRECTIVES, CollapseDirective, TYPEAHEAD_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
@@ -15,7 +15,6 @@ import { PropertySearchComponent } from "../../../+property/index";
 import {STATES} from "../../data";
 import {SearchService} from "../../services";
 import { UserService } from '../../../services';
-import { RightSidebarComponent } from '../../components';
 
 @Component({
     selector: 'app',
@@ -25,12 +24,12 @@ import { RightSidebarComponent } from '../../components';
         ROUTER_DIRECTIVES,
         LayoutComponent,
         NavbarComponent,
+        SidebarComponent,
         SidebarToggleDirective,
         RouterActiveDirective,
         BUTTON_DIRECTIVES,
         CollapseDirective,
-        TYPEAHEAD_DIRECTIVES,
-        RightSidebarComponent
+        TYPEAHEAD_DIRECTIVES
     ],
     providers: [
         Sidebar,
