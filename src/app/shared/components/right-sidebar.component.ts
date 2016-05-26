@@ -23,8 +23,12 @@ export class RightSidebarComponent extends SidebarComponent {
 			if (children && children.length) {
 				let sidebar = children[0];
 				sidebar.classList.remove('sidebar-left');
+                sidebar.classList.remove('sidebar-dark');
+                sidebar.classList.remove('bg-primary');
 				sidebar.classList.add('sidebar-right');
-				sidebar.classList.add('ls-top-navbar-xs-up');
+				sidebar.classList.add('sidebar-light');
+                sidebar.classList.add('bg-white');
+                sidebar.classList.add('ls-top-navbar-xs-up');
 			}
 		}
 	}
