@@ -119,8 +119,11 @@
                 <content>
                     <div class="map-container" style="padding:15px;">
                         <sebm-google-map [latitude]="40.1739428" [longitude]="-101.2099918" zoom="4">
-                            <sebm-google-map-marker *ngFor="let marker of markers" [latitude]="marker.latitude" [longitude]="marker.longitude"
+                            <sebm-google-map-marker *ngFor="let property of markers" [latitude]="property.coordinate.latitude" [longitude]="property.coordinate.longitude"
                                                     [iconUrl]="'assets/images/icon_red.png'">
+                                <sebm-google-map-info-window [disableAutoPan]="true">
+                                    <strong>{{property.name}}</strong>
+                                </sebm-google-map-info-window>
                             </sebm-google-map-marker>
                         </sebm-google-map>
                     </div>

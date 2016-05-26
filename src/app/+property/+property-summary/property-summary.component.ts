@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import {LayoutComponent, NavbarComponent, SidebarComponent, SidebarToggleDirective} from 'ng2-bootstrap-layout';
 import {Sidebar, SidebarToggle} from 'bootstrap-layout';
 import { RouteSegment, ROUTER_DIRECTIVES } from '@angular/router';
@@ -7,6 +7,7 @@ import {SebmGoogleMapMarker,
     SebmGoogleMap} from 'angular2-google-maps/core';
 import {DROPDOWN_DIRECTIVES} from "ng2-bootstrap/ng2-bootstrap";
 import {Property} from '../../shared/interfaces';
+import {SidebarService} from '../../shared/services';
 import {PropertyService} from '../shared';
 
 @Component({    
@@ -31,19 +32,26 @@ import {PropertyService} from '../shared';
     ]
 
 })
-export class PropertySummaryComponent implements OnInit {
+export class PropertySummaryComponent implements OnInit, OnDestroy {
     property: Property;
     propertyId: string;
 
     constructor(public propertyService: PropertyService,
                 @Inject('moment') private moment,
-                params: RouteSegment) {
+                params: RouteSegment,
+                private sidebarService: SidebarService) {
         this.propertyId =   params.getParam('propertyId');
     }
 
     ngOnInit(): void {
         this.propertyService.getProperty(this.propertyId).subscribe(res => {
             this.property = res;
+
+            this.sidebarService.showSidebar(res);
         });
+    }
+
+    ngOnDestroy(): void {
+        this.sidebarService.hideSidebar();
     }
 }

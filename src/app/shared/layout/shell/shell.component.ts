@@ -13,8 +13,9 @@ import { DashboardComponent } from "../../../+dashboard/index";
 import { PropertySummaryComponent } from "../../../+property/index";
 import { PropertySearchComponent } from "../../../+property/index";
 import {STATES} from "../../data";
-import {SearchService} from "../../services";
+import {SearchService, SidebarService} from "../../services";
 import { UserService } from '../../../services';
+import {PropertySidebarComponent} from "../../../+property/property-sidebar/property-sidebar.component";
 
 @Component({
     selector: 'app',
@@ -29,7 +30,8 @@ import { UserService } from '../../../services';
         RouterActiveDirective,
         BUTTON_DIRECTIVES,
         CollapseDirective,
-        TYPEAHEAD_DIRECTIVES
+        TYPEAHEAD_DIRECTIVES,
+        PropertySidebarComponent
     ],
     providers: [
         Sidebar,
@@ -55,6 +57,7 @@ export class ShellComponent implements OnInit {
     public searchTypeModel:string = 'Property';
     searchTerm: string;
     searched: boolean = false;
+    public sidebarValue: any;
 
     states: Object[] = this._.map(STATES,(data)=>{
         return {id: data.id, name: data.shortName}
@@ -63,11 +66,15 @@ export class ShellComponent implements OnInit {
     constructor(private router:Router,
                 private http: Http, @Inject('_') public _,
                 private searchService: SearchService,
-                private userService: UserService
+                private userService: UserService,
+                private sidebarService: SidebarService
     ) {}
 
     ngOnInit() {
         this.router.navigate(['/app/home']);
+        this.sidebarService.sidebardShow$.subscribe(value => {
+            this.sidebarValue = value;
+        });
     }
 
     public getContext():any {

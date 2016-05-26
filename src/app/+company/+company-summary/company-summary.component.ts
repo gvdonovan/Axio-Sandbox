@@ -4,8 +4,9 @@ import { RouteSegment, ROUTER_DIRECTIVES } from '@angular/router';
 import { CompanyService} from '../shared';
 import {DataTableDirectives} from "angular2-datatable/datatable";
 import {DROPDOWN_DIRECTIVES} from "ng2-bootstrap/ng2-bootstrap";
-import {SebmGoogleMapMarker, SebmGoogleMap} from "angular2-google-maps/core";
+import {SebmGoogleMapMarker, SebmGoogleMap, SebmGoogleMapInfoWindow} from "angular2-google-maps/core";
 import {Panel} from "../../shared/components";
+import { Property } from '../../shared/interfaces';
 import {FormPhoneComponent, FormAdressComponent} from "../../shared/components";
 
 @Component({
@@ -13,14 +14,14 @@ import {FormPhoneComponent, FormAdressComponent} from "../../shared/components";
     template: require('./company-summary.component.html'),
     styles: [ require('./company-summary.component.scss') ],
     encapsulation: ViewEncapsulation.None,
-    directives: [Panel, SebmGoogleMap, SebmGoogleMapMarker, FormAdressComponent, DataTableDirectives, DROPDOWN_DIRECTIVES, FormPhoneComponent],
+    directives: [Panel, SebmGoogleMap, SebmGoogleMapMarker, SebmGoogleMapInfoWindow, FormAdressComponent, DataTableDirectives, DROPDOWN_DIRECTIVES, FormPhoneComponent],
     providers: [CompanyService]
 
 })
 export class CompanySummaryComponent implements OnInit{
     company: Company;
     companyId: string;
-    markers: Array<Coordinate> = [];
+    markers: Array<Property> = [];
     formValid: boolean = false;
     bigValue: Object = { value: 'abcde'};
 
@@ -59,7 +60,7 @@ export class CompanySummaryComponent implements OnInit{
                 res => {
                     this.company = res;
 
-                    this.markers = this._.map(this.company.properties, 'coordinate');
+                    this.markers = this.company.properties;
                 }
             )
     };

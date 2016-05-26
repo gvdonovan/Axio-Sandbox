@@ -158,19 +158,8 @@
 
     </ng2-bl-sidebar>
 
-    <ng2-bl-sidebar sidebar-id="sidebar" sidebar-position="right" sidebar-class="sidebar-visible-xl-up sidebar-light bg-white ls-top-navbar-xs-up">
-        <ul class="sidebar-menu sm-active-button-bg">
-            <li class="sidebar-menu-item sm-bordered" ng2-router-active>
-                <a class="sidebar-menu-button" [routerLink]="['/app/home']"><i
-                    class="sidebar-menu-icon material-icons">home</i> Home</a>
-            </li>
-
-            <!-- Dashboard -->
-            <li class="sidebar-menu-item sm-bordered" ng2-router-active>
-                <a class="sidebar-menu-button" [routerLink]="['/app/dashboard']"><i
-                    class="sidebar-menu-icon material-icons">dashboard</i> Dashboard</a>
-            </li>
-        </ul>
+    <ng2-bl-sidebar sidebar-id="sidebar" sidebar-position="right" sidebar-class="sidebar-visible-xl-up sidebar-light bg-white ls-top-navbar-xs-up" *ngIf="sidebarValue">
+        <property-sidebar [model]="sidebarValue"></property-sidebar>
     </ng2-bl-sidebar>
 
 <!-- sidebar 
