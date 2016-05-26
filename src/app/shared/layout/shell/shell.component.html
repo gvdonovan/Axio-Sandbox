@@ -119,34 +119,34 @@
             <!-- Property -->
             <li [class]="isPropertyMenuCollapsed === true ? 'sidebar-menu-item sm-bordered' : 'sidebar-menu-item open'">
                 <a class="sidebar-menu-button"
-                   (click)="isPropertyMenuCollapsed = !isPropertyMenuCollapsed"><i class="sidebar-menu-icon material-icons">home</i> Property</a>
+                   (click)="isPropertyMenuCollapsed = !isPropertyMenuCollapsed"><i class="sidebar-menu-icon material-icons">domain</i> Property</a>
 
                 <!-- Submenu -->
                 <ul [collapse]="isPropertyMenuCollapsed" class="sidebar-submenu sm-bordered sm-indent">
                     <li class="sidebar-menu-item" ng2-router-active>
-                        <a class="sidebar-menu-button" [routerLink]="['/app/property/1']"><i class="sidebar-menu-icon material-icons">insert_chart</i>Summary</a>
+                        <a class="sidebar-menu-button" [routerLink]="['/app/property/search']"><i class="sidebar-menu-icon material-icons">search</i>Advanced Search</a>
                     </li>
                     <li class="sidebar-menu-item" ng2-router-active>
-                        <a class="sidebar-menu-button" [routerLink]="['/app/property/search']"><i class="sidebar-menu-icon material-icons">search</i>Advanced Search</a>
+                        <a class="sidebar-menu-button" [routerLink]="['/app/property/1']"><i class="sidebar-menu-icon material-icons">insert_chart</i>Report</a>
                     </li>
                 </ul>
             </li>
 
             <!-- Company -->
-            <li [class]="isCompanyMenuCollapsed === true ? 'sidebar-menu-item sm-bordered' : 'sidebar-menu-item open'">
-                <a class="sidebar-menu-button"
-                   (click)="isCompanyMenuCollapsed = !isCompanyMenuCollapsed"><i class="sidebar-menu-icon material-icons">domain</i> Company</a>
+            <!--<li [class]="isCompanyMenuCollapsed === true ? 'sidebar-menu-item sm-bordered' : 'sidebar-menu-item open'">-->
+                <!--<a class="sidebar-menu-button"-->
+                   <!--(click)="isCompanyMenuCollapsed = !isCompanyMenuCollapsed"><i class="sidebar-menu-icon material-icons">domain</i> Company</a>-->
 
-                <!-- Submenu -->
-                <ul [collapse]="isCompanyMenuCollapsed" class="sidebar-submenu sm-bordered sm-indent">
-                    <li class="sidebar-menu-item" ng2-router-active>
-                        <a class="sidebar-menu-button" [routerLink]="['/app/company/72']"><i class="sidebar-menu-icon material-icons">insert_chart</i>Summary</a>
-                    </li>
+                <!--&lt;!&ndash; Submenu &ndash;&gt;-->
+                <!--<ul [collapse]="isCompanyMenuCollapsed" class="sidebar-submenu sm-bordered sm-indent">-->
                     <!--<li class="sidebar-menu-item" ng2-router-active>-->
-                        <!--<a class="sidebar-menu-button" [routerLink]="['/app/property/search']"><i class="sidebar-menu-icon material-icons">search</i>Advanced Search</a>-->
+                        <!--<a class="sidebar-menu-button" [routerLink]="['/app/company/72']"><i class="sidebar-menu-icon material-icons">insert_chart</i>Summary</a>-->
                     <!--</li>-->
-                </ul>
-            </li>
+                    <!--&lt;!&ndash;<li class="sidebar-menu-item" ng2-router-active>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<a class="sidebar-menu-button" [routerLink]="['/app/property/search']"><i class="sidebar-menu-icon material-icons">search</i>Advanced Search</a>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                <!--</ul>-->
+            <!--</li>-->
 
             <!-- Admin -->
             <li class="sidebar-menu-item sm-bordered" ng2-router-active>
