@@ -96,7 +96,7 @@
 
     </ng2-bl-navbar>
 
-    <ng2-bl-sidebar sidebar-id="sidebar">
+    <ng2-bl-sidebar sidebar-id="sidebar" position="left">
 
         <!-- Brand -->
         <a [routerLink]="['/app/home']" class="sidebar-brand m-b-0 sidebar-brand-bg sidebar-brand-border">Axio Workspace</a>
@@ -156,6 +156,10 @@
 
         </ul>
 
+    </ng2-bl-sidebar>
+
+    <ng2-bl-sidebar sidebar-id="sidebar" position="right">
+        <span>Biff</span>
     </ng2-bl-sidebar>
 
     <router-outlet></router-outlet>
