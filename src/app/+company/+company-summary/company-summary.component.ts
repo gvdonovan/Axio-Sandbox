@@ -1,4 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import  { Control } from '@angular/common';
 import { Http } from '@angular/http';
 import {Address, Coordinate, PhoneNumber, Company} from "../../shared/interfaces";
 import { RouteSegment, ROUTER_DIRECTIVES } from '@angular/router';
@@ -34,12 +35,14 @@ import {STATES} from "../../shared/data";
 export class CompanySummaryComponent implements OnInit{
     company: Company;
     companyId: string;
-    markers: Array<Property> = [];
+    //markers: Array<Property> = [];
+    properties: Array<Property> = [];
     addPropertiesData: Array<Object> = [];
     pendingProperty: Object;
     formValid: boolean = false;
     bigValue: Object = { value: 'abcde'};
     addPropertiesModalsearchTerm: string = '';
+    propertiesTableFilter: Control = new Control();
 
     states: Object[] = this._.map(STATES,(data)=>{
         return {id: data.id, name: data.shortName}
@@ -83,9 +86,19 @@ export class CompanySummaryComponent implements OnInit{
                 res => {
                     this.company = res;
 
-                    this.markers = this.company.properties;
+                    this.properties = this.company.properties;
                 }
             )
+
+        this.propertiesTableFilter.valueChanges.debounceTime(300)
+            .distinctUntilChanged().subscribe(term => {
+            this.properties = this._.filter(this.company.properties,(value, index) => {
+                return (value.name || '').toLowerCase().indexOf(term.trim().toLowerCase()) !== -1
+                    || (value.address.city || '').toLowerCase().indexOf(term.trim().toLowerCase()) !== -1
+                    || (value.address.streetName || '').toLowerCase().indexOf(term.trim().toLowerCase()) !== -1
+                    || (value.market.name || '').toLowerCase().indexOf(term.trim().toLowerCase()) !== -1
+            });
+        });
     };
 
     onAddressChange(e: any) {
