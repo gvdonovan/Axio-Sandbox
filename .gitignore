@@ -1,4 +1,5 @@
 /node_modules
+!/node_modules/ng2-bootstrap/components/typeahead/typeahead-container.component.js
 /typings
 /.idea
 /reports

@@ -1,4 +1,9 @@
 .dropdown-menu {
+    border-radius: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .12);
+}
+
+.dropdown-menu {
   .nav-item & {
     border-radius: 0;
     border: 0;

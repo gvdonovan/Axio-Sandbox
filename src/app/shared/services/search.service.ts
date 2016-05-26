@@ -1,6 +1,6 @@
 import {Injectable, Inject} from '@angular/core';
 import {Observable, BehaviorSubject} from 'rxjs/Rx';
-import {Http, Headers, RequestOptions} from "@angular/http";
+import {Http, Headers, RequestOptions, Response} from "@angular/http";
 import {API_CONFIG} from '../config';
 import {FactoryService} from "./factory.service";
 import {Property} from '../interfaces';
@@ -32,5 +32,9 @@ export class SearchService {
 
   setSearchResults(_searchResult: Array<Property>): void {
     this.searchResultSource.next(_searchResult);
+  }
+  
+  searchPropertiesByState(stateId, searchTerm): Observable<Response> {
+    return this.http.get(API_CONFIG.base + API_CONFIG.propertyApi.base + '/search-by-state/' + stateId + '/' + searchTerm);
   }
 }
