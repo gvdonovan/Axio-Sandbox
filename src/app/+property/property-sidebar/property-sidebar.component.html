@@ -1,14 +1,14 @@
 <div class="sidebar-region">
     <div class="sidebar-stats">
         <div class="sidebar-stats-lead text-primary">
-            <span>{{model && model.units.units}}</span>
+            <span>{{ model && model.units && model.units.units }}</span>
         </div>
         <small>Units</small>
     </div>
 
     <div class="sidebar-stats">
         <div class="sidebar-stats-lead text-primary">
-            <span>{{model && model.units.effectiveRent | currency : 'USD' : true: '3.2-2'}}</span>
+            <span>{{ model && model.units && model.units.effectiveRent | currency : 'USD' : true: '3.2-2'}}</span>
         </div>
         <small>Effective Rent</small>
     </div>
