@@ -13,7 +13,7 @@ import {provide, enableProdMode} from '@angular/core';
 import {bootstrap} from '@angular/platform-browser-dynamic';
 import {ELEMENT_PROBE_PROVIDERS} from '@angular/platform-browser';
 import {ROUTER_PROVIDERS} from '@angular/router';
-import {LocationStrategy, HashLocationStrategy} from '@angular/common';
+import {LocationStrategy, HashLocationStrategy, PathLocationStrategy } from '@angular/common';
 import {Http, HTTP_PROVIDERS} from '@angular/http';
 import {AuthHttp, AuthConfig} from 'angular2-jwt';
 
@@ -42,7 +42,7 @@ bootstrap(AppComponent, [
 //    PropertyService,
     SidebarService,
     SearchService,
-    provide(LocationStrategy, {useClass: HashLocationStrategy}),
+    provide(LocationStrategy, {useClass: PathLocationStrategy}),
     provide("moment", {useValue: moment}),
     provide("_", {useValue: _}),
     provide(AuthHttp, {

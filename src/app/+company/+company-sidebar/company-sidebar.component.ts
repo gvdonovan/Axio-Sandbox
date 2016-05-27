@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
 	selector: 'company-sidebar',
 	template: require('./company-sidebar.component.html')
 })
-export class CompanySidebarComponent {}
+export class CompanySidebarComponent {
+	@Input('model') company: any;
+}
+

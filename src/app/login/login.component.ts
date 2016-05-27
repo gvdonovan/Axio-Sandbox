@@ -18,6 +18,6 @@ export class LoginComponent {
   ) { }
 
 	login(username: string, password: string) {
-    this.userService.login(username, password);
+      this.userService.login(username, password);
 	}
 }

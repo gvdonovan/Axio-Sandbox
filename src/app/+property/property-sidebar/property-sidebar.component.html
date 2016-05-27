@@ -1,9 +1,9 @@
 <div class="sidebar-heading sidebar-p-t">Stats</div>
 <div class="sidebar-region">
-    <div class="sidebar-text">Occupancy Status: {{ model ? model.stats.occupancyStatus : 'Unknown' }}</div>
-    <div class="sidebar-text">Property Type: {{ model ? model.stats.propertyType : 'Unknown' }}</div>
-    <div class="sidebar-text">Occupancy: {{ model ? model.stats.occupancy || 0 : 0 }}%</div>
-    <div class="sidebar-text">Survey Date: {{ model ? (model.stats.surveyDateTime | date) : 'Never' }}</div>
+    <div class="sidebar-text">Occupancy Status: {{ model && model.stats ? model.stats.occupancyStatus : 'Unknown' }}</div>
+    <div class="sidebar-text">Property Type: {{ model && model.stats ? model.stats.propertyType : 'Unknown' }}</div>
+    <div class="sidebar-text">Occupancy: {{ model && model.stats ? model.stats.occupancy || 0 : 0 }}%</div>
+    <div class="sidebar-text">Survey Date: {{ model && model.stats ? (model.stats.surveyDateTime | date) : 'Never' }}</div>
 </div>
 
 <div class="sidebar-heading sidebar-p-t">Lead Parcel</div>
