@@ -23,28 +23,34 @@
                         <div class="col-lg-3"><span class="text-muted-light">Floor Count</span><br>{{property.floorCount}}</div>
                     </div>
 
+                    <div class="row">&nbsp;</div>
+
                     <div class="row">
                         <div class="col-lg-6"><span class="text-muted-light">Market</span><br>{{property.market.name}}</div>
-                        <div class="col-lg-3"><span class="text-muted-light">MSA ID</span><br>[MSA ID]</div>
+                        <div class="col-lg-3"><span class="text-muted-light">MSA ID</span><br>{{property.market.marketCode}}</div>
                         <div class="col-lg-3"><span class="text-muted-light">Year Built</span><br>{{property.yearBuilt}}</div>
                     </div>
+
+                    <div class="row">&nbsp;</div>
 
                     <div class="row">
                         <div class="col-lg-6">
                             <span class="text-muted-light">Address</span><br>{{property.address.streetName}}<br>{{property.address.city}}, {{property.address.state.shortName}} {{property.address.zipCode}}
                             <br><abbr>P:</abbr>{{property.phoneNumber.primaryNumber}}
                         </div>
-                        <div class="col-lg-3 col-lg-offset-3"><span class="text-muted-light">Last Rennovation</span><br>{{property.lastRennovation}}</div>
+                        <div class="col-lg-3"><span class="text-muted-light">Contact</span><br>
+                            <abbr>P:</abbr>{{property.phoneNumber.primaryNumber}}<br>
+                        </div>
+                        <div class="col-lg-3"><span class="text-muted-light">Last Rennovation</span><br>{{property.lastRennovation}}</div>
                     </div>
+
                 </content>
             </panel>
         </div>
 
         <div class="col-lg-4">
             <panel style="min-height:300px;">
-                <panel-title>
-                    Lead Parcel
-                </panel-title>
+                <panel-title>Parcels</panel-title>
                 <content>
                 </content>
             </panel>
