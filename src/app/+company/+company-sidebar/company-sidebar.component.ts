@@ -6,5 +6,9 @@ import { Component, Input } from '@angular/core';
 })
 export class CompanySidebarComponent {
 	@Input('model') company: any;
+
+	get properties() {
+		return this.company && this.company.properties ? this.company.properties.slice(0, 3).filter((f) => !!f.name) : [];
+	}
 }
 

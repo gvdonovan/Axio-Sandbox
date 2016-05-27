@@ -86,4 +86,10 @@ export interface Property {
   submarket: Submarket;
   stats: Stats;
   coordinate: Coordinate;
+  units: Units;
+}
+
+export interface Units {
+  units: number;
+  effectiveRent: number;
 }
