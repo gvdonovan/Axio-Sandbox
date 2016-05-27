@@ -8,7 +8,7 @@
 
         <button class="navbar-toggler pull-xs-right" type="button" ng2-bl-sidebar-toggle data-target="#sidebar-right"><span
             class="material-icons">menu</span></button>
-            
+
         <!-- Search Form -->
         <form class="form-inline pull-xs-left hidden-md-down">
             <div class="input-group width-400">
@@ -20,7 +20,7 @@
                     <button class="btn" type="button"><i class="material-icons">search</i></button>
                 </span>
             </div>
-            <div class="btn-group search-type">
+            <div class="btn-group mt-8">
                 <label class="btn btn-default border-radius-left-5" [(ngModel)]="searchTypeModel" btnRadio="Property">Property</label>
                 <label class="btn btn-default border-radius-right-5" [(ngModel)]="searchTypeModel"btnRadio="Company">Company</label>
             </div>
@@ -165,12 +165,12 @@
         <company-sidebar [model]="sidebarValue" *ngIf="sidebarService.isCompanySidebarVisible"></company-sidebar>
     </ng2-bl-sidebar>
 
-<!-- sidebar 
-sidebar-right 
-sidebar-size-3 
-sidebar-visible-xl-up 
-sidebar-light bg-white 
-ls-top-navbar-xs-up 
+<!-- sidebar
+sidebar-right
+sidebar-size-3
+sidebar-visible-xl-up
+sidebar-light bg-white
+ls-top-navbar-xs-up
 simplebar sidebar-visible -->
 
 
