@@ -10,39 +10,15 @@
     <a class="sidebar-heading-link pull-right" href="#">All</a>
 </div>
 <ul class="sidebar-activity">
-    <li class="media">
+    <li class="media" *ngFor="let property of properties">
         <div class="media-left">
             <div class="sidebar-activity-icon">
                 <i class="material-icons">today</i>
             </div>
         </div>
         <div class="media-body">
-            <a href="#">Biff Tannen</a> completed monthly survey
+            <a href="#">Purchased {{ property ? property.name : '' }}</a>
             <small>3 weeks ago</small>
-        </div>
-    </li>
-
-    <li class="media">
-        <div class="media-left">
-            <div class="sidebar-activity-icon">
-                <i class="material-icons">person</i>
-                <i src="assets/images/guy-7.jpg" width="40"></i>
-            </div>
-        </div>
-        <div class="media-body">
-            <a href="#">Greg Donovan</a> updated occupancy status
-            <small>10 days ago</small>
-        </div>
-    </li>
-    <li class="media">
-        <div class="media-left">
-            <div class="sidebar-activity-icon">
-                <i class="material-icons">person</i>
-            </div>
-        </div>
-        <div class="media-body">
-            <a href="#">Rishi Pampati</a> climbed 18 flights of stairs
-            <small>10 seconds ago</small>
         </div>
     </li>
 </ul>
