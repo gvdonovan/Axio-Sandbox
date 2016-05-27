@@ -160,8 +160,9 @@
 
     </ng2-bl-sidebar>
 
-    <ng2-bl-sidebar sidebar-id="sidebar-right" sidebar-position="right" sidebar-class="sidebar-visible-xl-up sidebar-light bg-white ls-top-navbar-xs-up" *ngIf="sidebarValue">
-        <property-sidebar [model]="sidebarValue"></property-sidebar>
+    <ng2-bl-sidebar sidebar-id="sidebar-right" sidebar-position="right" sidebar-class="sidebar-visible-xl-up sidebar-light bg-white ls-top-navbar-xs-up">
+        <property-sidebar [model]="sidebarValue" *ngIf="sidebarService.isPropertySidebarVisible"></property-sidebar>
+        <company-sidebar [model]="sidebarValue" *ngIf="sidebarService.isCompanySidebarVisible"></company-sidebar>
     </ng2-bl-sidebar>
 
 <!-- sidebar 

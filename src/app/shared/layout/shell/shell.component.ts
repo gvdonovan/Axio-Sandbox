@@ -8,7 +8,7 @@ import {BUTTON_DIRECTIVES, CollapseDirective, TYPEAHEAD_DIRECTIVES} from 'ng2-bo
 
 import { AdminHomeComponent } from "../../../+admin/index";
 import { HomeComponent } from "../../../+home/index"
-import { CompanySummaryComponent } from "../../../+company/index";
+import { CompanySummaryComponent, CompanySidebarComponent } from "../../../+company/index";
 import { DashboardComponent } from "../../../+dashboard/index";
 import { PropertySummaryComponent } from "../../../+property/index";
 import { PropertySearchComponent } from "../../../+property/index";
@@ -31,7 +31,8 @@ import {PropertySidebarComponent} from "../../../+property/property-sidebar/prop
         BUTTON_DIRECTIVES,
         CollapseDirective,
         TYPEAHEAD_DIRECTIVES,
-        PropertySidebarComponent
+        PropertySidebarComponent,
+        CompanySidebarComponent
     ],
     providers: [
         Sidebar,
