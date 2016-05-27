@@ -8,8 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class PropertySidebarComponent implements OnInit{
   @Input() model: any;
-  
+
   ngOnInit() {
-    
   }
 }
