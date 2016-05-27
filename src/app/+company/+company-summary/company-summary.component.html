@@ -103,16 +103,16 @@
                                 </thead>
                                 <tbody>
                                 <tr *ngFor="let property of mf.data">
-                                    <td>{{property.name}}</td>
+                                    <td><a [routerLink]="['/app/property/' + property.id]">{{property.name}}</a></td>
                                     <td>
                                         <small>
                                             {{property.address.streetName}}
                                         </small>
                                         <br>
                                         <small>
-                  <span>
-                    {{property.address.city}} {{property.address.state.shortName}}
-                  </span>
+                                          <span>
+                                            {{property.address.city}} {{property.address.state.shortName}}
+                                          </span>
                                         </small>
                                     </td>
                                     <td class="hidden-sm-down">

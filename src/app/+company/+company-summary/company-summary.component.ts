@@ -27,7 +27,8 @@ import {STATES} from "../../shared/data";
         DataTableDirectives,
         DROPDOWN_DIRECTIVES,
         FormPhoneComponent,
-        TYPEAHEAD_DIRECTIVES
+        TYPEAHEAD_DIRECTIVES,
+        ROUTER_DIRECTIVES
     ],
     providers: [CompanyService]
 

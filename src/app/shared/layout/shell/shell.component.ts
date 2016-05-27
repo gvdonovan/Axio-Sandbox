@@ -56,7 +56,7 @@ export class ShellComponent implements OnInit {
     public isPropertyMenuCollapsed:boolean = true;
     public isCompanyMenuCollapsed: boolean = true;
     public searchTypeModel:string = 'Property';
-    searchTerm: string;
+    searchTerm: string = '';
     searched: boolean = false;
     public sidebarValue: any;
 
