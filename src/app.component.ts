@@ -31,10 +31,10 @@ export class AppComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        // if (this.userService.loggedIn) {
+        if (this.userService.loggedIn) {
             this.router.navigate(['/app']);
-        // } else {
-            // this.router.navigate(['/login']);
-        // }
+        } else {
+            this.router.navigate(['/login']);
+        }
     }
 }
