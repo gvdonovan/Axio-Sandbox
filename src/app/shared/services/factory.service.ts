@@ -9,7 +9,8 @@ import {
   Submarket,
   Stats,
   Coordinate,
-  Company} from '../interfaces';
+  Company,
+    Units} from '../interfaces';
 import {Injectable, Inject} from '@angular/core';
 
 @Injectable()
@@ -33,7 +34,8 @@ export class FactoryService {
       market: this.createMarket(property.market),
       submarket: this.createSubmarket(property.submarket),
       stats: this.createStats(property.currentStats),
-      coordinate: this.createCoordinate(property.coordinates ? property.coordinates[0] : null)
+      coordinate: this.createCoordinate(property.coordinates ? property.coordinates[0] : null),
+      units: this.createUnits(property.units)
     };
     return p;
   }
@@ -237,5 +239,21 @@ export class FactoryService {
     };
 
     return _coordinate;
+  }
+
+  createUnits(units): Units {
+    if(! units) {
+      return {
+        units: null,
+        effectiveRent: null
+      }
+    };
+
+    let _units: Units = {
+      units: units.units,
+      effectiveRent: units.effectiveRent
+    }
+
+    return _units;
   }
 }
