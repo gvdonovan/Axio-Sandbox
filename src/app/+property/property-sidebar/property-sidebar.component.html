@@ -1,3 +1,19 @@
+<div class="sidebar-region">
+    <div class="sidebar-stats">
+        <div class="sidebar-stats-lead text-primary">
+            <span>{{model && model.units.units}}</span>
+        </div>
+        <small>Units</small>
+    </div>
+
+    <div class="sidebar-stats">
+        <div class="sidebar-stats-lead text-primary">
+            <span>{{model && model.units.effectiveRent | currency : 'USD' : true: '3.2-2'}}</span>
+        </div>
+        <small>Effective Rent</small>
+    </div>
+</div>
+
 <div class="sidebar-heading sidebar-p-t">Occupancy</div>
 <div class="sidebar-region">
     <div class="sidebar-text">Occupancy Status: {{ model && model.stats ? model.stats.occupancyStatus : 'Unknown' }}</div>
@@ -5,6 +21,12 @@
     <div class="sidebar-text">Occupancy: {{ model && model.stats ? model.stats.occupancy || 0 : 0 }}%</div>
     <div class="sidebar-text">Survey Date: {{ model && model.stats ? (model.stats.surveyDateTime | date) : 'Never' }}</div>
 </div>
+
+<div class="sidebar-heading sidebar-p-t">
+    Recent Transactions
+    <a class="sidebar-heading-link pull-right" href="#">All</a>
+</div>
+<div class="sidebar-region"></div>
 
 <div class="sidebar-heading sidebar-p-t">
     Recent Activity
@@ -47,27 +69,3 @@
         </div>
     </li>
 </ul>
-
-<div class="sidebar-heading sidebar-p-t">
-    Recent Transactions
-    <a class="sidebar-heading-link pull-right" href="#">All</a>
-</div>
-<div class="sidebar-region"></div>
-
-<div class="sidebar-heading sidebar-p-t">
-    Stats
-<div class="sidebar-region">
-    <div class="sidebar-stats">
-        <div class="sidebar-stats-lead text-primary">
-            <span>123</span>
-        </div>
-        <small>Units</small>
-    </div>
-
-    <div class="sidebar-stats">
-        <div class="sidebar-stats-lead text-primary">
-            <span>$850.00</span>
-        </div>
-        <small>Effective Rent</small>
-    </div>
-</div>
