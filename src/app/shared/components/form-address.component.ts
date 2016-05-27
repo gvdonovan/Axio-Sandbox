@@ -1,5 +1,5 @@
 import { Component, Output, Input, EventEmitter, OnInit } from '@angular/core';
-import { ControlGroup, Control } from '@angular/common';
+import { ControlGroup, Control, Validators, AbstractControl } from '@angular/common';
 import {Address} from "../interfaces";
 
 @Component({
@@ -26,12 +26,24 @@ export class FormAdressComponent implements OnInit{
   ngOnInit() {
     
     this.form = new ControlGroup({
-      street: new Control((this.model && this.model.streetName) || ''),
-      city: new Control((this.model && this.model.city) || ''),
-      state: new Control((this.model && this.model.state.shortName) || ''),
-      zipcode: new Control((this.model && this.model.zipCode) || '')
+      street: new Control((this.model && this.model.streetName) || '', Validators.compose([Validators.required, streetValidator])),
+      city: new Control((this.model && this.model.city) || '', Validators.compose([Validators.required])),
+      state: new Control((this.model && this.model.state.shortName), Validators.compose([Validators.required])),
+      zipcode: new Control((this.model && this.model.zipCode) || '', Validators.compose([Validators.required, zipCodeValidator]))
     });
 
     this.form.valueChanges.debounceTime(400).distinctUntilChanged().subscribe(value => {this.addressChanged.emit({value: value, valid: this.form.valid});});
   }
+}
+
+function streetValidator(input: AbstractControl) : { [key: string]: any } {
+  const validStreetRegex = /\d+\s\w+/;
+  if (validStreetRegex.test(input.value)) return null;
+  return { "invalidStreet": true };
+}
+
+function zipCodeValidator(input: AbstractControl) {
+  const validZipCode = /\d{5}/;
+  if (validZipCode.test(input.value)) return null;
+  return { "invalidZipCode": true };
 }

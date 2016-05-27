@@ -10,7 +10,7 @@ import {SebmGoogleMapMarker, SebmGoogleMap, SebmGoogleMapInfoWindow} from "angul
 import {Panel} from "../../shared/components";
 import { Property } from '../../shared/interfaces';
 import {FormPhoneComponent, FormAdressComponent} from "../../shared/components";
-import {SearchService, FactoryService} from "../../shared/services";
+import {SearchService, FactoryService, SidebarService} from "../../shared/services";
 import {STATES} from "../../shared/data";
 
 @Component({
@@ -76,7 +76,8 @@ export class CompanySummaryComponent implements OnInit{
                 params: RouteSegment,
                 private http: Http,
                 private searchService: SearchService,
-                private factoryService: FactoryService) {
+                private factoryService: FactoryService,
+                private sidebarService: SidebarService) {
         this.companyId = params.getParam('companyId');
     }
 
@@ -87,6 +88,8 @@ export class CompanySummaryComponent implements OnInit{
                     this.company = res;
 
                     this.properties = this.company.properties;
+
+                    this.sidebarService.showSidebar(this.company);
                 }
             )
 
