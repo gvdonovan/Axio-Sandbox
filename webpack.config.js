@@ -24,7 +24,7 @@ module.exports = {
   // static data for index.html
   metadata: metadata,
   // for faster builds use 'eval'
-  devtool: 'source-map',
+  devtool: 'eval',
   debug: true,
   // cache: false,
 
@@ -52,23 +52,23 @@ module.exports = {
     ],
     loaders: [
       // Support Angular 2 async routes via .async.ts
-      { test: /\.async\.ts$/, loaders: ['es6-promise-loader', 'ts-loader'], exclude: [ /\.(spec|e2e)\.ts$/ ] },
+      { test: /\.async\.ts$/, loaders: ['es6-promise-loader', 'ts-loader'], exclude: [ /\.(spec|e2e)\.ts$/, root('node_modules') ] },
 
       // Support for .ts files.
-      { test: /\.ts$/, loader: 'ts-loader', exclude: [ /\.(spec|e2e|async)\.ts$/ ] },
+      { test: /\.ts$/, loader: 'ts-loader', exclude: [root('node_modules'), /\.(spec|e2e|async)\.ts$/ ] },
 
       // Support for *.json files.
-      { test: /\.json$/,  loader: 'json-loader' },
+      { test: /\.json$/,  loader: 'json-loader', exclude: [root('node_modules')]},
 
       // Support for CSS as raw text
-      { test: /\.css$/,   loader: 'raw-loader' },
+      { test: /\.css$/,   loader: 'raw-loader', exclude: [root('node_modules')]},
 
       // support for .html as raw text
-      { test: /\.html$/,  loader: 'raw-loader', exclude: [ root('src/index.html') ] },
+      { test: /\.html$/,  loader: 'raw-loader', exclude: [root('node_modules'), root('src/index.html') ] },
 
-      { test: /\.scss$/, loaders: ['raw-loader', 'sass-loader'] },
+      { test: /\.scss$/, loaders: ['raw-loader', 'sass-loader'], exclude: [root('node_modules')] },
 
-      { test: /\.(woff2?|ttf|eot|svg)$/, loader: 'url?limit=10000&name=[name].[ext]' },
+      { test: /\.(woff2?|ttf|eot|svg)$/, loader: 'url?limit=10000&name=[name].[ext]', exclude: [root('node_modules')] },
 
       // Bootstrap 4
       { test: /bootstrap\/dist\/js\/umd\//, loader: 'imports?jQuery=jquery' }

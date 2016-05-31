@@ -52,7 +52,7 @@
     <div class="row">
         <div class="col-lg-12">
             <section class="search-result-item" *ngFor="let searchResult of searchResults | paginate: { itemsPerPage: 5, currentPage: currentPage }">
-                <a class="image-link" href="#">
+                <a class="image-link" href="#" [routerLink]="['/app/property', searchResult.id]">
                     <img class="image" src="//axioportal.s3.amazonaws.com/images/properties/{{searchResult.id}}.jpg"
                          onError="this.src='//axioportal.s3.amazonaws.com/images/properties/coming_soon_icon.png';">
                 </a>
@@ -60,7 +60,7 @@
                     <div class="row">
                         <div class="col-sm-8">
                             <h4 class="search-result-item-heading">
-                                <a href="#">{{searchResult.name}}</a>
+                                <a [routerLink]="['/app/property/', searchResult.id]">{{searchResult.name}}</a>
                             </h4>
                             <p class="info">
                                 {{searchResult.address.streetName + ' ' + searchResult.address.city + ', ' + searchResult.address.state.shortName + ' ' + searchResult.address.zipCode}}
