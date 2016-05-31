@@ -37,11 +37,12 @@
 
                     <div class="row">
                         <div class="col-lg-5">
-                            <span class="text-muted-light">Address</span><br>{{property.address.streetName}}<br>{{property.address.city}}, {{property.address.state.shortName}} {{property.address.zipCode}}
+                            <span class="text-muted-light">Address</span><br>{{property.address.streetName}}<br>
+                            {{property.address.city}}, {{property.address.state.shortName}} {{property.address.zipCode}}<br>
+                            [www.somewhere.com]
                         </div>
                         <div class="col-lg-3"><span class="text-muted-light">Contact</span><br>
-                            <abbr title="Phone">P:&nbsp;</abbr>{{property.phoneNumber.primaryNumber}}<br>
-                            <abbr title="www">W:&nbsp;</abbr>[www.somewhere.com]<br>
+                            <abbr title="Phone">P:&nbsp;</abbr>{{property.phoneNumber.primaryNumber}}
                         </div>
                         <div class="col-lg-2"><span class="text-muted-light">Parcel Count</span><br>[Parcel Count]</div>
                         <div class="col-lg-2"></div>
