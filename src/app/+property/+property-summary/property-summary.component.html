@@ -1,5 +1,5 @@
 <div *ngIf="property">
-    <h3 class="page-title">{{property.name}}</h3>
+    <h3 class="page-title">{{property.name}} ({{property.id}})</h3>
 
     <div class="row">
         <div class="col-lg-8">
@@ -18,30 +18,33 @@
                 <content>
 
                     <div class="row">
-                        <div class="col-lg-6"><span class="text-muted-light">County</span><br>{{property.county.name}}</div>
+                        <div class="col-lg-5"><span class="text-muted-light">County</span><br>{{property.county.name}}</div>
                         <div class="col-lg-3"><span class="text-muted-light">FIPS Code</span><br>{{property.address.state.fipsCode + property.county.fipsCode}}</div>
-                        <div class="col-lg-3"><span class="text-muted-light">Floor Count</span><br>{{property.floorCount}}</div>
+                        <div class="col-lg-2"><span class="text-muted-light">Levels</span><br>{{property.floorCount}}</div>
+                        <div class="col-lg-2"><span class="text-muted-light">Year Built</span><br>{{property.yearBuilt}}</div>
                     </div>
 
                     <div class="row">&nbsp;</div>
 
                     <div class="row">
-                        <div class="col-lg-6"><span class="text-muted-light">Market</span><br>{{property.market.name}}</div>
+                        <div class="col-lg-5"><span class="text-muted-light">Market/Submarket</span><br>{{property.market.name}}<br>[Submarket Name]</div>
                         <div class="col-lg-3"><span class="text-muted-light">MSA ID</span><br>{{property.market.marketCode}}</div>
-                        <div class="col-lg-3"><span class="text-muted-light">Year Built</span><br>{{property.yearBuilt}}</div>
+                        <div class="col-lg-2"><span class="text-muted-light">Units</span><br>[Units]</div>
+                        <div class="col-lg-2"><span class="text-muted-light">Last Rennovation</span><br>{{property.lastRennovation}}</div>
                     </div>
 
                     <div class="row">&nbsp;</div>
 
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-5">
                             <span class="text-muted-light">Address</span><br>{{property.address.streetName}}<br>{{property.address.city}}, {{property.address.state.shortName}} {{property.address.zipCode}}
-                            <br><abbr>P:</abbr>{{property.phoneNumber.primaryNumber}}
                         </div>
                         <div class="col-lg-3"><span class="text-muted-light">Contact</span><br>
-                            <abbr>P:</abbr>{{property.phoneNumber.primaryNumber}}<br>
+                            <abbr title="Phone">P:&nbsp;</abbr>{{property.phoneNumber.primaryNumber}}<br>
+                            <abbr title="www">W:&nbsp;</abbr>[www.somewhere.com]<br>
                         </div>
-                        <div class="col-lg-3"><span class="text-muted-light">Last Rennovation</span><br>{{property.lastRennovation}}</div>
+                        <div class="col-lg-2"><span class="text-muted-light">Parcel Count</span><br>[Parcel Count]</div>
+                        <div class="col-lg-2"></div>
                     </div>
 
                 </content>
