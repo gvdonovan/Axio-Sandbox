@@ -5,36 +5,210 @@
 
     <form [ngFormModel]="form" [collapse]="isCollapsed" (submit)="search()">
 
-        <div *ngFor="let field of fields">
-            <div [class]="field.className">
-                <div *ngFor="let fieldGroup of field.fieldGroups;let i=index;" [class]="fieldGroup.className">
-                    <div class="form-group">
-                        <label *ngIf="fieldGroup.templateOptions.label" [attr.for]="'form_'+i+'_input_'+fieldGroup.key" [innerHtml]="fieldGroup.templateOptions.label">
-                        </label>
-                        <input *ngIf="fieldGroup.type === 'input'" [attr.id]="'form_'+i+'_input_'+fieldGroup.key" class="form-control" [ngControl]="fieldGroup.key"
-                               [attr.placeholder]="fieldGroup.templateOptions.placeholder" [attr.type]="fieldGroup.templateOptions.type" [disabled]="fieldGroup.templateOptions.disabled ? fieldGroup.templateOptions.disabled() : false">
+        <!-- First row in advanced search -->
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label for="form_input_propertyName">Property Name</label>
+                    <input id="form_input_propertyName" type="text" class="form-control" type="text"
+                           class="form-control" ngControl="propertyName">
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label for="form_input_streetName">Street</label>
+                    <input id="form_input_streetName" type="text" class="form-control" ngControl="streetName">
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label for="form_input_cityName">City</label>
+                    <input id="form_input_cityName" type="text" class="form-control" ngControl="cityName">
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label for="form_input_countyName">County</label>
+                    <input id="form_input_countyName" type="text" class="form-control" [(ngModel)]="typeaheads.countyName.model"
+                           [typeahead]="typeaheads.countyName.typeahead(getContext())" (change)="typeaheadOnValueChanged('countyName',typeaheads.countyName.model)"
+                           (typeaheadOnSelect)="typeaheadOnSelect($event,'countyName',typeaheads.countyName.model)"
+                           [disabled]="!typeaheads.stateId.model">
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label for="form_input_stateId">State</label>
+                    <input id="form_input_stateId" type="text" class="form-control" [(ngModel)]="typeaheads.stateId.model"
+                           [typeahead]="typeaheads.stateId.typeahead(getContext())" (change)="typeaheadOnValueChanged('stateId',typeaheads.stateId.model)"
+                           (typeaheadOnSelect)="typeaheads.stateId.typeaheadOnSelect($event)">
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label for="form_input_zipCode">Zipcode</label>
+                    <input id="form_input_zipCode" type="text" class="form-control" ngControl="zipCode">
+                </div>
+            </div>
+        </div>
 
-                        <input *ngIf="fieldGroup.type === 'typeahead'" [(ngModel)]="model[fieldGroup.key]" [disabled]="fieldGroup.templateOptions.disabled ? fieldGroup.templateOptions.disabled() : false"
-                               [typeahead]="fieldGroup.templateOptions.options(getContext())" [attr.id]="'form_'+i+'_input_'+fieldGroup.key"
-                               (typeaheadOnSelect)="typeaheadOnSelect($event,fieldGroup.key,model[fieldGroup.key])"
-                               class="form-control">
+        <!-- Second row in advanced search -->
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label for="form_input_marketId">Market</label>
+                    <input id="form_input_marketId" type="text" class="form-control" [(ngModel)]="typeaheads.marketId.model"
+                           [typeahead]="typeaheads.marketId.typeahead(getContext())" (change)="typeaheadOnValueChanged('marketId',typeaheads.marketId.model)"
+                           (typeaheadOnSelect)="typeaheads.marketId.typeaheadOnSelect($event)">
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label for="form_input_submarketId">Submarket</label>
+                    <input id="form_input_submarketId" type="text" class="form-control" [(ngModel)]="typeaheads.submarketId.model"
+                           [typeahead]="typeaheads.submarketId.typeahead(getContext())" (change)="typeaheadOnValueChanged('marketId',typeaheads.submarketId.model)"
+                           (typeaheadOnSelect)="typeaheads.submarketId.typeaheadOnSelect($event)"
+                           [disabled]="!typeaheads.marketId.model">
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label for="form_input_fipsCode">FIPS Code</label>
+                    <input id="form_input_fipsCode" type="text" class="form-control" ngControl="fipsCode">
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label for="form_input_occupancyStatusId">Occupancy Stats</label>
+                    <input id="form_input_occupancyStatusId" type="text" class="form-control" [(ngModel)]="typeaheads.occupancyStatusId.model"
+                           [typeahead]="typeaheads.occupancyStatusId.typeahead(getContext())" (change)="typeaheadOnValueChanged('occupancyStatusId',typeaheads.occupancyStatusId.model)"
+                           (typeaheadOnSelect)="typeaheads.occupancyStatusId.typeaheadOnSelect($event)">
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label for="form_input_phone">Phone</label>
+                    <input id="form_input_phone" type="text" class="form-control" ngControl="phone">
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label for="form_input_unformattedAPN">Unformatted APN</label>
+                    <input id="form_input_unformattedAPN" type="text" class="form-control" ngControl="unformattedAPN">
+                </div>
+            </div>
+        </div>
+
+        <!-- Third row in advanced search -->
+        <div class="row">
+            <div class="col-lg-4 form-group">
+                <label>Year Built</label>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <input class="form-control" type="text" ngControl="yearBuiltFrom" placeholder="from...">
+                    </div>
+                    <div class="col-lg-6">
+                        <input class="form-control" type="text" ngControl="yearBuiltTo" placeholder="to...">
                     </div>
                 </div>
             </div>
-            <hr />
+
+            <div class="col-lg-4 form-group">
+                <label>Last Renovation</label>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <input class="form-control" type="text" placeholder="from...">
+                    </div>
+                    <div class="col-lg-6">
+                        <input class="form-control" type="text" placeholder="to...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 form-group">
+                <label>Units</label>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <input class="form-control" type="text" placeholder="min">
+                    </div>
+                    <div class="col-lg-6">
+                        <input class="form-control" type="text" placeholder="max">
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <!-- Forth row in advanced search -->
         <div class="row">
-            <!--<div class="col-md-2">-->
-                <!--<div class="form-group" dropdown *ngIf="savedSearches.length > 0">-->
-                    <!--<label for="saveSearch">Saved Searches</label>-->
-                    <!--<button class="btn btn-sm btn-default" id="saveSearch" dropdownToggle>-->
-                        <!--<i class="fa fa-bars" aria-hidden="true"></i>-->
-                    <!--</button>-->
-                    <!--<ul class="dropdown-menu" role="menu" aria-labelledby="single-button">-->
-                        <!--<li role="menuitem" *ngFor="let search of savedSearches"><a class="dropdown-item" href="#" (click)="$event.preventDefault();gotoSearch(search)">{{search.name}}</a></li>-->
-                    <!--</ul>-->
+            <div class="col-lg-4 form-group">
+                <label>Parcel Count</label>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <input class="form-control" type="text" placeholder="min">
+                    </div>
+                    <div class="col-lg-6">
+                        <input class="form-control" type="text" placeholder="max">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 form-group">
+                <label>Levels</label>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <input class="form-control" type="text" placeholder="min">
+                    </div>
+                    <div class="col-lg-6">
+                        <input class="form-control" type="text" placeholder="max">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 form-group">
+                <label>Last Sales Price</label>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <input class="form-control" type="text" placeholder="min">
+                    </div>
+                    <div class="col-lg-6">
+                        <input class="form-control" type="text" placeholder="max">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fifth row in advanced search -->
+        <div class="row">
+            <div class="col-lg-4 form-group">
+                <label>Last Sales Date</label>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <input class="form-control" type="text" placeholder="from...">
+                    </div>
+                    <div class="col-lg-6">
+                        <input class="form-control" type="text" placeholder="to...">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--<div *ngFor="let field of fields">-->
+            <!--<div [class]="field.className">-->
+                <!--<div *ngFor="let fieldGroup of field.fieldGroups;let i=index;" [class]="fieldGroup.className">-->
+                    <!--<div class="form-group">-->
+                        <!--<label *ngIf="fieldGroup.templateOptions.label" [attr.for]="'form_'+i+'_input_'+fieldGroup.key" [innerHtml]="fieldGroup.templateOptions.label">-->
+                        <!--</label>-->
+                        <!--<input *ngIf="fieldGroup.type === 'input'" [attr.id]="'form_'+i+'_input_'+fieldGroup.key" class="form-control" [ngControl]="fieldGroup.key"-->
+                               <!--[attr.placeholder]="fieldGroup.templateOptions.placeholder" [attr.type]="fieldGroup.templateOptions.type" [disabled]="fieldGroup.templateOptions.disabled ? fieldGroup.templateOptions.disabled() : false">-->
+
+                        <!--<input *ngIf="fieldGroup.type === 'typeahead'" [(ngModel)]="model[fieldGroup.key]" [disabled]="fieldGroup.templateOptions.disabled ? fieldGroup.templateOptions.disabled() : false"-->
+                               <!--[typeahead]="fieldGroup.templateOptions.options(getContext())" [attr.id]="'form_'+i+'_input_'+fieldGroup.key"-->
+                               <!--(typeaheadOnSelect)="typeaheadOnSelect($event,fieldGroup.key,model[fieldGroup.key])"-->
+                               <!--class="form-control">-->
+                    <!--</div>-->
                 <!--</div>-->
             <!--</div>-->
+            <!--<hr />-->
+        <!--</div>-->
+        <hr />
+        <div class="row">
             <div class="col-md-2 col-md-offset-10">
                 <button class="btn btn-primary" type="submit" [disabled]="!form.valid">Search</button>
                 <button class="btn btn-default" type="button" (click)="resetForm()">Reset</button>
@@ -43,11 +217,11 @@
         </div>
     </form>
 </div>
-<!--<div class="row">-->
-<!--<p>-->
-<!--{{form.value | json}}-->
-<!--</p>-->
-<!--</div>-->
+<div class="row">
+<p>
+{{form.value | json}}
+</p>
+</div>
 <div class="results-container" *ngIf="searchActive">
     <div class="row">
         <div class="col-lg-12">

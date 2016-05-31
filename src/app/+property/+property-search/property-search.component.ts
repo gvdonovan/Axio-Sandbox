@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, OnDestroy} from '@angular/core';
 import {Http} from "@angular/http";
-import {ControlGroup, FormBuilder, Control} from '@angular/common';
+import {ControlGroup, FormBuilder, Control, Validators} from '@angular/common';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 import {Subscription} from "rxjs/Subscription";
 import {
@@ -9,7 +9,7 @@ import {
     CollapseDirective,
     PAGINATION_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 
-import {STATES, MARKETS} from '../../shared/data';
+import {STATES, MARKETS, OCCUPANCY_STATUS} from '../../shared/data';
 import {PaginatePipe} from '../../shared/pipes';
 import {Property} from '../../shared/interfaces';
 import {SearchService} from "../../shared/services";
@@ -258,19 +258,98 @@ export class PropertySearchComponent  implements OnInit, OnDestroy{
             ]
         }
     ];
+
+    typeaheads: Object = {
+        countyName: {
+            model: '',
+            typeahead: () => {
+                let currentState = this._.find(STATES, {id: this.form.find('stateId').value});
+                if (currentState) {
+                    return this._.map(currentState.counties, 'name');
+                }
+                else {
+                    return [];
+                }
+            }
+        },
+        stateId: {
+            model: '',
+            typeahead: () => {
+                return this._.map(STATES, 'name');
+            },
+            typeaheadOnSelect: (e: any) => {
+                let currentState = this._.find(STATES, {name: e.item});
+                if(currentState) {
+                    (<Control>this.form.find('stateId')).updateValue(currentState.id);
+                }
+            }
+        },
+        marketId: {
+            model: '',
+            typeahead: () => {
+                return this._.map(MARKETS, 'name');
+            },
+            typeaheadOnSelect: (e: any) => {
+                let currentMarket = this._.find(MARKETS, {name: e.item});
+                if(currentMarket) {
+                    (<Control>this.form.find('marketId')).updateValue(currentMarket.id);
+                }
+            }
+        },
+        submarketId: {
+            model: '',
+            typeahead: () => {
+                let currentMarket = this._.find(MARKETS,{id: this.form.find('marketId').value});
+                if(currentMarket){
+                    return this._.map(currentMarket.submarkets, 'name');
+                }
+                else {
+                    return [];
+                }
+            },
+            typeaheadOnSelect: (e: any) => {
+                let currentMarket = this._.find(MARKETS,{id: this.form.find('marketId').value});
+                if(currentMarket) {
+                    let currentSubmarket = this._.find(currentMarket.submarkets, {name: e.item});
+                    if(currentSubmarket) {
+                        (<Control>this.form.find('submarketId')).updateValue(currentSubmarket.id);
+                    }
+                }
+            }
+        },
+        occupancyStatusId: {
+            model:'',
+            typeahead: () => {
+                return this._.map(OCCUPANCY_STATUS, 'name');
+            },
+            typeaheadOnSelect: (e: any) => {
+                let currentStats = this._.find(OCCUPANCY_STATUS, {name: e.item});
+                if(currentStats) {
+                    (<Control>this.form.find('occupancyStatusId')).updateValue(currentStats.id);
+                }
+            }
+        }
+    };
+
     model: Object = {
         county: '',
         state: '',
         market: '',
         submarket:''
     };
-    
+
     private searchResults: Array<Property> = [];
     private form: ControlGroup;
     private searchResultSubscriber: Subscription;
 
     typeaheadOnSelect(e: any, name: string, value: string): void {
         (<Control>this.form.find(name)).updateValue(e.item);
+    }
+    
+    typeaheadOnValueChanged(name: string, value: string): void {
+        if(!value) {
+            (<Control>this.form.find(name)).updateValue(value);
+        }
     }
 
     public getContext():any {
@@ -317,7 +396,44 @@ export class PropertySearchComponent  implements OnInit, OnDestroy{
     constructor(private builder: FormBuilder, @Inject('_') private _,
                 private searchService: SearchService,
                 private http: Http) {
-        this.initializeForm(builder, _);
+        //this.initializeForm(builder, _);
+        this.form = builder.group({
+
+            propertyName: '',
+            streetName: '',
+            cityName: '',
+            countyName: '',
+            stateId: '',
+            zipCode: ['', CommonValidator.ZipcodeField],
+
+            marketId: '',
+            submarketId: '',
+            fipsCode: ['', CommonValidator.FipsCodeField],
+            occupancyStatusId: '',
+            phone: '',
+            unformattedAPN: '',
+
+            yearBuiltFrom: ['',
+                Validators.compose([
+                    Validators.maxLength(4),
+                    Validators.minLength(4),
+                    function(control: Control): ValidationResult{
+                    return SearchFormValidator.StartField(
+                        control,
+                        <Control>control.root.find('yearBuiltTo')
+                    );
+            }])],
+            yearBuiltTo: ['',
+                Validators.compose([
+                Validators.maxLength(4),
+                Validators.minLength(4),
+                function(control: Control): ValidationResult{
+                    return SearchFormValidator.EndField(
+                        <Control>control.root.find('yearBuiltFrom'),
+                        control);
+                }])
+            ]
+        });
 
         this.searchResultSubscriber = searchService.searchResult$
             .subscribe(
@@ -328,8 +444,9 @@ export class PropertySearchComponent  implements OnInit, OnDestroy{
                         this.totalItems = _searchResults.length;
                         this.currentPage = 1;
                         this.searchResults = _searchResults;
-                    };
-                });
+                    }
+                }
+            );
     }
 
     ngOnInit(): void {

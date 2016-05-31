@@ -6,12 +6,26 @@ export interface ValidationResult {
 
 export class CommonValidator {
     static ZipcodeField(control: Control): ValidationResult {
-        let ZIPCODE_REGEX = /^\d{5}(?:[-\s]\d{4})?$/i;
+        let ZIPCODE_REGEX = /^\d{5}$/i;
 
         if (control.value) {
             if (!ZIPCODE_REGEX.test(control.value)) {
                 return {
                     invalidZipcode : true
+                };
+            }
+        }
+
+        return null;
+    }
+
+    static FipsCodeField(control: Control): ValidationResult {
+        let FIPSCODE_REGEX = /^\d{5}$/i;
+
+        if (control.value) {
+            if (!FIPSCODE_REGEX.test(control.value)) {
+                return {
+                    invalidFipsCode: true
                 };
             }
         }
