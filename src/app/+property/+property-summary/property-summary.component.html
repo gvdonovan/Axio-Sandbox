@@ -79,20 +79,20 @@
                         <tr>
                             <th>Name</th>
                             <th>Address</th>
-                            <th class="hidden-xs">Type</th>
-                            <th class="hidden-xs">Start Date</th>
-                            <th class="hidden-xs">End Date</th>
-                            <th class="hidden-xs">Actions</th>
+                            <th class="hidden-sm-down">Type</th>
+                            <th class="hidden-sm-down">Start Date</th>
+                            <th class="hidden-sm-down">End Date</th>
+                            <th class="hidden-sm-down">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr *ngFor="let owner of property.owners;">
                             <td><a [routerLink]="['/app/company/' + owner.id]">{{owner.name}}</a></td>
                             <td>{{owner.address ? owner.address.streetName + ' ' + owner.address.city : ''}}</td>
-                            <td>Owner</td>
-                            <td>{{owner.startDate !== null ? moment(owner.startDate).format('D/MMM/YYYY') : ''}}</td>
-                            <td>{{owner.endDate !== null ? moment(owner.endDate).format('D/MMM/YYYY') : ''}}</td>
-                            <td>
+                            <td class="hidden-sm-down">Owner</td>
+                            <td class="hidden-sm-down">{{owner.startDate !== null ? moment(owner.startDate).format('D/MMM/YYYY') : ''}}</td>
+                            <td class="hidden-sm-down">{{owner.endDate !== null ? moment(owner.endDate).format('D/MMM/YYYY') : ''}}</td>
+                            <td class="hidden-sm-down">
                                 <button type="button" class="btn btn-warning btn-xs">
                                     <span class="fs-sm">Expire</span>
                                 </button>

@@ -7,20 +7,27 @@ import {
     TYPEAHEAD_DIRECTIVES,
     DROPDOWN_DIRECTIVES,
     CollapseDirective,
-    PAGINATION_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
+    PAGINATION_DIRECTIVES, DATEPICKER_DIRECTIVES
+} from 'ng2-bootstrap/ng2-bootstrap';
 
-import {STATES, MARKETS, OCCUPANCY_STATUS} from '../../shared/data';
-import {PaginatePipe} from '../../shared/pipes';
-import {Property} from '../../shared/interfaces';
-import {SearchService} from "../../shared/services";
+import {STATES, MARKETS, SUBMARKETS, OCCUPANCY_STATUS} from '../../shared/data';
+import {SearchService, PropertySearchFormStore} from "../../shared/services";
+import {Panel} from '../../shared/components';
 import {SearchFormValidator, CommonValidator, ValidationResult} from '../shared';
 
 @Component({
     selector: 'ax-property',
     template: require('./property-search.component.html'),
     styles: [ require('./property-search.component.scss') ],
-    directives: [TYPEAHEAD_DIRECTIVES, DROPDOWN_DIRECTIVES, CollapseDirective, PAGINATION_DIRECTIVES, ROUTER_DIRECTIVES],
-    pipes: [PaginatePipe]
+    directives: [
+        TYPEAHEAD_DIRECTIVES,
+        DROPDOWN_DIRECTIVES,
+        DATEPICKER_DIRECTIVES,
+        CollapseDirective,
+        PAGINATION_DIRECTIVES,
+        Panel,
+        ROUTER_DIRECTIVES
+    ]
 })
 export class PropertySearchComponent  implements OnInit, OnDestroy{
     public totalItems: number = 64;
@@ -28,242 +35,17 @@ export class PropertySearchComponent  implements OnInit, OnDestroy{
     public searchActive: boolean = false;
     public isCollapsed: boolean = false;
 
-    fields: Object[] = [
-        {
-            className: 'row',
-            fieldGroups: [
-                {
-                    className: 'col-lg-2',
-                    type: 'input',
-                    key: 'streetName',
-                    templateOptions: {
-                        type: 'text',
-                        label: 'Street',
-                        placeholder: '',
-                        required: true
-                    }
-                },
-                {
-                    className: 'col-lg-1',
-                    type: 'input',
-                    key: 'cityName',
-                    templateOptions: {
-                        type: 'text',
-                        label: 'City',
-                        placeholder: '',
-                        options: (context): Function => {return function ():Promise<Object[]> {
-                            let currentState = context._.find(STATES,{name: context.form.find('state').value});
-                            return context.http.get('http://localhost:59176/api/properties/cities/' + currentState.id).map((response) => {return response.json();}).toPromise();
-                        } },
-                        disabled: () => {
-                            return !this.form.find('state').value; }
-                    },
-                },
-                {
-                    className: 'col-lg-1',
-                    type: 'typeahead',
-                    key: 'countyName',
-                    templateOptions: {
-                        type: 'text',
-                        label: 'County',
-                        placeholder: '',
-                        options: () => {
-                            let currentState = this._.find(STATES,{name: this.form.find('state').value});
-                            if(currentState){
-                                return this._.map(currentState.counties, 'name');
-                            }
-                            else {
-                                return [];
-                            }
-                        },
-                        disabled: () => {
-                            return !this.form.find('state').value;
-                        }
-                    }
-                },
-                {
-                    className: 'col-lg-1',
-                    type: 'typeahead',
-                    key: 'state',
-                    templateOptions: {
-                        type: 'text',
-                        label: 'State',
-                        placeholder: '',
-                        options: () => {return this._.map(STATES, 'name');}
-                    },
-                    validator: []
-                },
-                {
-                    className: 'col-lg-1',
-                    type: 'input',
-                    key: 'zipCode',
-                    templateOptions: {
-                        type: 'number',
-                        label: 'Zipcode',
-                        placeholder: ''
-                    },
-                    validator: [CommonValidator.ZipcodeField]
-                },
-                {
-                    className: 'col-lg-1',
-                    type: 'typeahead',
-                    key: 'occNoteId',
-                    templateOptions: {
-                        type: 'number',
-                        label: 'OccNote Id',
-                        placeholder: '',
-                        options: () => { return ['1', '2', '3', '4', '22', '25', '45']; }
-                    }
-                },
-                {
-                    className: 'col-lg-2',
-                    type: 'typeahead',
-                    key: 'market',
-                    templateOptions: {
-                        type: 'text',
-                        label: 'Market',
-                        placeholder: '',
-                        options: () => { return this._.map(MARKETS, 'name'); }
-                    }
-                },
-                {
-                    className: 'col-lg-1',
-                    type: 'input',
-                    key: 'msaId',
-                    templateOptions: {
-                        type: 'number',
-                        label: 'MSA ID',
-                        placeholder: ''
-                    }
-                },
-                {
-                    className: 'col-lg-2',
-                    type: 'typeahead',
-                    key: 'submarket',
-                    templateOptions: {
-                        type: 'text',
-                        label: 'Submarket',
-                        placeholder: '',
-                        options: () => {
-                            let currentMarket = this._.find(MARKETS,{name: this.form.find('market').value});
-                            if(currentMarket){
-                                return this._.map(currentMarket.submarkets, 'name');
-                            }
-                            else {
-                                return [];
-                            }
-                        },
-                        disabled: () => {
-                            return !this.form.find('market').value;
-                        }
-                    }
-                }
-            ]
-        },
-        {
-            className: 'row',
-            fieldGroups: [
-                {
-                    className: 'col-lg-1 field-joined-group-left',
-                    type: 'input',
-                    key: 'yearBuiltFrom',
-                    templateOptions: {
-                        type: 'number',
-                        label: 'Year Built',
-                        placeholder: 'From...'
-                    },
-                    validator: [function(control: Control): ValidationResult{
-                        return SearchFormValidator.StartField(
-                            control,
-                            <Control>control.root.find('yearBuiltTo')
-                        );
-                    }]
-                },
-                {
-                    className: 'col-lg-1 field-joined-group-right',
-                    type: 'input',
-                    key: 'yearBuiltTo',
-                    templateOptions: {
-                        type: 'number',
-                        label: '&nbsp;',
-                        placeholder: 'To...'
-                    },
-                    validator: [function(control: Control): ValidationResult{
-                        return SearchFormValidator.EndField(
-                            <Control>control.root.find('yearBuiltFrom'),
-                            control);
-                    }]
-                },
-                {
-                    className: 'col-lg-1 field-joined-group-left',
-                    type: 'input',
-                    key: 'lastRehabFrom',
-                    templateOptions: {
-                        type: 'number',
-                        label: 'Last Renovation',
-                        placeholder: 'From...'
-                    }
-                },
-                {
-                    className: 'col-lg-1 field-joined-group-right',
-                    type: 'input',
-                    key: 'lastRehabTo',
-                    templateOptions: {
-                        type: 'number',
-                        label: '&nbsp;',
-                        placeholder: 'To...'
-                    }
-                },
-                {
-                    className: 'col-lg-1 field-joined-group-left',
-                    type: 'input',
-                    key: 'unitsFrom',
-                    templateOptions: {
-                        type: 'number',
-                        label: 'Units',
-                        placeholder: 'From...'
-                    }
-                },
-                {
-                    className: 'col-lg-1 field-joined-group-right',
-                    type: 'input',
-                    key: 'unitsTo',
-                    templateOptions: {
-                        type: 'number',
-                        label: '&nbsp;',
-                        placeholder: 'To...'
-                    }
-                },
-                {
-                    className: 'col-lg-1 field-joined-group-left',
-                    type: 'input',
-                    key: 'levelsFrom',
-                    templateOptions: {
-                        type: 'number',
-                        label: 'Levels',
-                        placeholder: 'From...'
-                    }
-                },
-                {
-                    className: 'col-lg-1 field-joined-group-right',
-                    type: 'input',
-                    key: 'levelsTo',
-                    templateOptions: {
-                        type: 'number',
-                        label: '&nbsp;',
-                        placeholder: 'To...'
-                    }
-                }
+    public serchResultsFields = ['name','address','levels','units'];
 
-            ]
-        }
-    ];
+    private searchResults: Array<Object> = [];
+    private form: ControlGroup;
+    private searchResultSubscriber: Subscription;
 
-    typeaheads: Object = {
+    public typeaheads: Object = {
         countyName: {
             model: '',
             typeahead: () => {
-                let currentState = this._.find(STATES, {id: this.form.find('stateId').value});
+                let currentState = this._.find(STATES, {id: this.form.find('stateProvinceId').value});
                 if (currentState) {
                     return this._.map(currentState.counties, 'name');
                 }
@@ -272,7 +54,7 @@ export class PropertySearchComponent  implements OnInit, OnDestroy{
                 }
             }
         },
-        stateId: {
+        stateProvinceId: {
             model: '',
             typeahead: () => {
                 return this._.map(STATES, 'name');
@@ -280,8 +62,11 @@ export class PropertySearchComponent  implements OnInit, OnDestroy{
             typeaheadOnSelect: (e: any) => {
                 let currentState = this._.find(STATES, {name: e.item});
                 if(currentState) {
-                    (<Control>this.form.find('stateId')).updateValue(currentState.id);
+                    (<Control>this.form.find('stateProvinceId')).updateValue(currentState.id);
                 }
+            },
+            transform: (stateProvinceId) => {
+                return this._.find(STATES, {id: stateProvinceId}).name;
             }
         },
         marketId: {
@@ -294,6 +79,9 @@ export class PropertySearchComponent  implements OnInit, OnDestroy{
                 if(currentMarket) {
                     (<Control>this.form.find('marketId')).updateValue(currentMarket.id);
                 }
+            },
+            transform: (marketId) => {
+                return this._.find(MARKETS, {id: marketId}).name;
             }
         },
         submarketId: {
@@ -315,6 +103,9 @@ export class PropertySearchComponent  implements OnInit, OnDestroy{
                         (<Control>this.form.find('submarketId')).updateValue(currentSubmarket.id);
                     }
                 }
+            },
+            transform: (submarketId) => {
+                return this._.find(SUBMARKETS, {id: submarketId}).name;
             }
         },
         occupancyStatusId: {
@@ -327,20 +118,12 @@ export class PropertySearchComponent  implements OnInit, OnDestroy{
                 if(currentStats) {
                     (<Control>this.form.find('occupancyStatusId')).updateValue(currentStats.id);
                 }
+            },
+            transform: (occupancyStatusId) => {
+                return this._.find(OCCUPANCY_STATUS, {id: occupancyStatusId}).name;
             }
         }
     };
-
-    model: Object = {
-        county: '',
-        state: '',
-        market: '',
-        submarket:''
-    };
-
-    private searchResults: Array<Property> = [];
-    private form: ControlGroup;
-    private searchResultSubscriber: Subscription;
 
     typeaheadOnSelect(e: any, name: string, value: string): void {
         (<Control>this.form.find(name)).updateValue(e.item);
@@ -357,60 +140,71 @@ export class PropertySearchComponent  implements OnInit, OnDestroy{
     }
 
     private resetForm(): void {
+        // form controls reset
         this._.each(this.form.controls, (control: Control) => {
             control.updateValue('');
             control.setErrors(null);
         });
+
+        //typeahead reset (it does not support ng control for now)
+        this._.each(this.typeaheads, (typeahead) => {
+            typeahead.model = '';
+        });
     }
 
     private search(): void {
-        this.searchActive = true;
-        this.isCollapsed = true;
-        this.searchService.advancedSearch(this.form.value)
-            .subscribe(
-                _searchResults => {
-                    if(_searchResults && _searchResults.length > 0) {
-                        this.searchService.setSearchResults(_searchResults);
-                    }}
-            );
+        let formWithoutEmptyValues = this.removeEmptyValues(this.form.value);
+
+        if(this._.keys(formWithoutEmptyValues).length > 0){
+            this.searchService.advancedSearch(formWithoutEmptyValues)
+                .subscribe(
+                    _searchResults => {
+                        if(_searchResults.count > 0 && _searchResults.results.length > 0) {
+                            this.searchService.setSearchResults(_searchResults);
+                        }
+                    }
+                );
+
+            this.searchFormState.saveState(formWithoutEmptyValues);
+        }
     }
 
     public pageChanged(e): void {
-        console.log(e);
+        let formWithoutEmptyValues = this.removeEmptyValues(this.form.value);
+
+        if(this._.keys(formWithoutEmptyValues).length > 0){
+            this.searchService.advancedSearch(formWithoutEmptyValues,e.page)
+                .subscribe(
+                    _searchResults => {
+                        if(_searchResults.count > 0 && _searchResults.results.length > 0) {
+                            this.searchService.setSearchResults(_searchResults);
+                        }
+                    }
+                );
+        }
     }
 
-    private initializeForm(builder: FormBuilder, _): void {
-
-        this.form = builder.group(_.reduce(
-            _.flatten(_.map(this.fields, 'fieldGroups')),
-            (result, value, key) => {
-                if (value.validator && value.validator.length > 0) {
-                    result[value.key] = ['', value.validator[0]];
-                } else {
-                    result[value.key] = [''];
-                }
-                return result;
-            }, {}));
-    }
-
-    constructor(private builder: FormBuilder, @Inject('_') private _,
+    constructor(private builder: FormBuilder, 
+                @Inject('_') private _,
+                @Inject('moment') private moment,
                 private searchService: SearchService,
-                private http: Http) {
-        //this.initializeForm(builder, _);
+                private http: Http,
+                private searchFormState: PropertySearchFormStore) {
+
         this.form = builder.group({
 
             propertyName: '',
             streetName: '',
             cityName: '',
             countyName: '',
-            stateId: '',
+            stateProvinceId: '',
             zipCode: ['', CommonValidator.ZipcodeField],
 
             marketId: '',
             submarketId: '',
             fipsCode: ['', CommonValidator.FipsCodeField],
             occupancyStatusId: '',
-            phone: '',
+            phoneNumber: '',
             unformattedAPN: '',
 
             yearBuiltFrom: ['',
@@ -432,28 +226,80 @@ export class PropertySearchComponent  implements OnInit, OnDestroy{
                         <Control>control.root.find('yearBuiltFrom'),
                         control);
                 }])
-            ]
-        });
+            ],
+            yearRehabFrom: '',
+            yearRehabTo: '',
+            unitsFrom: '',
+            unitsTo: '',
 
-        this.searchResultSubscriber = searchService.searchResult$
-            .subscribe(
-                _searchResults => {
-                    if(_searchResults && _searchResults.length > 0) {
-                        this.searchActive = true;
-                        this.isCollapsed = true;
-                        this.totalItems = _searchResults.length;
-                        this.currentPage = 1;
-                        this.searchResults = _searchResults;
-                    }
-                }
-            );
+            parcelCountFrom: '',
+            parcelCountTo: '',
+            floorCountFrom: '',
+            floorCountTo: '',
+            salePriceFrom: '',
+            salePriceTo: '',
+
+            soldFrom: '',
+            soldTo: ''
+        });
     }
 
     ngOnInit(): void {
+        this.searchResultSubscriber = this.searchService.searchResult$
+            .subscribe(
+                _searchResults => {
+                    if(_searchResults && _searchResults.results.length > 0) {
 
+                        if(!this.searchActive) {
+                            this.searchActive = true;
+                        }
+
+                        if(!this.isCollapsed) {
+                            this.isCollapsed = true;
+                        }
+
+                        if(this.totalItems !== _searchResults.count ){
+                            this.totalItems = _searchResults.count;
+                        }
+
+                        if(this.currentPage !== _searchResults.page) {
+                            this.currentPage = _searchResults.page;
+                        }
+
+                        this.searchResults = _searchResults.results;
+                    }
+                }
+            );
+
+        let context = this;
+        this.searchFormState.states$.subscribe((savedFormValue) => {
+            if(!this._.isEqual(this.removeEmptyValues(this.form.value), savedFormValue)) {
+             this._.each(savedFormValue, (value,key) => {
+                 if(value) {
+                     (<Control>this.form.find(key)).updateValue(value);
+
+                     //set value for typeahead
+                     if(key in context.typeaheads) {
+                         if('transform' in context.typeaheads[key]) {
+                             context.typeaheads[key].model = context.typeaheads[key].transform(value);
+                         }
+                         else {
+                             context.typeaheads[key].model = value;
+                         }
+                     }
+                 }
+             })
+            }
+        })
     }
 
     ngOnDestroy(): void {
         this.searchResultSubscriber.unsubscribe();
+    }
+
+    private removeEmptyValues(data: Object): Object {
+        return this._.pickBy(data, (value,key) => {
+            return value;
+        });
     }
 }

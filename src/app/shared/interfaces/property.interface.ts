@@ -72,6 +72,11 @@ export interface Coordinate {
   longitude: number;
 }
 
+export interface Units {
+  units: number;
+  effectiveRent: number;
+}
+
 export interface Property {
   id: number;
   name: string;
@@ -89,7 +94,9 @@ export interface Property {
   units: Units;
 }
 
-export interface Units {
-  units: number;
-  effectiveRent: number;
+export interface PropertySearchResult {
+  page: number;
+  pageSize: number;
+  count: number;
+  results: Array<Object>
 }

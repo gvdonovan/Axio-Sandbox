@@ -134,8 +134,8 @@ export class ShellComponent implements OnInit {
                     }
                 }
                 else if (properties.length > 1) {
-                    this.router.navigate(['/app/property/search']);
-                    this.searchService.setSearchResults(properties);
+                    //this.router.navigate(['/app/property/search']);
+                    //this.searchService.setSearchResults(properties);
                 }
             });
     }

@@ -14,6 +14,8 @@
   padding: 20px 30px 10px 30px;
   border: 1px solid #ddd;
   border-radius: 5px;
+  background-color: #fff;
+  font-size: 14px;
 }
 
 .results-container {
@@ -21,8 +23,37 @@
   padding: 30px 20px 5px 20px;
   border: 1px solid #ddd;
   border-radius: 5px;
+  background-color: #fff;
+
+  .table {
+    font-size: 14px;
+  }
 }
 
 .row {
   padding: 5px;
+}
+
+.table {
+
+  .col-name {
+    width: 20%;
+  }
+
+  .col-address {
+    width: 25%;
+  }
+
+  .col-submarket {
+    width: 15%;
+  }
+
+
+  .col-parcelCount, .col-yearBuilt, .col-lastRenovation, .col-status, .col-units, .col-levels, .col-fipsCode, .col-market {
+    width: 5%;
+  }
+
+  td.col-levels, td.col-units, td.col-fipsCode, td.col-parcelCount, td.col-yearBuilt, td.col-lastRenovation {
+    text-align: right;
+  }
 }

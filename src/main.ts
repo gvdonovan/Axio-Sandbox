@@ -31,7 +31,7 @@ if ('production' === process.env.ENV) {
 import {AppComponent} from './app.component';
 import {ANGULAR2_GOOGLE_MAPS_PROVIDERS} from "angular2-google-maps/core";
 //import {PropertyService} from "./app/property/property.service";
-import {SearchService, SidebarService, FactoryService} from "./app/shared/services";
+import {SearchService, SidebarService, FactoryService, PropertySearchFormStore} from "./app/shared/services";
 
 bootstrap(AppComponent, [
     ENV_PROVIDERS,
@@ -39,8 +39,9 @@ bootstrap(AppComponent, [
     ROUTER_PROVIDERS,
     ANGULAR2_GOOGLE_MAPS_PROVIDERS,
     FactoryService,
-//    PropertyService,
+//  PropertyService,
     SidebarService,
+    PropertySearchFormStore,
     SearchService,
     provide(LocationStrategy, {useClass: PathLocationStrategy}),
     provide("moment", {useValue: moment}),
