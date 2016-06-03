@@ -12,9 +12,12 @@ import {
 import {SebmGoogleMapMarker, SebmGoogleMap, SebmGoogleMapInfoWindow} from "angular2-google-maps/core";
 import {Panel} from "../../shared/components";
 import { Property } from '../../shared/interfaces';
+import { PhoneNumberPipe } from '../../shared/pipes';
 import {FormPhoneComponent, FormAdressComponent, FormWebAddressComponent} from "../../shared/components";
-import {SearchService, FactoryService, SidebarService} from "../../shared/services";
+import {SearchService, FactoryService, SidebarService, HttpClient} from "../../shared/services";
 import {STATES} from "../../shared/data";
+
+import {ToastsManager} from '../../../vendor/ng2-toastr/src/toast-manager';
 
 declare var jQuery: any;
 
@@ -36,7 +39,8 @@ declare var jQuery: any;
         TYPEAHEAD_DIRECTIVES,
         ROUTER_DIRECTIVES
     ],
-    providers: [CompanyService]
+    providers: [CompanyService, HttpClient],
+    pipes: [PhoneNumberPipe]
 
 })
 export class CompanySummaryComponent implements OnInit{
@@ -71,7 +75,8 @@ export class CompanySummaryComponent implements OnInit{
                 private http: Http,
                 private searchService: SearchService,
                 private factoryService: FactoryService,
-                private sidebarService: SidebarService) {
+                private sidebarService: SidebarService,
+                public toastr: ToastsManager) {
         this.companyId = params.getParam('companyId');
     }
 
@@ -157,19 +162,75 @@ export class CompanySummaryComponent implements OnInit{
      * phone number editing
      * */
 
-    editPhoneNumber(): void {
-        this.isEditingPhoneNumber = true;
+    editPhoneNumber(id: string): void {
+        
         this.isEditingAddress = false;
         this.isEditingWebAddress = false;
+        
+        this.companyService.getPhoneNumber(id)
+            .subscribe(phoneNumber => {
+
+                // empty address, do create
+                if(this._.isEmpty(phoneNumber)) {
+                    this.isCreatingNew = true;
+                }// not empty, do update
+                else {
+                    this.isCreatingNew = false;
+                }
+
+                this.editingPhonenumber = phoneNumber;
+                this.pendingEdits = phoneNumber;
+                jQuery('#editModal').modal({backdrop: false});
+                this.isEditingPhoneNumber = true;
+            })
 
     }
 
-    editWebAddress(): void {
-        this.isEditingWebAddress = true;
+    onPhoneNumberChanged(e: any) {
+        this.formValid = e.valid;
+
+        if(this.formValid) {
+            this._.assign(this.pendingEdits,e.value);
+        }
+
+    }
+
+    /**
+     *
+     * web address editing
+     * */
+
+    editWebAddress(id:string): void {
+
         this.isEditingAddress = false;
         this.isEditingPhoneNumber = false;
 
+        this.companyService.getWebAddress(id)
+            .subscribe(
+                webAddress => {
 
+                    // empty address, do create
+                    if(this._.isEmpty(webAddress)) {
+                        this.isCreatingNew = true;
+                    }// not empty, do update
+                    else {
+                        this.isCreatingNew = false;
+                    }
+
+                    this.editingWebAddress = webAddress;
+                    this.pendingEdits = webAddress;
+                    jQuery('#editModal').modal({backdrop: false});
+                    this.isEditingWebAddress = true;
+                }
+            )
+    }
+
+    onWebAddressChanged(e: any): void {
+        this.formValid = e.valid;
+
+        if(this.formValid) {
+            this._.assign(this.pendingEdits,e.value);
+        }
     }
 
     saveEdits(): void {
@@ -179,6 +240,7 @@ export class CompanySummaryComponent implements OnInit{
                 this.companyService.createAddress(this.company.id,this.pendingEdits)
                     .subscribe(
                         response => {
+                            this.toastr.success('The data has been updated successfully!');
                             this.refreshCompany();
                             this.isEditingAddress = false;
                         }
@@ -194,6 +256,61 @@ export class CompanySummaryComponent implements OnInit{
                     );
             }
         }
+        else if(this.isEditingPhoneNumber) {
+
+            if(this.isCreatingNew) {
+                this.companyService.createPhoneNumber(this.company.id, this.pendingEdits)
+                    .subscribe(
+                        response => {
+                            this.toastr.success('The data has been updated successfully!');
+                            this.refreshCompany();
+                            this.isEditingPhoneNumber = false;
+                        }
+                    )
+            }
+            else {
+                this.companyService.editPhoneNumber(this.company.id, this.pendingEdits)
+                    .subscribe(
+                        response => {
+                            this.refreshCompany();
+                            this.isEditingPhoneNumber = false;
+                        }
+                    )
+            }
+        }
+        else if(this.isEditingWebAddress) {
+            if(this.isCreatingNew) {
+                this.companyService.createWebAddress(this.company.id, this.pendingEdits)
+                    .subscribe(
+                        response => {
+                            this.toastr.success('The data has been updated successfully!');
+                            this.refreshCompany();
+                            this.isEditingWebAddress = false;
+                        }
+                    );
+
+            }
+            else {
+                this.companyService.editWebAddress(this.company.id, this.pendingEdits)
+                    .subscribe(
+                        response => {
+                            this.refreshCompany();
+                            this.isEditingWebAddress = false;
+                        }
+                    );
+            }
+        }
+    }
+
+    cancelEdits(): void {
+        this.isEditingAddress = false;
+        this.isEditingPhoneNumber = false;
+        this.isEditingWebAddress = false;
+
+        this.pendingEdits = null;
+        this.editingAddress = null;
+        this.editingPhonenumber = null;
+        this.editingWebAddress = null;
     }
 
     /**

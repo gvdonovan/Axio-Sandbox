@@ -1,0 +1,62 @@
+{
+  "name": "ng2-toastr",
+  "version": "0.2.0",
+  "description": "bootstrap style of toast for angular 2",
+  "main": "ng2-toastr.js",
+  "typings": "ng2-toastr.d.ts",
+  "scripts": {
+    "prepublish": "gulp clean && tsc && node make.js && gulp bundle-css",
+    "build:prod": "NODE_ENV=production webpack -p --progress --color --optimize-minimize --optimize-dedupe --optimize-occurence-order",
+    "build:dev": "webpack-dev-server --hot --inline --colors --display-error-details --display-cached",
+    "tsc": "tsc",
+    "tsc:w": "tsc -w",
+    "lite": "lite-server",
+    "start": "concurrent \"npm run tsc:w\" \"npm run lite\" "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PointInside/ng2-toastr.git"
+  },
+  "keywords": [
+    "toast",
+    "toastr",
+    "angular 2",
+    "bootstrap"
+  ],
+  "author": "Derek Shi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PointInside/ng2-toastr/issues"
+  },
+  "homepage": "https://github.com/PointInside/ng2-toastr#readme",
+  "devDependencies": {
+    "@angular/core": "2.0.0-rc.1",
+    "systemjs": "~0.19.26",
+    "es6-promise": "^3.0.2",
+    "es6-shim": "^0.35.0",
+    "rxjs": "5.0.0-beta.6",
+    "zone.js": "0.6.12",
+    "concurrently": "^2.0.0",
+    "lite-server": "^2.1.0",
+    "typescript": "^1.8.10",
+    "typings": "^0.8.1",
+    "tslint": "~3.3",
+    "gulp": "3.9.0",
+    "gulp-rimraf": "~0.2",
+    "gulp-eslint": "1.1.1",
+    "gulp-size": "2.0.0",
+    "gulp-tslint": "4.3.1",
+    "gulp-cssnano": "2.1.0",
+    "gulp-rename": "1.2.2",
+    "require-dir": "0.3.0",
+    "ts-loader": "~0.8",
+    "css-loader": "~0.23",
+    "style-loader": "~0.13",
+    "async": "1.5.2",
+    "del": "2.2.0",
+    "systemjs-builder": "0.15.6",
+    "webpack": "~1.12.12",
+    "webpack-dev-server": "~1.14.1"
+  },
+  "dependencies": {}
+}

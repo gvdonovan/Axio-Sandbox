@@ -10,14 +10,17 @@ import {WebAddress} from "../interfaces/property.interface";
 export class FormWebAddressComponent implements OnInit{
 
     form: ControlGroup;
-    @Input() model: WebAddress;
-    @Output() WebAddressChanged: EventEmitter<Object> = new EventEmitter();
+    @Input() model: any;
+    @Output() webAddressChanged: EventEmitter<Object> = new EventEmitter();
 
     ngOnInit() {
         this.form = new ControlGroup({
             url: new Control((this.model && this.model.url) || '',Validators.compose([Validators.required]))
         });
 
-        this.form.valueChanges.debounceTime(400).distinctUntilChanged().subscribe(value => {this.WebAddressChanged.emit({value: value, valid: this.form.valid});});
+        this.form.valueChanges.debounceTime(400).distinctUntilChanged().subscribe(
+            value => {
+                this.webAddressChanged.emit({value: value, valid: this.form.valid});
+            });
     }
 }

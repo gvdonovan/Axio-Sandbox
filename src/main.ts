@@ -32,6 +32,7 @@ import {AppComponent} from './app.component';
 import {ANGULAR2_GOOGLE_MAPS_PROVIDERS} from "angular2-google-maps/core";
 //import {PropertyService} from "./app/property/property.service";
 import {SearchService, SidebarService, FactoryService, PropertySearchFormStore} from "./app/shared/services";
+import {ToastsManager} from './vendor/ng2-toastr/src/toast-manager'
 
 bootstrap(AppComponent, [
     ENV_PROVIDERS,
@@ -43,6 +44,7 @@ bootstrap(AppComponent, [
     SidebarService,
     PropertySearchFormStore,
     SearchService,
+    ToastsManager,
     provide(LocationStrategy, {useClass: PathLocationStrategy}),
     provide("moment", {useValue: moment}),
     provide("_", {useValue: _}),

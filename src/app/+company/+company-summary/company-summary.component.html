@@ -18,16 +18,17 @@
                         </div>
                         <div class="col-md-3">
                             <div class="row"><strong><span>Phone Number</span></strong>
-                                <i class="material-icons btn btn-sm no-padding" (click)="editPhoneNumber()">edit</i>
+                                <i class="material-icons btn btn-sm no-padding" (click)="editPhoneNumber(company.id)">edit</i>
                             </div>
                             <div class="row">
                                 {{company.phoneNumber ?
-                                company.phoneNumber.primaryNumber || '' : ''}}
+                                (company.phoneNumber.primaryNumber | phoneNumber) : ''
+                                }}
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="row"><strong><span>Web Address</span></strong>
-                                <i class="material-icons btn btn-sm no-padding" (click)="editWebAddress()">edit</i>
+                                <i class="material-icons btn btn-sm no-padding" (click)="editWebAddress(company.id)">edit</i>
                             </div>
                             <div class="row">
                                 {{company.webAddress ?
@@ -171,13 +172,13 @@
             </div>
             <div class="modal-body">
                 <form-address (addressChanged)="onAddressChange($event)" [model]="editingAddress" *ngIf="isEditingAddress"></form-address>
-                <form-phone [model]="currentPhoneNumber" *ngIf="isEditingPhoneNumber"></form-phone>
-                <form-webaddress [model]="currentWebAddress" *ngIf="isEditingWebAddress"></form-webaddress>
+                <form-phone [model]="editingPhonenumber" *ngIf="isEditingPhoneNumber" (phoneNumberChanged)="onPhoneNumberChanged($event)"></form-phone>
+                <form-webaddress [model]="editingWebAddress" *ngIf="isEditingWebAddress" (webAddressChanged)="onWebAddressChanged($event)"></form-webaddress>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal" [disabled]="!formValid"
                 (click)="saveEdits()">OK</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelEdits()">Cancel</button>
             </div>
         </div>
     </div>
