@@ -93,6 +93,9 @@ export interface Property {
   coordinate: Coordinate;
   units: Units;
 }
+export interface WebAddress {
+  url: string;
+}
 
 export interface PropertySearchResult {
   page: number;

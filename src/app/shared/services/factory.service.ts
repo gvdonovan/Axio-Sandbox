@@ -12,6 +12,7 @@ import {
   Company,
     Units} from '../interfaces';
 import {Injectable, Inject} from '@angular/core';
+import {WebAddress} from "../interfaces/property.interface";
 
 @Injectable()
 export class FactoryService {
@@ -41,17 +42,32 @@ export class FactoryService {
   }
 
   createCompany(company): Company {
-    let _company: Company = {
+    let _company: Company = { 
       id: company.id,
       name: company.name,
       stockSymbol: company.stockSymbol,
       address: this.createAddress(company.address),
       phoneNumber: this.createPhoneNumber(company.phoneNumber),
+      webAddress: this.createWebAddress(company.webAddress),
       properties: this._.concat(this._.map(company.owned, (ownedProperty) => { return this.createProperty(ownedProperty.property);}),
                                 this._.map(company.managed, (managedProperty) => { return this.createProperty(managedProperty.property); }))
     };
 
     return _company;
+  }
+
+  createWebAddress(webAddress): WebAddress {
+    if(! webAddress) {
+      return  {
+        url: null
+      }
+    }
+
+    let _webAddress: WebAddress = {
+      url: webAddress.webAddress.url
+    }
+
+    return _webAddress;
   }
 
   createOwner(owner): Owner {

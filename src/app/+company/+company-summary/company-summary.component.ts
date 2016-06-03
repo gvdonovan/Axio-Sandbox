@@ -5,13 +5,18 @@ import {Address, Coordinate, PhoneNumber, Company} from "../../shared/interfaces
 import { RouteSegment, ROUTER_DIRECTIVES } from '@angular/router';
 import { CompanyService} from '../shared';
 import {DataTableDirectives} from "angular2-datatable/datatable";
-import {DROPDOWN_DIRECTIVES, TYPEAHEAD_DIRECTIVES} from "ng2-bootstrap/ng2-bootstrap";
+import {
+    DROPDOWN_DIRECTIVES, TYPEAHEAD_DIRECTIVES, MODAL_DIRECTVES,
+    BS_VIEW_PROVIDERS
+} from "ng2-bootstrap/ng2-bootstrap";
 import {SebmGoogleMapMarker, SebmGoogleMap, SebmGoogleMapInfoWindow} from "angular2-google-maps/core";
 import {Panel} from "../../shared/components";
 import { Property } from '../../shared/interfaces';
-import {FormPhoneComponent, FormAdressComponent} from "../../shared/components";
+import {FormPhoneComponent, FormAdressComponent, FormWebAddressComponent} from "../../shared/components";
 import {SearchService, FactoryService, SidebarService} from "../../shared/services";
 import {STATES} from "../../shared/data";
+
+declare var jQuery: any;
 
 @Component({
     selector: 'ax-company',
@@ -27,6 +32,7 @@ import {STATES} from "../../shared/data";
         DataTableDirectives,
         DROPDOWN_DIRECTIVES,
         FormPhoneComponent,
+        FormWebAddressComponent,
         TYPEAHEAD_DIRECTIVES,
         ROUTER_DIRECTIVES
     ],
@@ -38,37 +44,24 @@ export class CompanySummaryComponent implements OnInit{
     companyId: string;
     //markers: Array<Property> = [];
     properties: Array<Property> = [];
+
+    isEditingAddress: boolean;
+    isEditingPhoneNumber: boolean;
+    isEditingWebAddress: boolean;
+    isCreatingNew: boolean;
+    editingAddress: any;
+    editingPhonenumber: any;
+    editingWebAddress:any;
+    pendingEdits: any;
+
     addPropertiesData: Array<Object> = [];
     pendingProperty: Object;
     formValid: boolean = false;
-    bigValue: Object = { value: 'abcde'};
     addPropertiesModalsearchTerm: string = '';
     propertiesTableFilter: Control = new Control();
-
     states: Object[] = this._.map(STATES,(data)=>{
         return {id: data.id, name: data.shortName}
     });
-
-    currentAddress: Address = {
-        id: null,
-        type: '',
-        streetName: '3805 164th St',
-        city: 'Lynnwood',
-        zipCode: '75013',
-        zipCodeExtension: '',
-        state: {
-            id: null,
-            name: '',
-            shortName: 'WA',
-            fipsCode: null
-        }
-    };
-
-    currentPhoneNumber: PhoneNumber = {
-        id: null,
-        primaryNumber: '6172123456',
-        extension: ''
-    };
 
 
     constructor(public companyService: CompanyService,
@@ -103,11 +96,104 @@ export class CompanySummaryComponent implements OnInit{
                     || (value.market.name || '').toLowerCase().indexOf(term.trim().toLowerCase()) !== -1
             });
         });
+
     };
+
+    protected refreshCompany(): void {
+        this.companyService.getCompany(this.company.id.toString())
+            .subscribe(
+                company => {
+                    this.company = company;
+                }
+            )
+    }
+
+    /**
+     *
+     * address editing
+     *
+     * */
+
+    getAddress(): string {
+        return this.company.address && this.company.address.streetName && this.company.address.city &&
+        this.company.address.state && this.company.address.state.shortName && this.company.address.zipCode ?
+            (this.company.address.streetName + ', ' + this.company.address.city + ' ' + this.company.address.state.shortName +
+        ' ' + this.company.address.zipCode) : '';
+    }
+
+    editAddress(id: string): void {
+
+        this.isEditingPhoneNumber = false;
+        this.isEditingWebAddress = false;
+
+        this.companyService.getAddress(id)
+            .subscribe(address => {
+
+                // empty address, do create
+                if(this._.isEmpty(address)) {
+                    this.isCreatingNew = true;
+                }// not empty, do update
+                else {
+                    this.isCreatingNew = false;
+                }
+
+                this.editingAddress = address;
+                this.pendingEdits = address;
+                jQuery('#editModal').modal({backdrop: false});
+                this.isEditingAddress = true;
+            })
+    }
 
     onAddressChange(e: any) {
         this.formValid = e.valid;
-        console.log(e);
+
+        if(this.formValid) {
+            this._.assign(this.pendingEdits,e.value);
+        }
+    }
+
+    /**
+     *
+     * phone number editing
+     * */
+
+    editPhoneNumber(): void {
+        this.isEditingPhoneNumber = true;
+        this.isEditingAddress = false;
+        this.isEditingWebAddress = false;
+
+    }
+
+    editWebAddress(): void {
+        this.isEditingWebAddress = true;
+        this.isEditingAddress = false;
+        this.isEditingPhoneNumber = false;
+
+
+    }
+
+    saveEdits(): void {
+        if(this.isEditingAddress) {
+            
+            if(this.isCreatingNew) {
+                this.companyService.createAddress(this.company.id,this.pendingEdits)
+                    .subscribe(
+                        response => {
+                            this.refreshCompany();
+                            this.isEditingAddress = false;
+                        }
+                    )
+            }
+            else {
+                this.companyService.editAddress(this.company.id,this.pendingEdits)
+                    .subscribe(
+                        response => {
+                            this.refreshCompany();
+                            this.isEditingAddress = false;
+                        }
+                    );
+            }
+        }
     }
 
     /**

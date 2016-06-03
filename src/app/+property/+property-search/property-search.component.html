@@ -203,9 +203,14 @@
     </content>
 </panel>
 
-<!--<div class="row">-->
-    <!--<p>{{form.value | json}}</p>-->
-<!--</div>-->
+<panel>
+    <panel-title>Debug</panel-title>
+    <content>
+        <div class="row">
+            <p>{{form.value | json}}</p>
+        </div>
+    </content>
+</panel>
 
 <panel *ngIf="searchActive">
     <panel-title>Search Results</panel-title>

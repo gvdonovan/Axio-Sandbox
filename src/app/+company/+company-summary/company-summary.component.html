@@ -10,28 +10,28 @@
                         <div class="col-md-5">
                             <div class="row">
                                 <strong><span>Address</span></strong>
-                                <i class="material-icons btn btn-sm no-padding" (click)="ifEditAddress = true;ifEditPhoneNumber = false;"
-                                   data-toggle="modal" data-target="#editModal" data-backdrop="false">edit</i>
+                                <i class="material-icons btn btn-sm no-padding" (click)="editAddress(company.id)">edit</i>
                             </div>
                             <div class="row">
-                                3805 164th St SW, Lynnwood WA 75013
+                                {{getAddress()}}
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="row"><strong><span>Phone Number</span></strong>
-                                <i class="material-icons btn btn-sm no-padding" (click)="ifEditPhoneNumber = true;ifEditAddress = false;"
-                                   data-toggle="modal" data-target="#editModal" data-backdrop="false">edit</i>
+                                <i class="material-icons btn btn-sm no-padding" (click)="editPhoneNumber()">edit</i>
                             </div>
                             <div class="row">
-                                (617)-212-3456
+                                {{company.phoneNumber ?
+                                company.phoneNumber.primaryNumber || '' : ''}}
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="row"><strong><span>Web Address</span></strong>
-                                <i class="material-icons btn btn-sm no-padding">edit</i>
+                                <i class="material-icons btn btn-sm no-padding" (click)="editWebAddress()">edit</i>
                             </div>
                             <div class="row">
-                                www.axiometrics.com
+                                {{company.webAddress ?
+                                company.webAddress.url || '' : ''}}
                             </div>
                         </div>
                     </div>
@@ -162,19 +162,21 @@
 
 
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
-        <div class="modal-content" style="margin-top:10%;">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content" style="margin-top:20%;">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="exampleModalLabel">Edit {{ifEditAddress ? 'Address': (ifEditPhoneNumber ? 'Phone Number' : '')}}</h4>
+                <h4 class="modal-title" id="exampleModalLabel">Edit</h4>
             </div>
             <div class="modal-body">
-                <form-address (addressChanged)="onAddressChange($event)" [model]="currentAddress" *ngIf="ifEditAddress"></form-address>
-                <form-phone [model]="currentPhoneNumber" *ngIf="ifEditPhoneNumber"></form-phone>
+                <form-address (addressChanged)="onAddressChange($event)" [model]="editingAddress" *ngIf="isEditingAddress"></form-address>
+                <form-phone [model]="currentPhoneNumber" *ngIf="isEditingPhoneNumber"></form-phone>
+                <form-webaddress [model]="currentWebAddress" *ngIf="isEditingWebAddress"></form-webaddress>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" [disabled]="!formValid">OK</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" [disabled]="!formValid"
+                (click)="saveEdits()">OK</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>

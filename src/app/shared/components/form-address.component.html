@@ -7,7 +7,7 @@
           <input  id="input_street" 
                   type="text" 
                   onclick="this.select();" 
-                  ngControl="street" 
+                  ngControl="streetName"
                   class="form-control">
         </div>
       </div>
@@ -23,12 +23,10 @@
       </div>
       <div class="col-xs-12">
         <div class="form-group">
-          <label for="input_state">State</label>
-          <input  id="input_state" 
-                  type="text" 
-                  ngControl="state" 
-                  onclick="this.select()"
-                  class="form-control">
+          <label for="input_stateProvinceId">State</label>
+          <input id="input_stateProvinceId" type="text" class="form-control" [(ngModel)]="stateProvinceId.model"
+                 [typeahead]="stateProvinceId.typeahead()" (change)="stateProvinceId.typeaheadOnValueChanged(stateProvinceId.model)"
+                 (typeaheadOnSelect)="stateProvinceId.typeaheadOnSelect($event)" required>
         </div>
       </div>
       <div class="col-xs-12">
@@ -37,7 +35,7 @@
           <input  id="input_zipcode" 
                   type="text" 
                   onclick="this.select()"
-                  ngControl="zipcode" 
+                  ngControl="zipCode"
                   class="form-control">
         </div>
       </div>

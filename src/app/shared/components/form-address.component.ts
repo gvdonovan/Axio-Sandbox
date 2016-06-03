@@ -1,11 +1,15 @@
-import { Component, Output, Input, EventEmitter, OnInit } from '@angular/core';
+import { Component, Output, Input, EventEmitter, OnInit, Inject } from '@angular/core';
 import { ControlGroup, Control, Validators, AbstractControl } from '@angular/common';
 import {Address} from "../interfaces";
+import {STATES} from '../data';
+import {TYPEAHEAD_DIRECTIVES} from "ng2-bootstrap/ng2-bootstrap";
 
 @Component({
   selector: 'form-address',
   template: require('./form-address.component.html'),
-  directives: [],
+  directives: [
+      TYPEAHEAD_DIRECTIVES
+  ],
   providers: [],
   styles:[
     `
@@ -15,24 +19,53 @@ import {Address} from "../interfaces";
   `
   ]
 })
-export class FormAdressComponent implements OnInit{
+export class FormAdressComponent implements OnInit {
 
-  form: ControlGroup;
-  @Input() model: Address;
-  @Output() addressChanged: EventEmitter<Object> = new EventEmitter();
+  form:ControlGroup;
+  @Input() model: any;
+  @Output() addressChanged:EventEmitter<Object> = new EventEmitter();
 
-  constructor() {
+  constructor(@Inject('_') private _) {
   }
+
   ngOnInit() {
-    
+
     this.form = new ControlGroup({
-      street: new Control((this.model && this.model.streetName) || '', Validators.compose([Validators.required, streetValidator])),
+      streetName: new Control((this.model && this.model.streetName) || '', Validators.compose([Validators.required, streetValidator])),
       city: new Control((this.model && this.model.city) || '', Validators.compose([Validators.required])),
-      state: new Control((this.model && this.model.state.shortName), Validators.compose([Validators.required])),
-      zipcode: new Control((this.model && this.model.zipCode) || '', Validators.compose([Validators.required, zipCodeValidator]))
+      stateProvinceId: new Control((this.model && this.model.stateProvinceId), Validators.compose([Validators.required])),
+      zipCode: new Control((this.model && this.model.zipCode) || '', Validators.compose([Validators.required, zipCodeValidator]))
     });
 
-    this.form.valueChanges.debounceTime(400).distinctUntilChanged().subscribe(value => {this.addressChanged.emit({value: value, valid: this.form.valid});});
+    if(this.model && this.model.stateProvinceId){
+      this.stateProvinceId.model = this.stateProvinceId.transform(this.model.stateProvinceId);
+    }
+
+    this.form.valueChanges.debounceTime(400).distinctUntilChanged().subscribe(value => {
+      this.addressChanged.emit({value: value, valid: this.form.valid});
+    });
+  }
+
+  stateProvinceId = {
+    model: '',
+    typeahead: () => {
+      return this._.map(STATES, 'name');
+    },
+    typeaheadOnSelect: (e:any) => {
+      let currentState = this._.find(STATES, {name: e.item});
+      if (currentState) {
+        (<Control>this.form.find('stateProvinceId')).updateValue(currentState.id);
+      }
+    },
+    transform: (stateProvinceId) => {
+      return this._.find(STATES, {id: stateProvinceId}).name;
+    },
+    typeaheadOnValueChanged: (value: string) => {
+      //when deleted, update ng control
+      if(!value) {
+        (<Control>this.form.find('stateProvinceId')).updateValue(value);
+      }
+    }
   }
 }
 
