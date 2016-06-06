@@ -20,10 +20,10 @@ export class SidebarService {
     }
 
     get isPropertySidebarVisible() : boolean {
-        return location.pathname.indexOf('property') !== -1;
+        return location.toString().split('/').slice(3).indexOf('property') !== -1;
     }
 
     get isCompanySidebarVisible() : boolean {
-        return location.pathname.indexOf('company') !== -1;
+        return location.toString().split('/').slice(3).indexOf('company') !== -1;
     }
 }
