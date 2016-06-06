@@ -7,5 +7,12 @@ export interface Company {
   address: Address;
   phoneNumber: PhoneNumber;
   webAddress: WebAddress;
-  properties: Property[];
+  properties: CompanyOwnedProperty[];
+}
+
+export interface CompanyOwnedProperty {
+  startDate: Date;
+  endDate: Date;
+  type: string;
+  property: Property
 }

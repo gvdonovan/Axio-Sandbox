@@ -10,6 +10,7 @@ import {
   Stats,
   Coordinate,
   Company,
+  CompanyOwnedProperty,
     Units} from '../interfaces';
 import {Injectable, Inject} from '@angular/core';
 import {WebAddress} from "../interfaces/property.interface";
@@ -49,11 +50,31 @@ export class FactoryService {
       address: this.createAddress(company.address),
       phoneNumber: this.createPhoneNumber(company.phoneNumber),
       webAddress: this.createWebAddress(company.webAddress),
-      properties: this._.concat(this._.map(company.owned, (ownedProperty) => { return this.createProperty(ownedProperty.property);}),
-                                this._.map(company.managed, (managedProperty) => { return this.createProperty(managedProperty.property); }))
+      properties: this._.concat(this._.map(company.owned, (ownedProperty) => { return this.createCompanyOwnedProperty(ownedProperty);}),
+                                this._.map(company.managed, (managedProperty) => { return this.createCompanyOwnedProperty(managedProperty); }))
     };
 
     return _company;
+  }
+
+  createCompanyOwnedProperty(property): CompanyOwnedProperty {
+    if(! property) {
+      return {
+        startDate: null,
+        endDate: null,
+        type: '',
+        property: this.createProperty(null)
+      }
+    }
+
+    let _companyOwnedProperty: CompanyOwnedProperty = {
+      startDate: property.startDate,
+      endDate: property.endDate,
+      type: property.type,
+      property: this.createProperty(property.property)
+    }
+
+    return _companyOwnedProperty;
   }
 
   createWebAddress(webAddress): WebAddress {

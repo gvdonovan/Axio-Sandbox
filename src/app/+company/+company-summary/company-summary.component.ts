@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import  { Control } from '@angular/common';
 import { Http } from '@angular/http';
-import {Address, Coordinate, PhoneNumber, Company} from "../../shared/interfaces";
+import {Address, Coordinate, PhoneNumber, Company, CompanyOwnedProperty} from "../../shared/interfaces";
 import { RouteSegment, ROUTER_DIRECTIVES } from '@angular/router';
 import { CompanyService} from '../shared';
 import {DataTableDirectives} from "angular2-datatable/datatable";
@@ -47,7 +47,7 @@ export class CompanySummaryComponent implements OnInit{
     company: Company;
     companyId: string;
     //markers: Array<Property> = [];
-    properties: Array<Property> = [];
+    properties: Array<CompanyOwnedProperty> = [];
 
     isEditingAddress: boolean;
     isEditingPhoneNumber: boolean;
@@ -95,7 +95,7 @@ export class CompanySummaryComponent implements OnInit{
         this.propertiesTableFilter.valueChanges.debounceTime(300)
             .distinctUntilChanged().subscribe(term => {
             this.properties = this._.filter(this.company.properties,(value, index) => {
-                return (value.name || '').toLowerCase().indexOf(term.trim().toLowerCase()) !== -1
+                return (value.property.name || '').toLowerCase().indexOf(term.trim().toLowerCase()) !== -1
                     || (value.address.city || '').toLowerCase().indexOf(term.trim().toLowerCase()) !== -1
                     || (value.address.streetName || '').toLowerCase().indexOf(term.trim().toLowerCase()) !== -1
                     || (value.market.name || '').toLowerCase().indexOf(term.trim().toLowerCase()) !== -1

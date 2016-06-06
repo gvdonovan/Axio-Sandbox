@@ -8,6 +8,7 @@ import {SebmGoogleMapMarker,
 import {DROPDOWN_DIRECTIVES} from "ng2-bootstrap/ng2-bootstrap";
 import {Property} from '../../shared/interfaces';
 import {SidebarService} from '../../shared/services';
+import {PhoneNumberPipe} from '../../shared/pipes';
 import {PropertyService} from '../shared';
 
 @Component({    
@@ -29,7 +30,8 @@ import {PropertyService} from '../shared';
         Sidebar,
         SidebarToggle,
         PropertyService
-    ]
+    ],
+    pipes: [PhoneNumberPipe]
 
 })
 export class PropertySummaryComponent implements OnInit, OnDestroy {

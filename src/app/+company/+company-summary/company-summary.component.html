@@ -86,40 +86,41 @@
                                 <thead>
                                 <tr>
                                     <th>
-                                        <mfDefaultSorter by="name">Name</mfDefaultSorter>
+                                        <mfDefaultSorter by="property.name">Name</mfDefaultSorter>
                                     </th>
                                     <th>
-                                        <mfDefaultSorter by="address.streetName">Address</mfDefaultSorter>
+                                        <mfDefaultSorter by="property.address.streetName">Address</mfDefaultSorter>
                                     </th>
                                     <th class="no-sort hidden-sm-down">
-                                        <mfDefaultSorter by="info">Type</mfDefaultSorter>
+                                        <mfDefaultSorter by="type">Type</mfDefaultSorter>
+                                    </th>
+                                    <!--<th class="hidden-sm-down">-->
+                                        <!--<mfDefaultSorter by="market.name">Market</mfDefaultSorter>-->
+                                    <!--</th>-->
+                                    <th class="hidden-sm-down">
+                                        <mfDefaultSorter by="startDate">Start Date</mfDefaultSorter>
                                     </th>
                                     <th class="hidden-sm-down">
-                                        <mfDefaultSorter by="market.name">Market</mfDefaultSorter>
-                                    </th>
-                                    <th class="hidden-sm-down">
-                                        <mfDefaultSorter by="stats.occupancyStatus">Status</mfDefaultSorter>
+                                        <mfDefaultSorter by="endDate">End Date</mfDefaultSorter>
                                     </th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr *ngFor="let property of mf.data">
-                                    <td><a [routerLink]="['/app/property/' + property.id]">{{property.name}}</a></td>
+                                    <td><a [routerLink]="['/app/property/' + property.property.id]">{{property.property.name}}</a></td>
                                     <td>
-                                        <small>
-                                            {{property.address.streetName}}
-                                        </small>
+                                            {{property.property.address.streetName}}
                                         <br>
-                                        <small>
                                           <span>
-                                            {{property.address.city}} {{property.address.state.shortName}}
+                                            {{property.property.address.city}} {{property.property.address.state.shortName}}
                                           </span>
-                                        </small>
                                     </td>
                                     <td class="hidden-sm-down">
+                                        {{property.type}}
                                     </td>
-                                    <td class="hidden-sm-down">{{property.market.name}}</td>
-                                    <td class="hidden-sm-down">{{property.stats.occupancyStatus}}</td>
+                                    <!--<td class="hidden-sm-down">{{property.property.market.name}}</td>-->
+                                    <td class="hidden-sm-down">{{property.startDate !== null ? moment(property.startDate).format('D/MMM/YYYY') : ''}}</td>
+                                    <td class="hidden-sm-down">{{property.endDate !== null ? moment(property.endDate).format('D/MMM/YYYY') : ''}}</td>
                                 </tr>
                                 </tbody>
                                 <tfoot>
@@ -142,10 +143,10 @@
                 <content>
                     <div class="map-container" style="padding:15px;">
                         <sebm-google-map [latitude]="40.1739428" [longitude]="-101.2099918" zoom="4">
-                            <sebm-google-map-marker *ngFor="let property of properties" [latitude]="property.coordinate.latitude" [longitude]="property.coordinate.longitude"
+                            <sebm-google-map-marker *ngFor="let property of properties" [latitude]="property.property.coordinate.latitude" [longitude]="property.property.coordinate.longitude"
                                                     [iconUrl]="'assets/images/icon_red.png'">
                                 <sebm-google-map-info-window [disableAutoPan]="true">
-                                    <strong>{{property.name}}</strong>
+                                    <strong>{{property.property.name}}</strong>
                                 </sebm-google-map-info-window>
                             </sebm-google-map-marker>
                         </sebm-google-map>

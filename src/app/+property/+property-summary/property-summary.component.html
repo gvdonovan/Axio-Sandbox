@@ -27,9 +27,9 @@
                     <div class="row">&nbsp;</div>
 
                     <div class="row">
-                        <div class="col-lg-5"><span class="text-muted-light">Market/Submarket</span><br>{{property.market.name}}<br>[Submarket Name]</div>
+                        <div class="col-lg-5"><span class="text-muted-light">Market/Submarket</span><br>{{property.market.name}}<br>{{property.submarket.name}}</div>
                         <div class="col-lg-3"><span class="text-muted-light">MSA ID</span><br>{{property.market.marketCode}}</div>
-                        <div class="col-lg-2"><span class="text-muted-light">Units</span><br>[Units]</div>
+                        <div class="col-lg-2"><span class="text-muted-light">Units</span><br>{{property.units.units}}</div>
                         <div class="col-lg-2"><span class="text-muted-light">Last Rennovation</span><br>{{property.lastRennovation}}</div>
                     </div>
 
@@ -42,7 +42,7 @@
                             [www.somewhere.com]
                         </div>
                         <div class="col-lg-3"><span class="text-muted-light">Contact</span><br>
-                            <abbr title="Phone">P:&nbsp;</abbr>{{property.phoneNumber.primaryNumber}}
+                            <abbr title="Phone">P:&nbsp;</abbr>{{property.phoneNumber.primaryNumber | phoneNumber}}
                         </div>
                         <div class="col-lg-2"><span class="text-muted-light">Parcel Count</span><br>[Parcel Count]</div>
                         <div class="col-lg-2"></div>
