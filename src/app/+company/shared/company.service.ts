@@ -110,4 +110,13 @@ export class CompanyService {
         return this.http.post(API_CONFIG.base + API_CONFIG.companyApi.base + '/webAddress/create',
             JSON.stringify({companyId: id, companyWebAddressTypeId: 1, webAddress: webAddress}));
     }
+
+    /**
+     *
+     * add properties
+     * */
+    addProperties(ownedProperties,managedProperties): Observable<any> {
+        return this.http.post(API_CONFIG.base + API_CONFIG.companyApi.base + '/properties',
+            JSON.stringify({managed:managedProperties, owned: ownedProperties, architected : [], contracted: [], developed: []}));
+    }
 }

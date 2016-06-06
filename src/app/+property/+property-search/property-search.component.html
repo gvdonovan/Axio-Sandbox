@@ -234,7 +234,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let property of searchResults; let idx = index;">
+                    <tr *ngFor="let property of searchResults.results; let idx = index;">
                         <td class="col-name"><a [routerLink]="['/app/property/' + property.id]">{{property.name + ' (' + property.id + ')'}}</a></td>
                         <td class="col-address">{{property.address ?
                             property.address.streetName + ' ' + property.address.city + ' ' +

@@ -102,5 +102,7 @@ export interface PropertySearchResult {
   page: number;
   pageSize: number;
   count: number;
+  searchType: string;
+  searchTerm: any;
   results: Array<Object>
 }

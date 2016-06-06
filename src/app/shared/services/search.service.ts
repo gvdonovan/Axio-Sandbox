@@ -8,15 +8,28 @@ import {Property, PropertySearchResult} from '../interfaces';
 @Injectable()
 export class SearchService {
 
-  private searchResultSource = new BehaviorSubject<PropertySearchResult>({page:0,pageSize:0,count:0,results:[]});
+  private searchResultSource = new BehaviorSubject<PropertySearchResult>({ page:0,pageSize:0,count:0,results:[],searchType:'',searchTerm:'' });
   searchResult$ = this.searchResultSource.asObservable();
 
   constructor(@Inject('_') private _, private http: Http, private factoryService: FactoryService) {}
 
-  basicSearch(term: string): Observable<Array<Property>> {
-    return this.http.get(API_CONFIG.base + API_CONFIG.propertyApi.base + '/search/' + term)
+  basicSearch(term: string, page?: number): Observable<any> {
+
+    let currentPage = page || 1;
+
+    return this.http.get(API_CONFIG.base + API_CONFIG.propertyApi.base + '/search/' + term + '?$page=' + currentPage + '&$pageSize=10')
       .map(res => {
-        return this._.map(res.json(),data => { return this.factoryService.createProperty(data);});//this.factoryService.createProperty(res.json());
+
+        let response = res.json();
+
+        if('page' in response && 'pageSize' in response && 'count' in response && 'results' in response) {
+          response.searchType = 'basic';
+          response.searchTerm = term;
+          return response;
+        }
+        else {
+          return this._.map(response,data => { return this.factoryService.createProperty(data);});
+        }
       });
   }
 
@@ -38,12 +51,11 @@ export class SearchService {
 
     return this.http.post(API_CONFIG.base + API_CONFIG.propertyApi.base + '/search-advanced', JSON.stringify(payLoad), options)
       .map(res => {
-          return res.json();
-        // return {
-        //   count: res.json().count,
-        //   page: res.json().page,
-        //   results: this._.map(res.json().results,data => { return this.factoryService.createProperty(data);})
-        // };
+
+        let response = res.json();
+        response.searchType = 'advanced';
+        response.searchTerm = terms;
+        return response;
       });
   }
 

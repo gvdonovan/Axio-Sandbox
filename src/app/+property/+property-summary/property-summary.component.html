@@ -5,16 +5,16 @@
         <div class="col-lg-8">
             <panel style="min-height:300px;">
                 <panel-title>Property Details</panel-title>
-                <header-menu>
-                    <span class="dropdown">
-                        <a href="#" class="card-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </span>
-                </header-menu>
+                <!--<header-menu>-->
+                    <!--<span class="dropdown">-->
+                        <!--<a href="#" class="card-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="material-icons">more_vert</i></a>-->
+                        <!--<div class="dropdown-menu dropdown-menu-right">-->
+                            <!--<a class="dropdown-item" href="#">Action</a>-->
+                            <!--<a class="dropdown-item" href="#">Another action</a>-->
+                            <!--<a class="dropdown-item" href="#">Something else here</a>-->
+                        <!--</div>-->
+                    <!--</span>-->
+                <!--</header-menu>-->
                 <content>
 
                     <div class="row">
@@ -69,7 +69,7 @@
                     <span class="dropdown">
                         <a href="#" class="card-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="#"><i class="material-icons">person</i> add owner</a>
+                            <a class="dropdown-item"><i class="material-icons">person</i> add owner</a>
                         </div>
                     </span>
                 </header-menu>
@@ -88,7 +88,7 @@
                         <tbody>
                         <tr *ngFor="let owner of property.owners;">
                             <td><a [routerLink]="['/app/company/' + owner.id]">{{owner.name}}</a></td>
-                            <td>{{owner.address ? owner.address.streetName + ' ' + owner.address.city : ''}}</td>
+                            <td>{{owner.address && owner.address.streetName && owner.address.city ? owner.address.streetName + ' ' + owner.address.city : ''}}</td>
                             <td class="hidden-sm-down">Owner</td>
                             <td class="hidden-sm-down">{{owner.startDate !== null ? moment(owner.startDate).format('D/MMM/YYYY') : ''}}</td>
                             <td class="hidden-sm-down">{{owner.endDate !== null ? moment(owner.endDate).format('D/MMM/YYYY') : ''}}</td>

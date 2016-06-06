@@ -133,9 +133,9 @@ export class ShellComponent implements OnInit {
                         this.router.navigate(['/app/company/' + properties[0].id]);
                     }
                 }
-                else if (properties.length > 1) {
-                    //this.router.navigate(['/app/property/search']);
-                    //this.searchService.setSearchResults(properties);
+                else {
+                    this.router.navigate(['/app/property/search']);
+                    this.searchService.setSearchResults(properties);
                 }
             });
     }

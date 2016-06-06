@@ -120,7 +120,7 @@ export class FactoryService {
       name: owner.company.name,
       stockSymbol: owner.company.stockSymbol,
       propertyOwnerType: owner.company.propertyOwnerType,
-      address: owner.company.address,
+      address: this.createAddress(owner.company.address),
       phoneNumber: owner.company.phoneNumber,
       webAddress: owner.company.webAddress
     };

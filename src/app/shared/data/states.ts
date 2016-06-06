@@ -12025,7 +12025,7 @@ export const STATES = [
     ]
   },
   {
-    id: 45,
+    id: 0,
     name: 'Texas',
     shortName: 'TX',
     fipsCode: '48',
