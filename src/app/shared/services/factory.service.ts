@@ -33,6 +33,11 @@ export class FactoryService {
       address: this.createAddress(property.address),
       phoneNumber: this.createPhoneNumber(property.phoneNumber),
       owners: this._.map(property.owners, (owner) => {return this.createOwner(owner); }),
+      managers: this._.map(property.managers, (m) => {
+        m.startDate = m.startDate ? new Date(m.startDate) : m.startDate;
+        m.endDate = m.endDate ? new Date(m.endDate) : m.endDate;
+        return m;
+      }),
       market: this.createMarket(property.market),
       submarket: this.createSubmarket(property.submarket),
       stats: this.createStats(property.currentStats),

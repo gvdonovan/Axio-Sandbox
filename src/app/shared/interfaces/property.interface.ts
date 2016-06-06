@@ -87,6 +87,7 @@ export interface Property {
   address: Address;
   phoneNumber: PhoneNumber;
   owners: Owner[];
+  managers: Object[],
   market: Market;
   submarket: Submarket;
   stats: Stats;
