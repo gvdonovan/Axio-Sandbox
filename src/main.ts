@@ -32,7 +32,7 @@ import {AppComponent} from './app.component';
 import {ANGULAR2_GOOGLE_MAPS_PROVIDERS} from "angular2-google-maps/core";
 //import {PropertyService} from "./app/property/property.service";
 import {SearchService, SidebarService, FactoryService, PropertySearchFormStore} from "./app/shared/services";
-import {ToastsManager} from './vendor/ng2-toastr/src/toast-manager'
+import {ToastsManager, ToastOptions} from './vendor/ng2-toastr/ng2-toastr'
 
 bootstrap(AppComponent, [
     ENV_PROVIDERS,
@@ -55,7 +55,8 @@ bootstrap(AppComponent, [
             }), http);
         },
         deps: [Http]
-    })
+    }),
+    provide(ToastOptions, { useValue: new ToastOptions({toastLife: 10000})})
 ])
     .catch(err => console.error(err));
 

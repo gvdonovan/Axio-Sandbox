@@ -357,12 +357,23 @@ export class CompanySummaryComponent implements OnInit{
     }
 
     private typeaheadOnSelect(e: any): void {
-        e.item.stateName = this.addPropertiesModalsearchTerm.split(':')[0].trim().toUpperCase();
-        this.pendingProperty = e.item;
+        if (this._.find(this.company.properties, data => { return data.property.id === e.item.propertyId })) {
+            this.pendingProperty = null;
+            this.toastr.error('property already owned/managed by this company! Please choose another one.');
+        }
+        else {
+            e.item.stateName = this.addPropertiesModalsearchTerm.split(':')[0].trim().toUpperCase();
+            this.pendingProperty = e.item;
+        }
     }
 
     private selectedTypeChanged(e: any, rowIndex: number): void {
-        this.addPropertiesData[rowIndex].type = e.target.value;
+        if(e.target.value === '0') {
+            this.addPropertiesData[rowIndex].type = null;
+        }
+        else {
+            this.addPropertiesData[rowIndex].type = e.target.value;
+        }
 
         this.addPropertiesValid = this.checkAddPropertiesValid();
     }
@@ -376,6 +387,12 @@ export class CompanySummaryComponent implements OnInit{
             if(match) {
                 this.addPropertiesData[rowIndex][startEnd + 'Date'] = this.moment(match[0],'MM-DD-YYYY').toDate();
             }
+            else {
+                this.addPropertiesData[rowIndex][startEnd + 'Date'] = null;
+            }
+        }
+        else {
+            this.addPropertiesData[rowIndex][startEnd + 'Date'] = null;
         }
 
         this.addPropertiesValid = this.checkAddPropertiesValid();
@@ -384,7 +401,7 @@ export class CompanySummaryComponent implements OnInit{
     protected checkAddPropertiesValid() {
         return this._.filter(this.addPropertiesData,data => {
             return data.type && data.startDate;
-        }).length > 0;
+        }).length === this.addPropertiesData.length && this.addPropertiesData.length > 0;
     }
 
     AddPropertyToTable(): void {
