@@ -88,7 +88,7 @@
                         <tbody>
                         <tr *ngFor="let owner of property.owners;">
                             <td><a [routerLink]="['/app/company/' + owner.id]">{{owner.name}}</a></td>
-                            <td>{{owner.address ? owner.address.streetName + ' ' + owner.address.city : ''}}</td>
+                            <td>{{owner.address && owner.address.streetName && owner.address.city ? owner.address.streetName + ' ' + owner.address.city : ''}}</td>
                             <td class="hidden-sm-down">Owner</td>
                             <td class="hidden-sm-down">{{owner.startDate !== null ? moment(owner.startDate).format('D/MMM/YYYY') : ''}}</td>
                             <td class="hidden-sm-down">{{owner.endDate !== null ? moment(owner.endDate).format('D/MMM/YYYY') : ''}}</td>
