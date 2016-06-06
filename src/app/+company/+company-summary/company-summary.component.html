@@ -186,7 +186,7 @@
 </div>
 
 <div class="modal fade" id="addPropertiesModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content" style="margin-top:10%;">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -222,7 +222,16 @@
                                         <mfDefaultSorter by="name">Name</mfDefaultSorter>
                                     </th>
                                     <th>
-                                        <mfDefaultSorter by="address.streetName">Address</mfDefaultSorter>
+                                        <mfDefaultSorter by="streetName">Address</mfDefaultSorter>
+                                    </th>
+                                    <th>
+                                        <mfDefaultSorter by="type">Type</mfDefaultSorter>
+                                    </th>
+                                    <th>
+                                        <mfDefaultSorter by="startDate">Start Date</mfDefaultSorter>
+                                    </th>
+                                    <th>
+                                        <mfDefaultSorter by="endDate">End Date</mfDefaultSorter>
                                     </th>
                                     <th class="no-sort hidden-sm-down">
                                         <mfDefaultSorter by="info">Action</mfDefaultSorter>
@@ -240,6 +249,20 @@
                                         <span>
                                         {{property.city}} {{property.stateName}}
                                         </span>
+                                    </td>
+                                    <td>
+                                        <select class="form-control" style="min-width: 130px;" (change)="selectedTypeChanged($event,rowIndex)">
+                                            <option>Select Type</option>
+                                            <option value="3">Manager</option>
+                                            <option value="2">Title Owner</option>
+                                            <option value="1">True Owner</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" placeholder="mm-dd-yyyy" required (input)="inputDateChanged($event,rowIndex,'start')">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" placeholder="mm-dd-yyyy"(input)="inputDateChanged($event,rowIndex,'end')">
                                     </td>
                                     <td class="hidden-sm-down">
                                         <button class="btn btn-sm btn-danger" (click)="deleteRow(rowIndex)">Delete</button>
@@ -259,7 +282,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="OKAddProperties()">Ok</button> <!-- [disabled]="addPropertiesData.length === 0" -->
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="OKAddProperties()" [disabled]="!addPropertiesValid">Ok</button> <!-- [disabled]="addPropertiesData.length === 0" -->
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelAddProperties()">Cancel</button>
             </div>
         </div>

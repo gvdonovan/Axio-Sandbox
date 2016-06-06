@@ -6,8 +6,7 @@ import { RouteSegment, ROUTER_DIRECTIVES } from '@angular/router';
 import { CompanyService} from '../shared';
 import {DataTableDirectives} from "angular2-datatable/datatable";
 import {
-    DROPDOWN_DIRECTIVES, TYPEAHEAD_DIRECTIVES, MODAL_DIRECTVES,
-    BS_VIEW_PROVIDERS
+    DROPDOWN_DIRECTIVES, TYPEAHEAD_DIRECTIVES
 } from "ng2-bootstrap/ng2-bootstrap";
 import {SebmGoogleMapMarker, SebmGoogleMap, SebmGoogleMapInfoWindow} from "angular2-google-maps/core";
 import {Panel} from "../../shared/components";
@@ -58,8 +57,9 @@ export class CompanySummaryComponent implements OnInit{
     editingWebAddress:any;
     pendingEdits: any;
 
-    addPropertiesData: Array<Object> = [];
+    addPropertiesData: Array<any> = [];
     pendingProperty: Object;
+    addPropertiesValid: boolean = false;
     formValid: boolean = false;
     addPropertiesModalsearchTerm: string = '';
     propertiesTableFilter: Control = new Control();
@@ -96,9 +96,9 @@ export class CompanySummaryComponent implements OnInit{
             .distinctUntilChanged().subscribe(term => {
             this.properties = this._.filter(this.company.properties,(value, index) => {
                 return (value.property.name || '').toLowerCase().indexOf(term.trim().toLowerCase()) !== -1
-                    || (value.address.city || '').toLowerCase().indexOf(term.trim().toLowerCase()) !== -1
-                    || (value.address.streetName || '').toLowerCase().indexOf(term.trim().toLowerCase()) !== -1
-                    || (value.market.name || '').toLowerCase().indexOf(term.trim().toLowerCase()) !== -1
+                    || (value.property.address.city || '').toLowerCase().indexOf(term.trim().toLowerCase()) !== -1
+                    || (value.property.address.streetName || '').toLowerCase().indexOf(term.trim().toLowerCase()) !== -1
+                    || (value.property.market.name || '').toLowerCase().indexOf(term.trim().toLowerCase()) !== -1
             });
         });
 
@@ -109,6 +109,10 @@ export class CompanySummaryComponent implements OnInit{
             .subscribe(
                 company => {
                     this.company = company;
+
+                    this.properties = this.company.properties;
+
+                    this.sidebarService.showSidebar(this.company);
                 }
             )
     }
@@ -357,11 +361,38 @@ export class CompanySummaryComponent implements OnInit{
         this.pendingProperty = e.item;
     }
 
-    AddPropertyToTable(value: any): void {
-        this.addPropertiesData.push(this.pendingProperty);
-        this.addPropertiesData = this._.uniqBy(this.addPropertiesData, 'propertyId');
+    private selectedTypeChanged(e: any, rowIndex: number): void {
+        this.addPropertiesData[rowIndex].type = e.target.value;
+
+        this.addPropertiesValid = this.checkAddPropertiesValid();
     }
 
+    private inputDateChanged(e: any, rowIndex: number, startEnd: string):void {
+        let DATE_REGEX = /^\d{2}-\d{2}-\d{4}$/i;
+
+        if(e.target.value && e.target.value.trim().length === 10) {
+            let match  = e.target.value.match(DATE_REGEX);
+
+            if(match) {
+                this.addPropertiesData[rowIndex][startEnd + 'Date'] = this.moment(match[0],'MM-DD-YYYY').toDate();
+            }
+        }
+
+        this.addPropertiesValid = this.checkAddPropertiesValid();
+    }
+
+    protected checkAddPropertiesValid() {
+        return this._.filter(this.addPropertiesData,data => {
+            return data.type && data.startDate;
+        }).length > 0;
+    }
+
+    AddPropertyToTable(): void {
+        if(this.pendingProperty) {
+            this.addPropertiesData.push(this.pendingProperty);
+            this.addPropertiesData = this._.uniqBy(this.addPropertiesData, 'propertyId');
+        }
+    }
     deleteRow(rowIndex: number): void {
         this.addPropertiesData = this._.filter(this.addPropertiesData,(value, index) => { return index !== rowIndex;});
     }
@@ -369,10 +400,34 @@ export class CompanySummaryComponent implements OnInit{
     cancelAddProperties(): void {
         this.addPropertiesData = [];
         this.addPropertiesModalsearchTerm = '';
+        this.pendingProperty = null;
     }
 
     OKAddProperties(): void {
-        this.addPropertiesData = [];
-        this.addPropertiesModalsearchTerm = '';
+        
+        let ownedProperties = this._.map(this._.filter(this.addPropertiesData,(d) => {return d.type !== '3'; }),
+            (data) => {
+                return {propertyId: data.propertyId, companyId: this.company.id, startDate: data.startDate, encDate: data.endDate, propertyOwnerTypeId: Number(data.type)}
+            }
+        );
+        let managedProperties = this._.map(this._.filter(this.addPropertiesData,{type: '3'}),
+            (data) => {
+                return {propertyId: data.propertyId, companyId: this.company.id, startDate: data.startDate, encDate: data.endDate}
+            }
+        );
+
+        this.companyService.addProperties(ownedProperties,managedProperties)
+            .subscribe(
+                response => {
+                    this.toastr.success('The data has been updated successfully!');
+                    this.refreshCompany();
+
+                    this.addPropertiesData = [];
+                    this.addPropertiesModalsearchTerm = '';
+                    this.pendingProperty = null;
+                }
+            );
+
+
     }
 }

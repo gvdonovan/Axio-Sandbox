@@ -14,6 +14,7 @@ import {STATES, MARKETS, SUBMARKETS, OCCUPANCY_STATUS} from '../../shared/data';
 import {SearchService, PropertySearchFormStore} from "../../shared/services";
 import {Panel} from '../../shared/components';
 import {SearchFormValidator, CommonValidator, ValidationResult} from '../shared';
+import {PropertySearchResult} from "../../shared/interfaces/property.interface";
 
 @Component({
     selector: 'ax-property',
@@ -37,7 +38,7 @@ export class PropertySearchComponent  implements OnInit, OnDestroy{
 
     public serchResultsFields = ['name','address','levels','units'];
 
-    private searchResults: Array<Object> = [];
+    private searchResults: PropertySearchResult;
     private form: ControlGroup;
     private searchResultSubscriber: Subscription;
 
@@ -170,10 +171,18 @@ export class PropertySearchComponent  implements OnInit, OnDestroy{
     }
 
     public pageChanged(e): void {
-        let formWithoutEmptyValues = this.removeEmptyValues(this.form.value);
-
-        if(this._.keys(formWithoutEmptyValues).length > 0){
-            this.searchService.advancedSearch(formWithoutEmptyValues,e.page)
+        if(this.searchResults.searchType === 'basic') {
+            this.searchService.basicSearch(this.searchResults.searchTerm,e.page)
+                .subscribe(
+                    _searchResults => {
+                        if(_searchResults.count > 0 && _searchResults.results.length > 0) {
+                            this.searchService.setSearchResults(_searchResults);
+                        }
+                    }
+                );
+        }
+        else if(this.searchResults.searchType === 'advanced'){
+            this.searchService.advancedSearch(this.searchResults.searchTerm,e.page)
                 .subscribe(
                     _searchResults => {
                         if(_searchResults.count > 0 && _searchResults.results.length > 0) {
@@ -266,7 +275,7 @@ export class PropertySearchComponent  implements OnInit, OnDestroy{
                             this.currentPage = _searchResults.page;
                         }
 
-                        this.searchResults = _searchResults.results;
+                        this.searchResults = _searchResults;
                     }
                 }
             );
