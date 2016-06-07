@@ -119,4 +119,16 @@ export class CompanyService {
         return this.http.post(API_CONFIG.base + API_CONFIG.companyApi.base + '/properties',
             JSON.stringify({managed:managedProperties, owned: ownedProperties, architected : [], contracted: [], developed: []}));
     }
+
+    /**
+     *
+     * new company
+     * */ 
+    createCompany(company: any, phoneNumber: any, webAddress: any, address: any): Observable<any> {
+        return this.http.post(API_CONFIG.base + API_CONFIG.companyApi.base + '/create',
+            JSON.stringify({company: company, address: address, webAddress: webAddress, phoneNumber: phoneNumber}))
+            .map(res => {
+                return res.json();
+            });
+    }
 }

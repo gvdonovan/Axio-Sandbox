@@ -16,7 +16,7 @@ import {FormPhoneComponent, FormAdressComponent, FormWebAddressComponent} from "
 import {SearchService, FactoryService, SidebarService, HttpClient} from "../../shared/services";
 import {STATES} from "../../shared/data";
 
-import {ToastsManager} from '../../../vendor/ng2-toastr/src/toast-manager';
+import {ToastsManager} from '../../../vendor/ng2-toastr/ng2-toastr';
 
 declare var jQuery: any;
 

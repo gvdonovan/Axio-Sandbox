@@ -16,6 +16,8 @@ import {STATES} from "../../data";
 import {SearchService, SidebarService} from "../../services";
 import { UserService } from '../../../services';
 import {PropertySidebarComponent} from "../../../+property/property-sidebar/property-sidebar.component";
+import {CompanySearchComponent} from "../../../+company/+company-search/company-search.component";
+import {CompanyNewComponent} from "../../../+company/+company-new/company-new.component";
 
 @Component({
     selector: 'app',
@@ -44,6 +46,8 @@ import {PropertySidebarComponent} from "../../../+property/property-sidebar/prop
     {path: '/home', component: HomeComponent}, //, name: 'Dashboard', useAsDefault: true },
     {path: '/dashboard', component: DashboardComponent}, //, name: 'Dashboard', useAsDefault: true },
     {path: '/property/search', component: PropertySearchComponent }, //, name: 'AdvancedSearch' },
+    {path: 'company/search', component: CompanySearchComponent},
+    {path: 'company/new', component: CompanyNewComponent},
     {path: '/admin', component: AdminHomeComponent }, //, name: 'AdvancedSearch' },
     /***
      * Routes without links
