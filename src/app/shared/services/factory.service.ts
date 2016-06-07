@@ -182,7 +182,7 @@ export class FactoryService {
     let _address: Address = {
       id: address.address.id,
       type: address.address.propertyAddressType,
-      streetName: address.address.streetName,
+      streetName: this.getProperAddress(address.address),
       city: address.address.city,
       zipCode: address.address.zipCode,
       zipCodeExtension: address.address.zipCodeExtension,
@@ -298,4 +298,28 @@ export class FactoryService {
 
     return _units;
   }
+
+
+
+  private getProperAddress(address : _address) : string {
+    var addressString = [
+      address.primaryNumber, 
+      address.preDirectional, 
+      address.streetName,
+      address.suffix,
+      address.postDirectional
+    ]
+    .filter((f) => (f && f.length > 0))
+    .join(' ');
+
+    return addressString;
+  }
+}
+
+interface _address {
+  primaryNumber : string;
+  preDirectional: string;
+  streetName: string;
+  suffix: string;
+  postDirectional: string;
 }
