@@ -39,7 +39,7 @@ export interface Owner {
   id: number;
   startDate: Date;
   endDate: Date;
-  propertyOwnerType: string;
+  type: string;
   percentage: number;
   name: string;
   stockSymbol: string;

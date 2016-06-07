@@ -7,13 +7,14 @@ import {Observable} from 'rxjs/Rx';
 import 'rxjs/Rx';
 
 import {API_CONFIG} from '../../shared/config';
+import {HttpClient} from "../../shared/services";
 
 @Injectable()
 export class PropertyService {
 
     constructor(
         public factoryService: FactoryService,
-        private http: Http
+        private http: HttpClient
     ) { }
 
     getProperty(id: string): Observable<Property> {
@@ -23,5 +24,10 @@ export class PropertyService {
                     return this.factoryService.createProperty(res.json());
                 }
             );
+    }
+
+    addCompanies(owners: any[], managers: any[]): Observable<any> {
+        return this.http.post(API_CONFIG.base + API_CONFIG.propertyApi.base + '/companies',
+            JSON.stringify({owners:owners, managers: managers, architects : [], contractors: [], developers: []}));
     }
 }

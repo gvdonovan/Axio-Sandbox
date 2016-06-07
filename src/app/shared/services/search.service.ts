@@ -66,4 +66,9 @@ export class SearchService {
   searchPropertiesByState(stateId, searchTerm): Observable<Response> {
     return this.http.get(API_CONFIG.base + API_CONFIG.propertyApi.base + '/search-by-state/' + stateId + '/' + searchTerm);
   }
+
+    searchCompaniesByName(searchTerm): Observable<Response> {
+        return this.http.get(API_CONFIG.base + API_CONFIG.companyApi.base + '/search/' + searchTerm)
+            .map(res => {return res.json();});
+    }
 }

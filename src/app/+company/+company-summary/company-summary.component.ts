@@ -409,6 +409,8 @@ export class CompanySummaryComponent implements OnInit{
             this.addPropertiesData.push(this.pendingProperty);
             this.addPropertiesData = this._.uniqBy(this.addPropertiesData, 'propertyId');
         }
+
+        this.addPropertiesValid = this.checkAddPropertiesValid();
     }
     deleteRow(rowIndex: number): void {
         this.addPropertiesData = this._.filter(this.addPropertiesData,(value, index) => { return index !== rowIndex;});

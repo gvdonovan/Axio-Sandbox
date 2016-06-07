@@ -63,33 +63,44 @@
 
     <div class="row">
         <div class="col-lg-8">
-            <panel style="min-height:400px;">
-                <panel-title>Owners</panel-title>
+            <panel style="min-height:415px;">
+                <panel-title>Companies</panel-title>
                 <header-menu>
                     <span class="dropdown">
                         <a href="#" class="card-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item"><i class="material-icons">person</i> add owner</a>
+                            <a class="dropdown-item btn" data-toggle="modal" data-target="#addOwnersModal" data-backdrop="false">
+                                <i class="material-icons">person</i> add company</a>
                         </div>
                     </span>
                 </header-menu>
                 <content>
-                    <table class="table table-hover">
+                    <table class="table table-hover" [mfData]="_.concat(property.owners,property.managers)" #mfCompanies="mfDataTable" [mfRowsOnPage]="5">
                         <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Address</th>
-                            <th class="hidden-sm-down">Type</th>
-                            <th class="hidden-sm-down">Start Date</th>
-                            <th class="hidden-sm-down">End Date</th>
+                            <th>
+                                <mfDefaultSorter by="name">Name</mfDefaultSorter>
+                            </th>
+                            <th>
+                                <mfDefaultSorter by="address.streetName">Address</mfDefaultSorter>
+                            </th>
+                            <th class="hidden-sm-down">
+                                <mfDefaultSorter by="type">Type</mfDefaultSorter>
+                            </th>
+                            <th class="hidden-sm-down">
+                                <mfDefaultSorter by="startDate">Start Date</mfDefaultSorter>
+                            </th>
+                            <th class="hidden-sm-down">
+                                <mfDefaultSorter by="endDate">End Date</mfDefaultSorter>
+                            </th>
                             <th class="hidden-sm-down">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr *ngFor="let owner of property.owners;">
+                        <tr *ngFor="let owner of mfCompanies.data;">
                             <td><a [routerLink]="['/app/company/' + owner.id]">{{owner.name}}</a></td>
                             <td>{{owner.address && owner.address.streetName && owner.address.city ? owner.address.streetName + ' ' + owner.address.city : ''}}</td>
-                            <td class="hidden-sm-down">Owner</td>
+                            <td class="hidden-sm-down">{{owner.type}}</td>
                             <td class="hidden-sm-down">{{owner.startDate !== null ? moment(owner.startDate).format('D/MMM/YYYY') : ''}}</td>
                             <td class="hidden-sm-down">{{owner.endDate !== null ? moment(owner.endDate).format('D/MMM/YYYY') : ''}}</td>
                             <td class="hidden-sm-down">
@@ -102,12 +113,19 @@
                             </td>
                         </tr>
                         </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="12" style="padding: 0;line-height: 0;">
+                                <mfBootstrapPaginator></mfBootstrapPaginator>
+                            </td>
+                        </tr>
+                        </tfoot>
                     </table>
                 </content>
             </panel>
         </div>
         <div class="col-lg-4">
-            <panel style="min-height:400px;" >
+            <panel style="min-height:415px;" >
                 <panel-title>Map</panel-title>
                 <content>
                     <sebm-google-map [latitude]="property.coordinate.latitude" [longitude]="property.coordinate.longitude" zoom="10">
@@ -134,4 +152,111 @@
 
 <div *ngIf="!property">
     <h4>No Data Available</h4>
+</div>
+
+<div class="modal fade" id="addOwnersModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" style="margin-top:10%;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="addPropertiesModalLabel">Add Companies</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <input class="form-control" placeholder="Company Name"
+                                   [typeahead]="getAsyncData(getContext())" [typeaheadOptionField]="'name'"
+                                   typeaheadWaitMs="300" (typeaheadOnSelect)="typeaheadOnSelect($event)"
+                                   [(ngModel)]="addCompaniesModalSearchTerm">
+                        </div>
+                        <div class="col-lg-4">
+                            <button type="submit" class="btn btn-primary" (click)="AddCompanyToTable()">Add</button>
+                            <button class="btn btn-secondary" (click)="addCompaniesModalSearchTerm = '';">Clear</button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="add-companies-table-container">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <table class="table table-hover" [mfData]="addCompaniesData" #mf="mfDataTable" [mfRowsOnPage]="5">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <mfDefaultSorter by="name">Name</mfDefaultSorter>
+                                    </th>
+                                    <th>
+                                        <mfDefaultSorter by="streetName">Address</mfDefaultSorter>
+                                    </th>
+                                    <th>
+                                        <mfDefaultSorter by="type">Type</mfDefaultSorter>
+                                    </th>
+                                    <th>
+                                        <mfDefaultSorter by="startDate">Start Date</mfDefaultSorter>
+                                    </th>
+                                    <th>
+                                        <mfDefaultSorter by="endDate">End Date</mfDefaultSorter>
+                                    </th>
+                                    <th>
+                                        <mfDefaultSorter by="source">Source</mfDefaultSorter>
+                                    </th>
+                                    <th class="no-sort hidden-sm-down">
+                                        <mfDefaultSorter by="info">Action</mfDefaultSorter>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let company of mf.data; let rowIndex = index">
+                                    <td>{{company.name}}</td>
+                                    <td>
+                                        <span>
+                                            {{company.address ? company.address.streetName : ''}}
+                                        </span>
+                                        <br>
+                                        <span>
+                                        {{company.address ? company.address.city : ''}} {{company.address ? company.address.stateProvince.shortName : ''}}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <select class="form-control" style="min-width: 130px;" (change)="selectedTypeChanged($event,rowIndex)">
+                                            <option value="0">Select Type</option>
+                                            <option value="3">Manager</option>
+                                            <option value="2">Title Owner</option>
+                                            <option value="1">True Owner</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" placeholder="mm-dd-yyyy" required (input)="inputDateChanged($event,rowIndex,'start')">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" placeholder="mm-dd-yyyy"(input)="inputDateChanged($event,rowIndex,'end')">
+                                    </td>
+                                    <td class="hidden-sm-down">
+
+                                    </td>
+                                    <td class="hidden-sm-down">
+                                        <button class="btn btn-sm btn-danger" (click)="deleteRow(rowIndex)">Delete</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="12" style="padding: 0;line-height: 0;">
+                                        <mfBootstrapPaginator></mfBootstrapPaginator>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="OKAddCompanies()" [disabled]="!addCompaniesValid">Ok</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelAddCompanies()" >Cancel</button>
+            </div>
+        </div>
+    </div>
 </div>

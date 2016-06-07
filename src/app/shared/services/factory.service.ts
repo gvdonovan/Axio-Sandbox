@@ -32,12 +32,8 @@ export class FactoryService {
       county: this.createCounty(property.county),
       address: this.createAddress(property.address),
       phoneNumber: this.createPhoneNumber(property.phoneNumber),
-      owners: this._.map(property.owners, (owner) => {return this.createOwner(owner); }),
-      managers: this._.map(property.managers, (m) => {
-        m.startDate = m.startDate ? new Date(m.startDate) : m.startDate;
-        m.endDate = m.endDate ? new Date(m.endDate) : m.endDate;
-        return m;
-      }),
+      owners: this._.map(property.owners, (owner) => {return this.createOwner(owner, 'Owner'); }),
+      managers: this._.map(property.managers, (manager) => {return this.createOwner(manager, 'Manager');}),
       market: this.createMarket(property.market),
       submarket: this.createSubmarket(property.submarket),
       stats: this.createStats(property.currentStats),
@@ -96,7 +92,7 @@ export class FactoryService {
     return _webAddress;
   }
 
-  createOwner(owner): Owner {
+  createOwner(owner, type): Owner {
     if (! owner) {
       return  {
         id: null,
@@ -105,7 +101,7 @@ export class FactoryService {
         percentage: null,
         name: null,
         stockSymbol: null,
-        propertyOwnerType: null,
+        type: null,
         address: null,
         phoneNumber: null,
         webAddress: null
@@ -119,7 +115,7 @@ export class FactoryService {
       percentage: owner.percentage,
       name: owner.company.name,
       stockSymbol: owner.company.stockSymbol,
-      propertyOwnerType: owner.company.propertyOwnerType,
+      type: owner.propertyOwnerType? owner.propertyOwnerType.name : type,
       address: this.createAddress(owner.company.address),
       phoneNumber: owner.company.phoneNumber,
       webAddress: owner.company.webAddress

@@ -25,7 +25,7 @@
 <div class="sidebar-heading sidebar-p-t">Managers</div>
 <div class="sidebar-region">
     <div class="sidebar-text" *ngFor="let manager of model?.managers">
-        <a [routerLink]="['/app', '/company/' + manager.company.id]">{{ manager.company.name }}</a>, {{ manager.startDate | date:'yyyy'}} - {{ manager.endDate | date:'yyyy' }}
+        <a [routerLink]="['/app', '/company/' + manager.id]">{{ manager.name }}</a>, {{ manager.startDate | date:'yyyy'}} - {{ manager.endDate | date:'yyyy' }}
     </div>
 </div>
 
