@@ -1,8 +1,6 @@
 import {Injectable} from '@angular/core';
 import { Http } from '@angular/http';
 
-import {FactoryService} from '../../shared/services';
-import {Company} from '../../shared/interfaces';
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/Rx';
 
@@ -13,15 +11,14 @@ import {HttpClient} from "../../shared/services/http-client.service";
 export class CompanyService {
 
     constructor(
-        public factoryService: FactoryService,
         private http: HttpClient
     ) { }
 
-    getCompany(id: string): Observable<Company> {
+    getCompany(id: string): Observable<any> {
         return this.http.get(API_CONFIG.base + API_CONFIG.companyApi.base + '/summary/' + id)
             .map(
                 res => {
-                    return this.factoryService.createCompany(res.json());
+                    return res.json();
                 }
             );
     }

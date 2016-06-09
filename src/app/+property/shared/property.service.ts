@@ -1,8 +1,6 @@
 import {Injectable} from '@angular/core';
 import { Http } from '@angular/http';
 
-import {FactoryService} from '../../shared/services';
-import {Property} from '../../shared/interfaces';
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/Rx';
 
@@ -13,15 +11,14 @@ import {HttpClient} from "../../shared/services";
 export class PropertyService {
 
     constructor(
-        public factoryService: FactoryService,
         private http: HttpClient
     ) { }
 
-    getProperty(id: string): Observable<Property> {
+    getProperty(id: string): Observable<any> {
         return this.http.get(API_CONFIG.base + API_CONFIG.propertyApi.base + '/summary/' + id)
             .map(
                 res => {
-                    return this.factoryService.createProperty(res.json());
+                    return res.json();
                 }
             );
     }

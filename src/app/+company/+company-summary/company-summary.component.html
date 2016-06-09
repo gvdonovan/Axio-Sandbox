@@ -13,7 +13,8 @@
                                 <i class="material-icons btn btn-sm no-padding" (click)="editAddress(company.id)">edit</i>
                             </div>
                             <div class="row">
-                                {{getAddress()}}
+                                {{company.address?.address?.streetName + ', ' + company.address?.address?.city + ' ' +
+                                company.address?.address?.stateProvince?.shortName + ' ' + company.address?.address?.zipCode}}
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -21,9 +22,7 @@
                                 <i class="material-icons btn btn-sm no-padding" (click)="editPhoneNumber(company.id)">edit</i>
                             </div>
                             <div class="row">
-                                {{company.phoneNumber ?
-                                (company.phoneNumber.primaryNumber | phoneNumber) : ''
-                                }}
+                                {{company.phoneNumber?.phoneNumber?.primaryNumber | phoneNumber}}
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -31,8 +30,7 @@
                                 <i class="material-icons btn btn-sm no-padding" (click)="editWebAddress(company.id)">edit</i>
                             </div>
                             <div class="row">
-                                {{company.webAddress ?
-                                company.webAddress.url || '' : ''}}
+                                {{company.webAddress?.webAddress?.url}}
                             </div>
                         </div>
                     </div>
@@ -107,12 +105,12 @@
                                 </thead>
                                 <tbody>
                                 <tr *ngFor="let property of mf.data">
-                                    <td><a [routerLink]="['/app/property/' + property.property.id]">{{property.property.name}}</a></td>
+                                    <td><a [routerLink]="['/app/property/' + property.property.propertyId]">{{property.property.name}}</a></td>
                                     <td>
-                                            {{property.property.address.streetName}}
+                                            {{property.property.address?.address?.streetName}}
                                         <br>
                                           <span>
-                                            {{property.property.address.city}} {{property.property.address.state.shortName}}
+                                            {{property.property.address?.address?.city}} {{property.property.address?.address?.stateProvince.shortName}}
                                           </span>
                                     </td>
                                     <td class="hidden-sm-down">
@@ -143,12 +141,16 @@
                 <content>
                     <div class="map-container" style="padding:15px;">
                         <sebm-google-map [latitude]="40.1739428" [longitude]="-101.2099918" zoom="4">
-                            <sebm-google-map-marker *ngFor="let property of properties" [latitude]="property.property.coordinate.latitude" [longitude]="property.property.coordinate.longitude"
-                                                    [iconUrl]="'assets/images/icon_red.png'">
-                                <sebm-google-map-info-window [disableAutoPan]="true">
-                                    <strong>{{property.property.name}}</strong>
-                                </sebm-google-map-info-window>
-                            </sebm-google-map-marker>
+                            <div *ngFor="let property of properties">
+                                <sebm-google-map-marker *ngIf="property.property.coordinates.length > 0"
+                                                        [latitude]="property.property.coordinates[0].latitude"
+                                                        [longitude]="property.property.coordinates[0].longitude"
+                                                        [iconUrl]="'assets/images/icon_red.png'">
+                                    <sebm-google-map-info-window [disableAutoPan]="true">
+                                        <strong>{{property.property.name}}</strong>
+                                    </sebm-google-map-info-window>
+                                </sebm-google-map-marker>
+                            </div>
                         </sebm-google-map>
                     </div>
                 </content>

@@ -6,7 +6,6 @@ import {Panel} from '../../shared/components';
 import {SebmGoogleMapMarker,
     SebmGoogleMap} from 'angular2-google-maps/core';
 import {DROPDOWN_DIRECTIVES, TYPEAHEAD_DIRECTIVES} from "ng2-bootstrap/ng2-bootstrap";
-import {Property} from '../../shared/interfaces';
 import {SidebarService, HttpClient} from '../../shared/services';
 import {PhoneNumberPipe} from '../../shared/pipes';
 import {PropertyService} from '../shared';
@@ -42,7 +41,7 @@ import {DataTableDirectives} from "angular2-datatable/datatable";
 
 })
 export class PropertySummaryComponent implements OnInit, OnDestroy {
-    property: Property;
+    property: any;
     propertyId: string;
 
     addCompaniesModalSearchTerm: string = '';

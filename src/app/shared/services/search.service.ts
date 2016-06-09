@@ -2,8 +2,7 @@ import {Injectable, Inject} from '@angular/core';
 import {Observable, BehaviorSubject} from 'rxjs/Rx';
 import {Http, Headers, RequestOptions, Response} from "@angular/http";
 import {API_CONFIG} from '../config';
-import {FactoryService} from "./factory.service";
-import {Property, PropertySearchResult} from '../interfaces';
+import {PropertySearchResult} from '../interfaces';
 
 @Injectable()
 export class SearchService {
@@ -11,7 +10,7 @@ export class SearchService {
   private searchResultSource = new BehaviorSubject<PropertySearchResult>({ page:0,pageSize:0,count:0,results:[],searchType:'',searchTerm:'' });
   searchResult$ = this.searchResultSource.asObservable();
 
-  constructor(@Inject('_') private _, private http: Http, private factoryService: FactoryService) {}
+  constructor(@Inject('_') private _, private http: Http) {}
 
   basicSearch(term: string, page?: number): Observable<any> {
 
@@ -28,7 +27,7 @@ export class SearchService {
           return response;
         }
         else {
-          return this._.map(response,data => { return this.factoryService.createProperty(data);});
+          return response;
         }
       });
   }

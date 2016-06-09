@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import  { Control } from '@angular/common';
 import { Http } from '@angular/http';
-import {Address, Coordinate, PhoneNumber, Company, CompanyOwnedProperty} from "../../shared/interfaces";
 import { RouteSegment, ROUTER_DIRECTIVES } from '@angular/router';
 import { CompanyService} from '../shared';
 import {DataTableDirectives} from "angular2-datatable/datatable";
@@ -10,10 +9,9 @@ import {
 } from "ng2-bootstrap/ng2-bootstrap";
 import {SebmGoogleMapMarker, SebmGoogleMap, SebmGoogleMapInfoWindow} from "angular2-google-maps/core";
 import {Panel} from "../../shared/components";
-import { Property } from '../../shared/interfaces';
 import { PhoneNumberPipe } from '../../shared/pipes';
 import {FormPhoneComponent, FormAdressComponent, FormWebAddressComponent} from "../../shared/components";
-import {SearchService, FactoryService, SidebarService, HttpClient} from "../../shared/services";
+import {SearchService, SidebarService, HttpClient} from "../../shared/services";
 import {STATES} from "../../shared/data";
 
 import {ToastsManager} from '../../../vendor/ng2-toastr/ng2-toastr';
@@ -43,10 +41,10 @@ declare var jQuery: any;
 
 })
 export class CompanySummaryComponent implements OnInit{
-    company: Company;
+    company: any;
     companyId: string;
     //markers: Array<Property> = [];
-    properties: Array<CompanyOwnedProperty> = [];
+    properties: Array<any> = [];
 
     isEditingAddress: boolean;
     isEditingPhoneNumber: boolean;
@@ -74,23 +72,13 @@ export class CompanySummaryComponent implements OnInit{
                 params: RouteSegment,
                 private http: Http,
                 private searchService: SearchService,
-                private factoryService: FactoryService,
                 private sidebarService: SidebarService,
                 public toastr: ToastsManager) {
         this.companyId = params.getParam('companyId');
     }
 
     ngOnInit(): void {
-        this.companyService.getCompany(this.companyId)
-            .subscribe(
-                res => {
-                    this.company = res;
-
-                    this.properties = this.company.properties;
-
-                    this.sidebarService.showSidebar(this.company);
-                }
-            )
+        this.refreshCompany(this.companyId);
 
         this.propertiesTableFilter.valueChanges.debounceTime(300)
             .distinctUntilChanged().subscribe(term => {
@@ -104,14 +92,13 @@ export class CompanySummaryComponent implements OnInit{
 
     };
 
-    protected refreshCompany(): void {
-        this.companyService.getCompany(this.company.id.toString())
+    protected refreshCompany(id?:string): void {
+        this.companyService.getCompany(id || this.company.id.toString())
             .subscribe(
                 company => {
                     this.company = company;
 
-                    this.properties = this.company.properties;
-
+                    this.properties = this._.concat(company.owned,company.managed);//this._.filter(this._.concat(company.owned,company.managed),data=>{return data.property.coordinates.length > 0;});
                     this.sidebarService.showSidebar(this.company);
                 }
             )
@@ -122,13 +109,6 @@ export class CompanySummaryComponent implements OnInit{
      * address editing
      *
      * */
-
-    getAddress(): string {
-        return this.company.address && this.company.address.streetName && this.company.address.city &&
-        this.company.address.state && this.company.address.state.shortName && this.company.address.zipCode ?
-            (this.company.address.streetName + ', ' + this.company.address.city + ' ' + this.company.address.state.shortName +
-        ' ' + this.company.address.zipCode) : '';
-    }
 
     editAddress(id: string): void {
 
